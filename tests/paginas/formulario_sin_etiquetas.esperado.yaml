@@ -1,5 +1,4 @@
 # Respuesta correcta (referencia) para formulario_sin_etiquetas.html. Vocabulario: ver perfecta.esperado.yaml
-# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 pagina: formulario_sin_etiquetas.html
 tareas:
   A:
@@ -7,36 +6,40 @@ tareas:
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 7
     ruta:
       - {tecla: H, rol: heading, nombre: "Contacto"}
       - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
-    razon: "El contacto tiene encabezado; la falla está solo en los campos."
+    razon: "Igual que perfecta.html: 6 + 1 = 7."
   B:
     entrada: formulario_sin_etiquetas.html
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 9
     ruta:
       - {tecla: H, rol: heading, nombre: "Trámites"}
       - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
-      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
-    razon: "Estructura correcta."
+      - {tecla: leer, rol: StaticText, nombre: "Croquis del terreno"}
+    razon: "Igual que perfecta.html: 4 + 5 = 9."
   C:
     entrada: formulario_sin_etiquetas.html
     estado: completable
     estrategia: enlace_por_nombre
     tipo_falla: null
+    friccion_esperada: 5
     ruta:
-      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
-      - {tecla: Enter, resultado: "PDF con capa de texto"}
-    razon: "Enlace con nombre único y PDF con texto."
+      - {tecla: lista_enlaces, rol: link, nombre: "Plan Municipal de Desarrollo (PDF)"}
+      - {tecla: Enter, destino: "docs/plan_municipal.pdf"}
+    razon: "Igual que perfecta.html: 1 + 3 + 1 = 5."
   D:
     entrada: formulario_sin_etiquetas.html
     estado: no_completable
-    estrategia: F_a_campos  # F sí llega al formulario; falla la identificación de los campos
+    estrategia: F_a_campos  # F sí llega a los campos; falla la identificación
     tipo_falla: no_identificable
+    friccion_esperada: 3
     ruta:
       - {tecla: F, rol: textbox, nombre: ""}
       - {tecla: F, rol: textbox, nombre: ""}
       - {tecla: F, rol: textbox, nombre: ""}
-    razon: "Se llega al formulario, pero los 3 campos se anuncian sin nombre (sin label, placeholder, title ni aria-label): no se puede identificar qué pide cada uno."
+    razon: "F llega a los 3 campos (3 pulsaciones), pero se anuncian sin nombre (sin label, placeholder, title ni aria-label): no se puede identificar qué pide cada uno."

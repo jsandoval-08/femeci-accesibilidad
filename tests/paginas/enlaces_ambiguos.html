@@ -8,7 +8,7 @@
     body { font-family: sans-serif; max-width: 52rem; margin: 0 auto; padding: 1rem; }
     nav a { margin-right: 1rem; }
     .tarjeta { border: 1px solid #888; padding: .5rem 1rem; margin: .5rem 0; }
-    .tarjeta .titulo { font-weight: bold; margin: 0; }
+    .nota, .tarjeta .titulo { font-weight: bold; margin: 0; }
     .redes a { display: inline-block; width: 2rem; height: 2rem; margin-right: .5rem; }
     label { display: block; margin-top: .5rem; }
   </style>
@@ -16,61 +16,85 @@
 <body>
   <!-- Falla aislada: los enlaces. Los títulos de las tarjetas son <p> (no encabezados) y
        los enlaces dicen solo "Leer más" / "clic aquí" (repetidos). El trámite buscado
-       (licencia de construcción menor) es la tarjeta 9 de 12 (27 elementos después del
-       encabezado "Trámites", más que UMBRAL_LECTURA); sus requisitos están en
-       enlaces_ambiguos_tramite.html. Al pie, íconos-enlace sin nombre. -->
+       (licencia de construcción menor) es la tarjeta 9 de 12; sus requisitos están en
+       enlaces_ambiguos_tramite.html. Las otras 11 llevan a enlaces_ambiguos_otro.html.
+       Probando en orden: fricción 35 (ver .esperado.yaml). Al pie, íconos-enlace sin nombre. -->
   <header>
     <h1>Ayuntamiento de Villa Ejemplo</h1>
     <nav aria-label="Principal">
-      <a href="#tramites">Trámites</a>
-      <a href="#descargas">Descargas</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#">Inicio</a>
+      <a href="#">Gobierno</a>
+      <a href="#">Transparencia</a>
     </nav>
   </header>
 
   <main>
+    <!-- Bloque de noticias común (20 elementos), ajeno a las 4 tareas -->
+    <section id="noticias" aria-labelledby="h-noticias">
+      <h2 id="h-noticias">Noticias</h2>
+      <p>Lo más reciente del Ayuntamiento.</p>
+      <p class="nota">Inicia campaña de reforestación en parques</p>
+      <p>12 de septiembre de 2026</p>
+      <p>Se plantarán 500 árboles en colonias del municipio.</p>
+      <p class="nota">Rehabilitan alumbrado en el centro</p>
+      <p>10 de septiembre de 2026</p>
+      <p>Se cambiaron 120 luminarias por tecnología LED.</p>
+      <p class="nota">Festival cultural de otoño</p>
+      <p>5 de septiembre de 2026</p>
+      <p>Música, danza y teatro gratuitos en la plaza principal.</p>
+      <p class="nota">Jornada de vacunación para mascotas</p>
+      <p>1 de septiembre de 2026</p>
+      <p>Aplicación gratuita de vacuna antirrábica.</p>
+      <p class="nota">Mantenimiento a la red de agua potable</p>
+      <p>28 de agosto de 2026</p>
+      <p>Trabajos en tuberías de tres colonias.</p>
+      <p class="nota">Torneo municipal de futbol infantil</p>
+      <p>25 de agosto de 2026</p>
+      <p>Participan niñas y niños de 8 a 12 años.</p>
+    </section>
+
     <section id="tramites" aria-labelledby="h-tramites">
       <h2 id="h-tramites">Trámites</h2>
 
       <div class="tarjeta">
         <p class="titulo">Constancia de residencia</p>
         <p>Documento que acredita su domicilio en el municipio.</p>
-        <a href="#t1">Leer más</a>
+        <a href="enlaces_ambiguos_otro.html">Leer más</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Pago del predial</p>
         <p>Consulte y pague su impuesto predial anual.</p>
-        <a href="#t2">clic aquí</a>
+        <a href="enlaces_ambiguos_otro.html">clic aquí</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Constancia de no adeudo</p>
         <p>Compruebe que no tiene adeudos con el municipio.</p>
-        <a href="#t3">Leer más</a>
+        <a href="enlaces_ambiguos_otro.html">Leer más</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Copia de acta de nacimiento</p>
         <p>Solicite una copia certificada de su acta.</p>
-        <a href="#t4">clic aquí</a>
+        <a href="enlaces_ambiguos_otro.html">clic aquí</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Permiso de venta ambulante</p>
         <p>Autorización para comerciar en la vía pública.</p>
-        <a href="#t5">Leer más</a>
+        <a href="enlaces_ambiguos_otro.html">Leer más</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Licencia de funcionamiento comercial</p>
         <p>Apertura y operación de un negocio.</p>
-        <a href="#t6">Leer más</a>
+        <a href="enlaces_ambiguos_otro.html">Leer más</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Registro de predio</p>
         <p>Alta de un terreno en el padrón municipal.</p>
-        <a href="#t7">Leer más</a>
+        <a href="enlaces_ambiguos_otro.html">Leer más</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Alineamiento y número oficial</p>
         <p>Constancia de alineamiento de su predio.</p>
-        <a href="#t8">clic aquí</a>
+        <a href="enlaces_ambiguos_otro.html">clic aquí</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Licencia de construcción menor</p>
@@ -80,23 +104,23 @@
       <div class="tarjeta">
         <p class="titulo">Permiso para eventos</p>
         <p>Autorización para eventos en espacios públicos.</p>
-        <a href="#t10">Leer más</a>
+        <a href="enlaces_ambiguos_otro.html">Leer más</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Cambio de propietario del predial</p>
         <p>Actualice el nombre del propietario en el padrón.</p>
-        <a href="#t11">clic aquí</a>
+        <a href="enlaces_ambiguos_otro.html">clic aquí</a>
       </div>
       <div class="tarjeta">
         <p class="titulo">Constancia de uso de suelo</p>
         <p>Documento sobre el uso permitido de un terreno.</p>
-        <a href="#t12">Leer más</a>
+        <a href="enlaces_ambiguos_otro.html">Leer más</a>
       </div>
     </section>
 
     <section id="descargas" aria-labelledby="h-descargas">
       <h2 id="h-descargas">Descargas</h2>
-      <p><a href="docs/requisitos_licencia.pdf">Requisitos de licencia de construcción (PDF)</a></p>
+      <p><a href="docs/plan_municipal.pdf">Plan Municipal de Desarrollo (PDF)</a></p>
     </section>
 
     <section id="contacto" aria-labelledby="h-contacto">

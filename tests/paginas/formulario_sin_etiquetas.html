@@ -9,6 +9,7 @@
     nav a { margin-right: 1rem; }
     .fila { margin-top: .5rem; }
     .rotulo { display: inline-block; width: 12rem; }
+    .nota { font-weight: bold; margin-bottom: 0; }
   </style>
 </head>
 <body>
@@ -18,13 +19,37 @@
   <header>
     <h1>Ayuntamiento de Villa Ejemplo</h1>
     <nav aria-label="Principal">
-      <a href="#tramites">Trámites</a>
-      <a href="#descargas">Descargas</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#">Inicio</a>
+      <a href="#">Gobierno</a>
+      <a href="#">Transparencia</a>
     </nav>
   </header>
 
   <main>
+    <!-- Bloque de noticias común (20 elementos), ajeno a las 4 tareas -->
+    <section id="noticias" aria-labelledby="h-noticias">
+      <h2 id="h-noticias">Noticias</h2>
+      <p>Lo más reciente del Ayuntamiento.</p>
+      <p class="nota">Inicia campaña de reforestación en parques</p>
+      <p>12 de septiembre de 2026</p>
+      <p>Se plantarán 500 árboles en colonias del municipio.</p>
+      <p class="nota">Rehabilitan alumbrado en el centro</p>
+      <p>10 de septiembre de 2026</p>
+      <p>Se cambiaron 120 luminarias por tecnología LED.</p>
+      <p class="nota">Festival cultural de otoño</p>
+      <p>5 de septiembre de 2026</p>
+      <p>Música, danza y teatro gratuitos en la plaza principal.</p>
+      <p class="nota">Jornada de vacunación para mascotas</p>
+      <p>1 de septiembre de 2026</p>
+      <p>Aplicación gratuita de vacuna antirrábica.</p>
+      <p class="nota">Mantenimiento a la red de agua potable</p>
+      <p>28 de agosto de 2026</p>
+      <p>Trabajos en tuberías de tres colonias.</p>
+      <p class="nota">Torneo municipal de futbol infantil</p>
+      <p>25 de agosto de 2026</p>
+      <p>Participan niñas y niños de 8 a 12 años.</p>
+    </section>
+
     <section id="tramites" aria-labelledby="h-tramites">
       <h2 id="h-tramites">Trámites</h2>
       <h3>Licencia de construcción menor</h3>
@@ -39,7 +64,7 @@
 
     <section id="descargas" aria-labelledby="h-descargas">
       <h2 id="h-descargas">Descargas</h2>
-      <p><a href="docs/requisitos_licencia.pdf">Requisitos de licencia de construcción (PDF)</a></p>
+      <p><a href="docs/plan_municipal.pdf">Plan Municipal de Desarrollo (PDF)</a></p>
     </section>
 
     <section id="contacto" aria-labelledby="h-contacto">

@@ -53,20 +53,25 @@ Software libre, repositorio público.
 ## Definiciones (no cambiar sin avisar)
 - **Tareas** (todas terminan ANTES de enviar nada): A Contacto · B Requisitos de un trámite ·
   C Abrir un documento descargable · D Llegar a un formulario e identificar sus campos
-- **Estados**:
-  - **Completable** = se llega con una estrategia dirigida (H, D, F, o elegir un enlace por nombre
-    en la lista de elementos NVDA+F7) más una lectura corta, y el cierre funciona.
-  - **Lectura corta** = como máximo 15 elementos leídos después del salto. Es un parámetro
-    configurable (`UMBRAL_LECTURA = 15`); se reportará un análisis de sensibilidad con 10, 15 y 25.
-    Convención de conteo (a confirmar al construir el emulador): un elemento = cada parada de
-    flecha abajo (encabezado, párrafo, elemento de lista, enlace, botón, campo, texto suelto);
-    el contenedor de una lista no cuenta.
-  - **Con dificultad** = solo se llega con un recorrido no dirigido (leer todo de corrido o
-    tabular todo desde el inicio).
+- **Estados** — se deciden por la **fricción**: pulsaciones totales (saltos + lectura) con la
+  MEJOR estrategia. `UMBRAL = 15`, configurable; se reporta sensibilidad con 10, 15 y 25.
+  - **Completable** = se llega y el cierre funciona, con fricción ≤ UMBRAL.
+  - **Con dificultad** = se llega y el cierre funciona, con fricción > UMBRAL.
   - **No completable** = no se llega, o no se puede identificar el objetivo, o el cierre está roto.
     Se registra como `tipo_falla`: `no_encontrado` · `no_identificable` · `cierre_roto`.
+  - "Dirigida / no dirigida" queda como campo descriptivo (`estrategia`); ya NO decide el estado.
+- **Elemento (parada)** = cada parada de flecha abajo: encabezado, enlace, botón, campo de
+  formulario y texto suelto (párrafo, elemento de lista, rótulo). El texto dentro de una parada
+  no es otra parada; el contenedor de una lista no cuenta.
+- **Conteo de pulsaciones**: el cursor empieza antes de la primera parada. H / K / F = 1 por cada
+  encabezado / enlace / campo saltado. Flecha abajo = 1 por parada. Lista de enlaces (NVDA+F7)
+  = 1 + flechas hasta el enlace, en orden del documento (no se filtra escribiendo). Enter = 1.
+  Volver (Alt+←) = 1.
+- **Las estrategias solo deciden con lo anunciado** (roles, nombres, títulos al llegar). Si varios
+  candidatos no se distinguen por nombre, se prueban en orden del documento y el costo se acumula
+  (cada intento fallido = K + Enter + volver), sin conocimiento del objetivo.
 - **Limitación del método**: Ctrl+F (búsqueda de texto de NVDA) queda excluido; se declara como
-  limitación, no se modela.
+  limitación, no se modela. Tampoco se modela filtrar escribiendo en la lista de enlaces.
 - **Punto de entrada**: parámetro explícito de cada tarea.
 
 ## Reglas de trabajo

@@ -1,7 +1,7 @@
 """Genera los dos PDFs de prueba de la tarea C (con Playwright, sin dependencias extra).
 
-  docs/requisitos_licencia.pdf   texto real (con capa de texto)
-  docs/requisitos_escaneado.pdf  solo una imagen del mismo texto (sin capa de texto)
+  docs/plan_municipal.pdf            texto real (con capa de texto)
+  docs/plan_municipal_escaneado.pdf  solo una imagen del mismo texto (sin capa de texto)
 
 El escaneado se logra fotografiando el documento y metiendo la imagen en un PDF:
 queda una página-imagen, igual que un papel escaneado sin OCR.
@@ -17,16 +17,16 @@ from playwright.sync_api import sync_playwright
 DOCS = Path(__file__).parent / "docs"
 
 DOCUMENTO = """<!DOCTYPE html>
-<html lang="es"><head><meta charset="utf-8"><title>Requisitos</title>
+<html lang="es"><head><meta charset="utf-8"><title>Plan Municipal de Desarrollo</title>
 <style>body{font-family:Arial,sans-serif;font-size:20px;margin:40px;width:680px}</style>
 </head><body>
-<h1>Requisitos de licencia de construcción menor</h1>
+<h1>Plan Municipal de Desarrollo 2024-2027</h1>
 <p>Ayuntamiento de Villa Ejemplo</p>
 <ul>
-<li>Identificación oficial vigente</li>
-<li>Comprobante de domicilio</li>
-<li>Comprobante de pago del predial</li>
-<li>Croquis del terreno</li>
+<li>Eje 1. Servicios públicos de calidad</li>
+<li>Eje 2. Desarrollo económico local</li>
+<li>Eje 3. Medio ambiente y espacios públicos</li>
+<li>Eje 4. Gobierno abierto</li>
 </ul>
 </body></html>"""
 
@@ -39,7 +39,7 @@ def generar() -> None:
 
         # 1) PDF con texto real
         pagina.set_content(DOCUMENTO)
-        pagina.pdf(path=str(DOCS / "requisitos_licencia.pdf"), format="Letter")
+        pagina.pdf(path=str(DOCS / "plan_municipal.pdf"), format="Letter")
 
         # 2) Foto del documento -> PDF que contiene solo la imagen
         png = pagina.screenshot(full_page=True)
@@ -48,7 +48,7 @@ def generar() -> None:
             f'<html><body style="margin:0"><img src="data:image/png;base64,{datos}" '
             f'style="width:100%"></body></html>'
         )
-        pagina.pdf(path=str(DOCS / "requisitos_escaneado.pdf"), format="Letter")
+        pagina.pdf(path=str(DOCS / "plan_municipal_escaneado.pdf"), format="Letter")
 
         navegador.close()
 

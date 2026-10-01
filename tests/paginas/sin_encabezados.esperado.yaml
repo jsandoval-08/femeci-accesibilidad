@@ -1,5 +1,6 @@
 # Respuesta correcta (referencia) para sin_encabezados.html. Vocabulario: ver perfecta.esperado.yaml
-# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
+# Sin encabezados ni landmarks; el menú no tiene enlaces internos. Paradas: título (1), menú (3),
+# noticias (20), trámites (7), descargas (2), contacto (2), ...
 pagina: sin_encabezados.html
 tareas:
   A:
@@ -7,33 +8,37 @@ tareas:
     estado: con_dificultad
     estrategia: no_dirigida
     tipo_falla: null
+    friccion_esperada: 35
     ruta:
       - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Teléfono: 667 555 0142"}}
-    razon: "Sin encabezados ni landmarks no hay salto dirigido a 'Contacto'; hay que leer todo de corrido."
+    razon: "No hay encabezado, landmark ni enlace que lleve a 'Contacto'; solo se llega leyendo desde el inicio: 1 + 3 + 20 + 7 + 2 + 2 = 35 paradas (> 25)."
   B:
     entrada: sin_encabezados.html
     estado: con_dificultad
     estrategia: no_dirigida
     tipo_falla: null
+    friccion_esperada: 31
     ruta:
       - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Croquis del terreno"}}
-    razon: "Los requisitos están en divs sueltos, sin encabezado ni lista; solo se llega leyendo todo."
+    razon: "Los requisitos son divs sueltos sin encabezado ni lista; leyendo desde el inicio: 1 + 3 + 20 + 7 = 31 paradas (> 25)."
   C:
     entrada: sin_encabezados.html
     estado: completable
     estrategia: enlace_por_nombre
     tipo_falla: null
+    friccion_esperada: 5
     ruta:
-      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
-      - {tecla: Enter, resultado: "PDF con capa de texto"}
-    razon: "El enlace conserva su nombre; no depende de encabezados."
+      - {tecla: lista_enlaces, rol: link, nombre: "Plan Municipal de Desarrollo (PDF)"}
+      - {tecla: Enter, destino: "docs/plan_municipal.pdf"}
+    razon: "El enlace conserva su nombre; no depende de encabezados: 1 + 3 + 1 = 5."
   D:
     entrada: sin_encabezados.html
     estado: completable
     estrategia: F_a_campos
     tipo_falla: null
+    friccion_esperada: 3
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
       - {tecla: F, rol: textbox, nombre: "Mensaje"}
-    razon: "Los campos tienen etiqueta y F no depende de encabezados."
+    razon: "Los campos tienen etiqueta y F no depende de encabezados: 3."

@@ -1,8 +1,13 @@
 # Respuesta correcta (referencia) para perfecta.html.
-# estado: completable | con_dificultad | no_completable
-# estrategia: H_a_seccion | F_a_campos | enlace_por_nombre | no_dirigida
+# estado: por fricción (ver CLAUDE.md). completable si friccion_esperada <= UMBRAL (15);
+#         con_dificultad si > UMBRAL; no_completable si no se llega / no se identifica / falla el cierre.
+# estrategia (descriptiva, no decide el estado): H_a_seccion | F_a_campos | enlace_por_nombre |
+#         probar_enlaces | no_dirigida
 # tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
-# ruta: pasos esperados con lo que se anunciaría (rol y nombre). No incluye conteo de pulsaciones.
+# friccion_esperada: pulsaciones de la ruta (saltos + lectura) con la mejor estrategia.
+# ruta: pasos que la prueba recorre sobre el árbol real para recalcular la fricción.
+#   Página de referencia: 44 paradas; encabezados en orden: h1, Noticias, Trámites,
+#   Licencia de construcción menor, Descargas, Contacto, Envíanos un mensaje.
 pagina: perfecta.html
 tareas:
   A:
@@ -10,36 +15,40 @@ tareas:
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 7
     ruta:
-      - {tecla: H, rol: heading, nombre: "Contacto"}
-      - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
-    razon: "El h2 'Contacto' está en el nivel de encabezados y el teléfono va justo debajo."
+      - {tecla: H, rol: heading, nombre: "Contacto"}                    # 6 (6.º encabezado)
+      - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}  # 1
+    razon: "H seis veces llega al h2 'Contacto' y el teléfono es la siguiente parada: 6 + 1 = 7."
   B:
     entrada: perfecta.html
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 9
     ruta:
-      - {tecla: H, rol: heading, nombre: "Trámites"}
-      - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
-      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
-    razon: "Encabezados h2/h3 llevan al trámite; la lista de requisitos sigue al h3."
+      - {tecla: H, rol: heading, nombre: "Trámites"}                         # 3
+      - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}   # 1
+      - {tecla: leer, rol: StaticText, nombre: "Croquis del terreno"}         # 5
+    razon: "H cuatro veces llega al h3 del trámite; luego 5 paradas (párrafo + 4 requisitos): 4 + 5 = 9."
   C:
     entrada: perfecta.html
     estado: completable
     estrategia: enlace_por_nombre
     tipo_falla: null
+    friccion_esperada: 5
     ruta:
-      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
-      - {tecla: Enter, resultado: "PDF con capa de texto"}
-    razon: "El enlace tiene nombre único y descriptivo; el PDF tiene texto extraíble."
+      - {tecla: lista_enlaces, rol: link, nombre: "Plan Municipal de Desarrollo (PDF)"}  # 1 + 3 flechas
+      - {tecla: Enter, destino: "docs/plan_municipal.pdf"}                              # 1
+    razon: "En la lista de enlaces el PDF es el 4.º (tras los 3 del menú): 1 + 3 + Enter = 5. Por H costaría 7. El PDF tiene texto."
   D:
     entrada: perfecta.html
     estado: completable
     estrategia: F_a_campos
     tipo_falla: null
+    friccion_esperada: 3
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
       - {tecla: F, rol: textbox, nombre: "Mensaje"}
-    razon: "F salta de campo en campo y los tres tienen etiqueta; no se envía nada."
+    razon: "F recorre los 3 campos y cada uno se anuncia con su etiqueta: 3. No se envía nada."

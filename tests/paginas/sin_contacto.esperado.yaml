@@ -1,40 +1,44 @@
 # Respuesta correcta (referencia) para sin_contacto.html. Vocabulario: ver perfecta.esperado.yaml
-# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 pagina: sin_contacto.html
 tareas:
   A:
     entrada: sin_contacto.html
     estado: no_completable
-    estrategia: no_dirigida  # ninguna estrategia (ni leer todo) encuentra un contacto que no existe
+    estrategia: no_dirigida  # ninguna estrategia encuentra un contacto que no existe
     tipo_falla: no_encontrado
-    ruta: null
-    razon: "No hay teléfono, correo ni enlace de contacto en la página; el objetivo no existe."
+    friccion_esperada: 42
+    ruta:
+      - {tecla: leer_de_corrido, hasta: fin}
+    razon: "No hay teléfono, correo ni enlace de contacto. La fricción (42) es lo que cuesta leer la página completa para comprobar que no existe."
   B:
     entrada: sin_contacto.html
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 9
     ruta:
       - {tecla: H, rol: heading, nombre: "Trámites"}
       - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
-      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
-    razon: "Estructura correcta; solo falta el contacto."
+      - {tecla: leer, rol: StaticText, nombre: "Croquis del terreno"}
+    razon: "Igual que perfecta.html: 4 + 5 = 9."
   C:
     entrada: sin_contacto.html
     estado: completable
     estrategia: enlace_por_nombre
     tipo_falla: null
+    friccion_esperada: 5
     ruta:
-      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
-      - {tecla: Enter, resultado: "PDF con capa de texto"}
-    razon: "Enlace con nombre único y PDF con texto."
+      - {tecla: lista_enlaces, rol: link, nombre: "Plan Municipal de Desarrollo (PDF)"}
+      - {tecla: Enter, destino: "docs/plan_municipal.pdf"}
+    razon: "Igual que perfecta.html: 1 + 3 + 1 = 5."
   D:
     entrada: sin_contacto.html
     estado: completable
     estrategia: F_a_campos
     tipo_falla: null
+    friccion_esperada: 3
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: combobox, nombre: "Trámite"}
       - {tecla: F, rol: textbox, nombre: "Fecha preferida"}
-    razon: "Formulario de solicitud de cita (no de contacto) con campos etiquetados; no se envía."
+    razon: "Formulario de solicitud de cita (no de contacto) con campos etiquetados: 3. No se envía."

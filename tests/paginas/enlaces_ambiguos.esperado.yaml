@@ -1,5 +1,6 @@
 # Respuesta correcta (referencia) para enlaces_ambiguos.html. Vocabulario: ver perfecta.esperado.yaml
-# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
+# Encabezados: h1, Noticias, Trámites, Descargas, Contacto, Envíanos un mensaje.
+# Enlaces en orden: menú (3), 12 tarjetas, PDF, 3 íconos sin nombre.
 pagina: enlaces_ambiguos.html
 tareas:
   A:
@@ -7,38 +8,43 @@ tareas:
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 6
     ruta:
       - {tecla: H, rol: heading, nombre: "Contacto"}
       - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
-    razon: "La falla de esta página está en los enlaces; el contacto tiene encabezado."
+    razon: "Contacto es el 5.º encabezado: 5 + 1 = 6."
   B:
     entrada: enlaces_ambiguos.html
     estado: con_dificultad
-    estrategia: no_dirigida
+    estrategia: probar_enlaces
     tipo_falla: null
+    friccion_esperada: 35
     ruta:
-      - {tecla: H, rol: heading, nombre: "Trámites"}
-      - {tecla: leer_de_corrido, hasta: {rol: link, nombre: "Leer más"}}  # 27 elementos; el 6.º "Leer más" (tarjeta 9 de 12)
-      - {tecla: Enter, resultado: "enlaces_ambiguos_tramite.html"}
-      - {tecla: H, rol: heading, nombre: "Requisitos"}
-      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
-    razon: "Hay 8 'Leer más' y 4 'clic aquí' idénticos: en la lista de enlaces no se distingue cuál es el trámite, y los títulos de tarjeta no son encabezados (no hay salto a la tarjeta). Leyendo desde el encabezado 'Trámites' (el salto), cada tarjeta son 3 elementos (título, descripción, enlace): la tarjeta 9 queda a 8×3 + 3 = 27 elementos del salto. Eso supera UMBRAL_LECTURA = 15 y también el 25 del análisis de sensibilidad (con 10 y 15 igual)."
+      - {tecla: H, rol: heading, nombre: "Trámites"}                                  # 3
+      - {tecla: probar_enlaces, nombres: ["Leer más", "clic aquí"],
+         destino: "enlaces_ambiguos_tramite.html"}                                      # 8×3 + 2 = 26
+      - {tecla: H, rol: heading, nombre: "Requisitos"}                                # 2
+      - {tecla: leer, rol: StaticText, nombre: "Croquis del terreno"}                  # 4
+    razon: "Los 12 enlaces de tarjeta se anuncian solo como 'Leer más' o 'clic aquí': no se distinguen por nombre y los títulos no son encabezados. La mejor estrategia: H a 'Trámites' (3) y probar los enlaces en orden. Cada intento fallido cuesta K + Enter + volver (3) y llega a 'Otro trámite'; el correcto es el 9.º: 8×3 + 2 = 26. En la página del trámite, H a 'Requisitos' (2) y leer 4: total 3 + 26 + 2 + 4 = 35 (> 25). Leer las tarjetas de corrido sería peor: 3 + 27 + 1 + 6 = 37."
   C:
     entrada: enlaces_ambiguos.html
     estado: completable
-    estrategia: enlace_por_nombre
+    estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 6
     ruta:
-      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
-      - {tecla: Enter, resultado: "PDF con capa de texto"}
-    razon: "El enlace al PDF sí tiene nombre único; los íconos sin nombre no estorban."
+      - {tecla: H, rol: heading, nombre: "Descargas"}
+      - {tecla: leer, rol: link, nombre: "Plan Municipal de Desarrollo (PDF)"}
+      - {tecla: Enter, destino: "docs/plan_municipal.pdf"}
+    razon: "Por la lista de enlaces el PDF es el 16.º (1 + 15 + 1 = 17); por H a 'Descargas' es mejor: 4 + 1 + 1 = 6."
   D:
     entrada: enlaces_ambiguos.html
     estado: completable
     estrategia: F_a_campos
     tipo_falla: null
+    friccion_esperada: 3
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
       - {tecla: F, rol: textbox, nombre: "Mensaje"}
-    razon: "Formulario con etiquetas."
+    razon: "Formulario con etiquetas: 3."

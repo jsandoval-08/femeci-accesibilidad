@@ -1,5 +1,4 @@
 # Respuesta correcta (referencia) para pdf_escaneado.html. Vocabulario: ver perfecta.esperado.yaml
-# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 pagina: pdf_escaneado.html
 tareas:
   A:
@@ -7,36 +6,40 @@ tareas:
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 7
     ruta:
       - {tecla: H, rol: heading, nombre: "Contacto"}
       - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
-    razon: "Igual que perfecta.html."
+    razon: "Igual que perfecta.html: 6 + 1 = 7."
   B:
     entrada: pdf_escaneado.html
     estado: completable
     estrategia: H_a_seccion
     tipo_falla: null
+    friccion_esperada: 9
     ruta:
       - {tecla: H, rol: heading, nombre: "Trámites"}
       - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
-      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
-    razon: "Igual que perfecta.html."
+      - {tecla: leer, rol: StaticText, nombre: "Croquis del terreno"}
+    razon: "Igual que perfecta.html: 4 + 5 = 9."
   C:
     entrada: pdf_escaneado.html
     estado: no_completable
     estrategia: enlace_por_nombre  # el enlace se alcanza; falla el cierre
     tipo_falla: cierre_roto
+    friccion_esperada: 5
     ruta:
-      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
-      - {tecla: Enter, resultado: "PDF sin capa de texto"}
-    razon: "El PDF es solo una imagen escaneada: el lector no tiene nada que leer; el cierre está roto."
+      - {tecla: lista_enlaces, rol: link, nombre: "Plan Municipal de Desarrollo (PDF)"}
+      - {tecla: Enter, destino: "docs/plan_municipal_escaneado.pdf"}
+    razon: "Se llega con 5 pulsaciones, pero el PDF es solo una imagen escaneada: el lector no tiene nada que leer; el cierre está roto."
   D:
     entrada: pdf_escaneado.html
     estado: completable
     estrategia: F_a_campos
     tipo_falla: null
+    friccion_esperada: 3
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
       - {tecla: F, rol: textbox, nombre: "Mensaje"}
-    razon: "Igual que perfecta.html."
+    razon: "Igual que perfecta.html: 3."
