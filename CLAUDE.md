@@ -26,7 +26,7 @@ Software libre, repositorio público.
 2. **Chequeo automático** — axe-core (WCAG 2.0/2.1 A y AA). Dos puntajes, ambos documentados:
    por **reglas** (pasadas / aplicables) y por **elementos** (el de reglas esconde la magnitud).
 3. **Emulador de lector de pantalla** (determinista, sin IA) — un ENTORNO: cursor sobre el árbol,
-   acciones H, K, D, Tab, flecha, **leer de corrido**, Enter; devuelve lo que se anunciaría.
+   acciones H, K, D, F (siguiente campo de formulario), Tab, flecha, **leer de corrido**, Enter; devuelve lo que se anunciaría.
    Fricción = total de pulsaciones de la ruta (salto + lectura). Tab solo llega a enfocables.
    Estrategias programadas (p. ej. "H hasta la sección, luego leer") corren sobre este entorno.
    PDFs: sin capa de texto = escaneado = no completable.
@@ -51,7 +51,14 @@ Software libre, repositorio público.
 ## Definiciones (no cambiar sin avisar)
 - **Tareas** (todas terminan ANTES de enviar nada): A Contacto · B Requisitos de un trámite ·
   C Abrir un documento descargable · D Llegar a un formulario e identificar sus campos
-- **Estados**: Completable · Con dificultad (solo tabulando/leyendo todo) · No completable
+- **Estados**:
+  - **Completable** = se llega con una estrategia dirigida (H, D, F, o elegir un enlace por nombre
+    en la lista de elementos NVDA+F7) más una lectura corta, y el cierre funciona.
+  - **Con dificultad** = solo se llega con un recorrido no dirigido (leer todo de corrido o
+    tabular todo desde el inicio).
+  - **No completable** = no se llega, o no se puede identificar el objetivo, o el cierre está roto.
+- **Limitación del método**: Ctrl+F (búsqueda de texto de NVDA) queda excluido; se declara como
+  limitación, no se modela.
 - **Punto de entrada**: parámetro explícito de cada tarea.
 
 ## Reglas de trabajo
@@ -70,7 +77,7 @@ Software libre, repositorio público.
 - **10 nov:** plan actualizado. **19 nov:** exposición. Fase de todos los municipios: al final, opcional.
 
 ## Estado actual
-**Fase 1A completa. Siguiente: 1B páginas de prueba.**
+**Fase 1B completa.**
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.

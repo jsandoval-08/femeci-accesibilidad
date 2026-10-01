@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ayuntamiento de Villa Ejemplo</title>
+  <style>
+    body { font-family: sans-serif; max-width: 52rem; margin: 0 auto; padding: 1rem; }
+    nav a { margin-right: 1rem; }
+    label { display: block; margin-top: .5rem; }
+  </style>
+</head>
+<body>
+  <!-- Estructura impecable, pero SIN teléfono, correo ni enlace/sección de contacto
+       (como sinaloa.gob.mx). El formulario es de solicitud de cita, no de contacto. -->
+  <header>
+    <h1>Ayuntamiento de Villa Ejemplo</h1>
+    <nav aria-label="Principal">
+      <a href="#tramites">Trámites</a>
+      <a href="#descargas">Descargas</a>
+      <a href="#cita">Solicitar cita</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="tramites" aria-labelledby="h-tramites">
+      <h2 id="h-tramites">Trámites</h2>
+      <h3>Licencia de construcción menor</h3>
+      <p>Requisitos para tramitar la licencia:</p>
+      <ul>
+        <li>Identificación oficial vigente</li>
+        <li>Comprobante de domicilio</li>
+        <li>Comprobante de pago del predial</li>
+        <li>Croquis del terreno</li>
+      </ul>
+    </section>
+
+    <section id="descargas" aria-labelledby="h-descargas">
+      <h2 id="h-descargas">Descargas</h2>
+      <p><a href="docs/requisitos_licencia.pdf">Requisitos de licencia de construcción (PDF)</a></p>
+    </section>
+
+    <section id="cita" aria-labelledby="h-cita">
+      <h2 id="h-cita">Solicitud de cita</h2>
+      <form action="#" method="post">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text">
+        <label for="tramite">Trámite</label>
+        <select id="tramite" name="tramite">
+          <option>Licencia de construcción menor</option>
+          <option>Otro trámite</option>
+        </select>
+        <label for="fecha">Fecha preferida</label>
+        <input id="fecha" name="fecha" type="text">
+        <p><button type="submit">Solicitar cita</button></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Ayuntamiento de Villa Ejemplo. Sitio ficticio para pruebas.</p>
+  </footer>
+</body>
+</html>

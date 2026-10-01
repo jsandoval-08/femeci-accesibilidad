@@ -1,0 +1,35 @@
+# Respuesta correcta (referencia) para sin_contacto.html. Vocabulario: ver perfecta.esperado.yaml
+pagina: sin_contacto.html
+tareas:
+  A:
+    entrada: sin_contacto.html
+    estado: no_completable
+    estrategia: no_dirigida  # ninguna estrategia (ni leer todo) encuentra un contacto que no existe
+    ruta: null
+    razon: "No hay teléfono, correo ni enlace de contacto en la página; el objetivo no existe."
+  B:
+    entrada: sin_contacto.html
+    estado: completable
+    estrategia: H_a_seccion
+    ruta:
+      - {tecla: H, rol: heading, nombre: "Trámites"}
+      - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
+      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
+    razon: "Estructura correcta; solo falta el contacto."
+  C:
+    entrada: sin_contacto.html
+    estado: completable
+    estrategia: enlace_por_nombre
+    ruta:
+      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
+      - {tecla: Enter, resultado: "PDF con capa de texto"}
+    razon: "Enlace con nombre único y PDF con texto."
+  D:
+    entrada: sin_contacto.html
+    estado: completable
+    estrategia: F_a_campos
+    ruta:
+      - {tecla: F, rol: textbox, nombre: "Nombre completo"}
+      - {tecla: F, rol: combobox, nombre: "Trámite"}
+      - {tecla: F, rol: textbox, nombre: "Fecha preferida"}
+    razon: "Formulario de solicitud de cita (no de contacto) con campos etiquetados; no se envía."

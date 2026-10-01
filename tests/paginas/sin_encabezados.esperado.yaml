@@ -1,0 +1,34 @@
+# Respuesta correcta (referencia) para sin_encabezados.html. Vocabulario: ver perfecta.esperado.yaml
+pagina: sin_encabezados.html
+tareas:
+  A:
+    entrada: sin_encabezados.html
+    estado: con_dificultad
+    estrategia: no_dirigida
+    ruta:
+      - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Teléfono: 667 555 0142"}}
+    razon: "Sin encabezados ni landmarks no hay salto dirigido a 'Contacto'; hay que leer todo de corrido."
+  B:
+    entrada: sin_encabezados.html
+    estado: con_dificultad
+    estrategia: no_dirigida
+    ruta:
+      - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Croquis del terreno"}}
+    razon: "Los requisitos están en divs sueltos, sin encabezado ni lista; solo se llega leyendo todo."
+  C:
+    entrada: sin_encabezados.html
+    estado: completable
+    estrategia: enlace_por_nombre
+    ruta:
+      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
+      - {tecla: Enter, resultado: "PDF con capa de texto"}
+    razon: "El enlace conserva su nombre; no depende de encabezados."
+  D:
+    entrada: sin_encabezados.html
+    estado: completable
+    estrategia: F_a_campos
+    ruta:
+      - {tecla: F, rol: textbox, nombre: "Nombre completo"}
+      - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
+      - {tecla: F, rol: textbox, nombre: "Mensaje"}
+    razon: "Los campos tienen etiqueta y F no depende de encabezados."

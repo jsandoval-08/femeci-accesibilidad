@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ayuntamiento de Villa Ejemplo</title>
+  <style>
+    body { font-family: sans-serif; max-width: 52rem; margin: 0 auto; padding: 1rem; }
+    .t1 { font-size: 2em; font-weight: bold; margin: .67em 0; }
+    .t2 { font-size: 1.5em; font-weight: bold; margin: .83em 0; }
+    .t3 { font-size: 1.17em; font-weight: bold; margin: 1em 0; }
+    .menu a { margin-right: 1rem; }
+    label { display: block; margin-top: .5rem; }
+  </style>
+</head>
+<body>
+  <!-- Mismo contenido que perfecta.html, pero sin h1-h6 ni landmarks: todo es <div> -->
+  <div>
+    <div class="t1">Ayuntamiento de Villa Ejemplo</div>
+    <div class="menu">
+      <a href="#tramites">Trámites</a>
+      <a href="#descargas">Descargas</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </div>
+
+  <div>
+    <div id="tramites">
+      <div class="t2">Trámites</div>
+      <div class="t3">Licencia de construcción menor</div>
+      <div>Requisitos para tramitar la licencia:</div>
+      <div>Identificación oficial vigente</div>
+      <div>Comprobante de domicilio</div>
+      <div>Comprobante de pago del predial</div>
+      <div>Croquis del terreno</div>
+    </div>
+
+    <div id="descargas">
+      <div class="t2">Descargas</div>
+      <div><a href="docs/requisitos_licencia.pdf">Requisitos de licencia de construcción (PDF)</a></div>
+    </div>
+
+    <div id="contacto">
+      <div class="t2">Contacto</div>
+      <div>Teléfono: 667 555 0142</div>
+      <div class="t3">Envíanos un mensaje</div>
+      <form action="#" method="post">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" type="text">
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" name="correo" type="email">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="4"></textarea>
+        <div><button type="submit">Enviar mensaje</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div>Ayuntamiento de Villa Ejemplo. Sitio ficticio para pruebas.</div>
+</body>
+</html>

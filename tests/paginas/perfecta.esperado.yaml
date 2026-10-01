@@ -1,0 +1,40 @@
+# Respuesta correcta (referencia) para perfecta.html.
+# estado: completable | con_dificultad | no_completable
+# estrategia: H_a_seccion | F_a_campos | enlace_por_nombre | no_dirigida
+# ruta: pasos esperados con lo que se anunciaría (rol y nombre). No incluye conteo de pulsaciones.
+pagina: perfecta.html
+tareas:
+  A:
+    entrada: perfecta.html
+    estado: completable
+    estrategia: H_a_seccion
+    ruta:
+      - {tecla: H, rol: heading, nombre: "Contacto"}
+      - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
+    razon: "El h2 'Contacto' está en el nivel de encabezados y el teléfono va justo debajo."
+  B:
+    entrada: perfecta.html
+    estado: completable
+    estrategia: H_a_seccion
+    ruta:
+      - {tecla: H, rol: heading, nombre: "Trámites"}
+      - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
+      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
+    razon: "Encabezados h2/h3 llevan al trámite; la lista de requisitos sigue al h3."
+  C:
+    entrada: perfecta.html
+    estado: completable
+    estrategia: enlace_por_nombre
+    ruta:
+      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
+      - {tecla: Enter, resultado: "PDF con capa de texto"}
+    razon: "El enlace tiene nombre único y descriptivo; el PDF tiene texto extraíble."
+  D:
+    entrada: perfecta.html
+    estado: completable
+    estrategia: F_a_campos
+    ruta:
+      - {tecla: F, rol: textbox, nombre: "Nombre completo"}
+      - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
+      - {tecla: F, rol: textbox, nombre: "Mensaje"}
+    razon: "F salta de campo en campo y los tres tienen etiqueta; no se envía nada."

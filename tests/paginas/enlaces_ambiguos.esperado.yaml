@@ -1,0 +1,39 @@
+# Respuesta correcta (referencia) para enlaces_ambiguos.html. Vocabulario: ver perfecta.esperado.yaml
+pagina: enlaces_ambiguos.html
+tareas:
+  A:
+    entrada: enlaces_ambiguos.html
+    estado: completable
+    estrategia: H_a_seccion
+    ruta:
+      - {tecla: H, rol: heading, nombre: "Contacto"}
+      - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
+    razon: "La falla de esta página está en los enlaces; el contacto tiene encabezado."
+  B:
+    entrada: enlaces_ambiguos.html
+    estado: con_dificultad
+    estrategia: no_dirigida
+    ruta:
+      - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Licencia de construcción menor"}}
+      - {tecla: Tab, hasta: {rol: link, nombre: "Leer más"}}  # el 2.º "Leer más" (3.ª tarjeta)
+      - {tecla: Enter, resultado: "enlaces_ambiguos_tramite.html"}
+      - {tecla: H, rol: heading, nombre: "Requisitos"}
+      - {tecla: leer, rol: list, nombre: "Identificación oficial vigente; Comprobante de domicilio; Comprobante de pago del predial; Croquis del terreno"}
+    razon: "Hay 2 'Leer más' y 2 'clic aquí' idénticos: en la lista de enlaces no se distingue cuál es el trámite; los títulos de tarjeta no son encabezados. Hay que leer las tarjetas y tabular hasta el enlace correcto."
+  C:
+    entrada: enlaces_ambiguos.html
+    estado: completable
+    estrategia: enlace_por_nombre
+    ruta:
+      - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
+      - {tecla: Enter, resultado: "PDF con capa de texto"}
+    razon: "El enlace al PDF sí tiene nombre único; los íconos sin nombre no estorban."
+  D:
+    entrada: enlaces_ambiguos.html
+    estado: completable
+    estrategia: F_a_campos
+    ruta:
+      - {tecla: F, rol: textbox, nombre: "Nombre completo"}
+      - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
+      - {tecla: F, rol: textbox, nombre: "Mensaje"}
+    razon: "Formulario con etiquetas."

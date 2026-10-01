@@ -1,2 +1,4 @@
 playwright==1.63.0
 pytest==9.1.1
+pypdf==6.19.0
+PyYAML==6.0.3
