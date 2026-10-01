@@ -31,6 +31,9 @@ Software libre, repositorio público.
    radio, listbox, spinbutton y campos de fecha).
    Fricción = total de pulsaciones de la ruta (salto + lectura). Tab solo llega a enfocables.
    Estrategias programadas (p. ej. "H hasta la sección, luego leer") corren sobre este entorno.
+   Deciden la relevancia con una lista declarada de palabras clave por tarea (se definirá en la
+   Fase 3); el agente decide por significado. Esa diferencia es lo que mide la comparación
+   programadas vs agente.
    PDFs: sin capa de texto = escaneado = no completable.
 4. **Agente por decisiones** (IA) — NO construir hasta que Javier lo indique (API aparte).
    - Recibe SOLO nombres y roles anunciados, **por niveles** (primero encabezados; al elegir, lo
@@ -67,6 +70,10 @@ Software libre, repositorio público.
   encabezado / enlace / campo saltado. Flecha abajo = 1 por parada. Lista de enlaces (NVDA+F7)
   = 1 + flechas hasta el enlace, en orden del documento (no se filtra escribiendo). Enter = 1.
   Volver (Alt+←) = 1.
+- **Mejor estrategia** = mínimo de fricción dentro del conjunto declarado: H+leer, D+leer, lista
+  de elementos + elegir por nombre (probando en orden los ambiguos), F a campos, leer desde el
+  inicio, Tab desde el inicio (solo objetivos enfocables). El mínimo absoluto queda excluido
+  porque requiere conocer el objetivo.
 - **Las estrategias solo deciden con lo anunciado** (roles, nombres, títulos al llegar). Si varios
   candidatos no se distinguen por nombre, se prueban en orden del documento y el costo se acumula
   (cada intento fallido = K + Enter + volver), sin conocimiento del objetivo.
@@ -90,7 +97,7 @@ Software libre, repositorio público.
 - **10 nov:** plan actualizado. **19 nov:** exposición. Fase de todos los municipios: al final, opcional.
 
 ## Estado actual
-**Fase 1B completa.**
+**Fase 1B completa. Siguiente: 1D primera captura real.**
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.
