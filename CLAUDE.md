@@ -27,6 +27,8 @@ Software libre, repositorio público.
    por **reglas** (pasadas / aplicables) y por **elementos** (el de reglas esconde la magnitud).
 3. **Emulador de lector de pantalla** (determinista, sin IA) — un ENTORNO: cursor sobre el árbol,
    acciones H, K, D, F (siguiente campo de formulario), Tab, flecha, **leer de corrido**, Enter; devuelve lo que se anunciaría.
+   La tecla F debe reconocer todos los roles de campo de formulario (textbox, combobox, checkbox,
+   radio, listbox, spinbutton y campos de fecha).
    Fricción = total de pulsaciones de la ruta (salto + lectura). Tab solo llega a enfocables.
    Estrategias programadas (p. ej. "H hasta la sección, luego leer") corren sobre este entorno.
    PDFs: sin capa de texto = escaneado = no completable.
@@ -54,9 +56,15 @@ Software libre, repositorio público.
 - **Estados**:
   - **Completable** = se llega con una estrategia dirigida (H, D, F, o elegir un enlace por nombre
     en la lista de elementos NVDA+F7) más una lectura corta, y el cierre funciona.
+  - **Lectura corta** = como máximo 15 elementos leídos después del salto. Es un parámetro
+    configurable (`UMBRAL_LECTURA = 15`); se reportará un análisis de sensibilidad con 10, 15 y 25.
+    Convención de conteo (a confirmar al construir el emulador): un elemento = cada parada de
+    flecha abajo (encabezado, párrafo, elemento de lista, enlace, botón, campo, texto suelto);
+    el contenedor de una lista no cuenta.
   - **Con dificultad** = solo se llega con un recorrido no dirigido (leer todo de corrido o
     tabular todo desde el inicio).
   - **No completable** = no se llega, o no se puede identificar el objetivo, o el cierre está roto.
+    Se registra como `tipo_falla`: `no_encontrado` · `no_identificable` · `cierre_roto`.
 - **Limitación del método**: Ctrl+F (búsqueda de texto de NVDA) queda excluido; se declara como
   limitación, no se modela.
 - **Punto de entrada**: parámetro explícito de cada tarea.

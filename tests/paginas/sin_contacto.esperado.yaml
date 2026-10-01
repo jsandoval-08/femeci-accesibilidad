@@ -1,16 +1,19 @@
 # Respuesta correcta (referencia) para sin_contacto.html. Vocabulario: ver perfecta.esperado.yaml
+# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 pagina: sin_contacto.html
 tareas:
   A:
     entrada: sin_contacto.html
     estado: no_completable
     estrategia: no_dirigida  # ninguna estrategia (ni leer todo) encuentra un contacto que no existe
+    tipo_falla: no_encontrado
     ruta: null
     razon: "No hay teléfono, correo ni enlace de contacto en la página; el objetivo no existe."
   B:
     entrada: sin_contacto.html
     estado: completable
     estrategia: H_a_seccion
+    tipo_falla: null
     ruta:
       - {tecla: H, rol: heading, nombre: "Trámites"}
       - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
@@ -20,6 +23,7 @@ tareas:
     entrada: sin_contacto.html
     estado: completable
     estrategia: enlace_por_nombre
+    tipo_falla: null
     ruta:
       - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
       - {tecla: Enter, resultado: "PDF con capa de texto"}
@@ -28,6 +32,7 @@ tareas:
     entrada: sin_contacto.html
     estado: completable
     estrategia: F_a_campos
+    tipo_falla: null
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: combobox, nombre: "Trámite"}

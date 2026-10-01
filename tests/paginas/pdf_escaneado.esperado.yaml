@@ -1,10 +1,12 @@
 # Respuesta correcta (referencia) para pdf_escaneado.html. Vocabulario: ver perfecta.esperado.yaml
+# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 pagina: pdf_escaneado.html
 tareas:
   A:
     entrada: pdf_escaneado.html
     estado: completable
     estrategia: H_a_seccion
+    tipo_falla: null
     ruta:
       - {tecla: H, rol: heading, nombre: "Contacto"}
       - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
@@ -13,6 +15,7 @@ tareas:
     entrada: pdf_escaneado.html
     estado: completable
     estrategia: H_a_seccion
+    tipo_falla: null
     ruta:
       - {tecla: H, rol: heading, nombre: "Trámites"}
       - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
@@ -22,6 +25,7 @@ tareas:
     entrada: pdf_escaneado.html
     estado: no_completable
     estrategia: enlace_por_nombre  # el enlace se alcanza; falla el cierre
+    tipo_falla: cierre_roto
     ruta:
       - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
       - {tecla: Enter, resultado: "PDF sin capa de texto"}
@@ -30,6 +34,7 @@ tareas:
     entrada: pdf_escaneado.html
     estado: completable
     estrategia: F_a_campos
+    tipo_falla: null
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: textbox, nombre: "Correo electrónico"}

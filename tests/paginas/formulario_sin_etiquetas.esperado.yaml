@@ -1,10 +1,12 @@
 # Respuesta correcta (referencia) para formulario_sin_etiquetas.html. Vocabulario: ver perfecta.esperado.yaml
+# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 pagina: formulario_sin_etiquetas.html
 tareas:
   A:
     entrada: formulario_sin_etiquetas.html
     estado: completable
     estrategia: H_a_seccion
+    tipo_falla: null
     ruta:
       - {tecla: H, rol: heading, nombre: "Contacto"}
       - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
@@ -13,6 +15,7 @@ tareas:
     entrada: formulario_sin_etiquetas.html
     estado: completable
     estrategia: H_a_seccion
+    tipo_falla: null
     ruta:
       - {tecla: H, rol: heading, nombre: "Trámites"}
       - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
@@ -22,6 +25,7 @@ tareas:
     entrada: formulario_sin_etiquetas.html
     estado: completable
     estrategia: enlace_por_nombre
+    tipo_falla: null
     ruta:
       - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
       - {tecla: Enter, resultado: "PDF con capa de texto"}
@@ -30,6 +34,7 @@ tareas:
     entrada: formulario_sin_etiquetas.html
     estado: no_completable
     estrategia: F_a_campos  # F sí llega al formulario; falla la identificación de los campos
+    tipo_falla: no_identificable
     ruta:
       - {tecla: F, rol: textbox, nombre: ""}
       - {tecla: F, rol: textbox, nombre: ""}

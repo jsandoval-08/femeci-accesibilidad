@@ -25,6 +25,7 @@ NOMBRES = [
 ]
 LANDMARKS = {"banner", "navigation", "main", "contentinfo", "region", "complementary", "search"}
 ESTADOS = {"completable", "con_dificultad", "no_completable"}
+TIPOS_FALLA = {"no_encontrado", "no_identificable", "cierre_roto"}
 ESTRATEGIAS = {"H_a_seccion", "F_a_campos", "enlace_por_nombre", "no_dirigida"}
 
 
@@ -84,9 +85,26 @@ def test_sin_contacto(capturas):
 def test_enlaces_ambiguos(capturas):
     nodos = capturas["enlaces_ambiguos"]
     enlaces = [n for r, n in nodos if r == "link"]
-    assert enlaces.count("Leer más") == 2
-    assert enlaces.count("clic aquí") == 2
+    assert enlaces.count("Leer más") == 8
+    assert enlaces.count("clic aquí") == 4
     assert enlaces.count("") == 3  # íconos-enlace sin nombre
+
+    # El enlace correcto es la tarjeta 9 de 12 y queda lejos del salto (encabezado "Trámites"):
+    # cuenta de elementos (párrafos y enlaces) hasta él > 25, el umbral mayor de sensibilidad.
+    html = (PAGINAS / "enlaces_ambiguos.html").read_text(encoding="utf-8")
+    destinos = re.findall(r'<div class="tarjeta">.*?<a href="([^"]+)"', html, flags=re.S)
+    assert len(destinos) == 12 and destinos[8] == "enlaces_ambiguos_tramite.html"
+    despues = nodos[nodos.index(("heading", "Trámites")) + 1:]
+    contados, enlaces_vistos = 0, 0
+    for rol, _ in despues:
+        if rol in ("paragraph", "link"):
+            contados += 1
+        if rol == "link":
+            enlaces_vistos += 1
+            if enlaces_vistos == 9:
+                break
+    assert contados == 27
+
     destino = capturas["enlaces_ambiguos_tramite"]
     assert ("heading", "Requisitos") in destino
 
@@ -127,6 +145,11 @@ def test_esperado_yaml(nombre):
         assert t["estado"] in ESTADOS
         assert t["estrategia"] in ESTRATEGIAS
         assert t["razon"]
+        # tipo_falla: null salvo en no_completable
+        if t["estado"] == "no_completable":
+            assert t["tipo_falla"] in TIPOS_FALLA
+        else:
+            assert t["tipo_falla"] is None
         # no_dirigida solo cuando no hay salto dirigido, y viceversa
         if t["estado"] == "completable":
             assert t["estrategia"] != "no_dirigida" and t["ruta"]

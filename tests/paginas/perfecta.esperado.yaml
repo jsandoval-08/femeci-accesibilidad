@@ -1,6 +1,7 @@
 # Respuesta correcta (referencia) para perfecta.html.
 # estado: completable | con_dificultad | no_completable
 # estrategia: H_a_seccion | F_a_campos | enlace_por_nombre | no_dirigida
+# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 # ruta: pasos esperados con lo que se anunciaría (rol y nombre). No incluye conteo de pulsaciones.
 pagina: perfecta.html
 tareas:
@@ -8,6 +9,7 @@ tareas:
     entrada: perfecta.html
     estado: completable
     estrategia: H_a_seccion
+    tipo_falla: null
     ruta:
       - {tecla: H, rol: heading, nombre: "Contacto"}
       - {tecla: leer, rol: StaticText, nombre: "Teléfono: 667 555 0142"}
@@ -16,6 +18,7 @@ tareas:
     entrada: perfecta.html
     estado: completable
     estrategia: H_a_seccion
+    tipo_falla: null
     ruta:
       - {tecla: H, rol: heading, nombre: "Trámites"}
       - {tecla: H, rol: heading, nombre: "Licencia de construcción menor"}
@@ -25,6 +28,7 @@ tareas:
     entrada: perfecta.html
     estado: completable
     estrategia: enlace_por_nombre
+    tipo_falla: null
     ruta:
       - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
       - {tecla: Enter, resultado: "PDF con capa de texto"}
@@ -33,6 +37,7 @@ tareas:
     entrada: perfecta.html
     estado: completable
     estrategia: F_a_campos
+    tipo_falla: null
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: textbox, nombre: "Correo electrónico"}

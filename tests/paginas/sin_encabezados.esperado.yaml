@@ -1,10 +1,12 @@
 # Respuesta correcta (referencia) para sin_encabezados.html. Vocabulario: ver perfecta.esperado.yaml
+# tipo_falla: null (completable o con_dificultad) | no_encontrado | no_identificable | cierre_roto
 pagina: sin_encabezados.html
 tareas:
   A:
     entrada: sin_encabezados.html
     estado: con_dificultad
     estrategia: no_dirigida
+    tipo_falla: null
     ruta:
       - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Teléfono: 667 555 0142"}}
     razon: "Sin encabezados ni landmarks no hay salto dirigido a 'Contacto'; hay que leer todo de corrido."
@@ -12,6 +14,7 @@ tareas:
     entrada: sin_encabezados.html
     estado: con_dificultad
     estrategia: no_dirigida
+    tipo_falla: null
     ruta:
       - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Croquis del terreno"}}
     razon: "Los requisitos están en divs sueltos, sin encabezado ni lista; solo se llega leyendo todo."
@@ -19,6 +22,7 @@ tareas:
     entrada: sin_encabezados.html
     estado: completable
     estrategia: enlace_por_nombre
+    tipo_falla: null
     ruta:
       - {tecla: lista_enlaces, rol: link, nombre: "Requisitos de licencia de construcción (PDF)"}
       - {tecla: Enter, resultado: "PDF con capa de texto"}
@@ -27,6 +31,7 @@ tareas:
     entrada: sin_encabezados.html
     estado: completable
     estrategia: F_a_campos
+    tipo_falla: null
     ruta:
       - {tecla: F, rol: textbox, nombre: "Nombre completo"}
       - {tecla: F, rol: textbox, nombre: "Correo electrónico"}
