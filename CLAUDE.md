@@ -70,4 +70,7 @@ Software libre, repositorio público.
 - **10 nov:** plan actualizado. **19 nov:** exposición. Fase de todos los municipios: al final, opcional.
 
 ## Estado actual
-**Fase 0 — Entorno.** Python 3.12, Git, VS Code y Claude Code listos. Falta: repo Git, `.venv`.
+**Fase 1A completa. Siguiente: 1B páginas de prueba.**
+
+**Pendientes:**
+- iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.
