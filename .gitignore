@@ -1,0 +1,16 @@
+# Entorno virtual (se recrea con: py -3.12 -m venv .venv)
+.venv/
+
+# Caché de Python
+__pycache__/
+*.pyc
+
+# Secretos (p. ej. clave de API del agente). Nunca al repositorio público.
+.env
+.env.*
+
+# Capturas de sitios (HTML renderizado + árbol de accesibilidad); se regeneran
+capturas/
+
+# Editor
+.vscode/
