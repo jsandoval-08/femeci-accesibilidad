@@ -1,6 +1,8 @@
 """Prueba de la captura sobre tests/paginas/basica.html (respuesta conocida)."""
 
 import json
+import re
+import time
 from pathlib import Path
 
 from src.captura import capturar, nombre_carpeta
@@ -18,7 +20,10 @@ def _nodos_visibles(carpeta):
 
 
 def test_captura_basica(tmp_path):
-    carpeta = capturar(PAGINA.resolve().as_uri(), base=tmp_path)
+    url = PAGINA.resolve().as_uri()
+    carpeta = capturar(url, base=tmp_path)
+    assert carpeta.parent.name == nombre_carpeta(url)
+    assert re.fullmatch(r"\d{8}-\d{6}", carpeta.name)
     for archivo in ("pagina.html", "arbol_ax.json", "aria_snapshot.txt", "metadatos.json"):
         assert (carpeta / archivo).exists()
 
@@ -33,6 +38,16 @@ def test_captura_basica(tmp_path):
     assert meta["viewport"] == {"width": 1366, "height": 768}
     assert meta["num_iframes"] == 0
     assert meta["chromium_version"]
+
+
+def test_recapturar_no_sobrescribe(tmp_path):
+    url = PAGINA.resolve().as_uri()
+    primera = capturar(url, base=tmp_path)
+    time.sleep(1.1)  # el sello de tiempo llega al segundo
+    segunda = capturar(url, base=tmp_path)
+    assert primera != segunda
+    assert primera.parent == segunda.parent
+    assert (primera / "metadatos.json").exists() and (segunda / "metadatos.json").exists()
 
 
 def test_nombre_carpeta_seguro():

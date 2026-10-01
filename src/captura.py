@@ -1,6 +1,6 @@
 """Captura de una página EN VIVO con Playwright (Fase 1A).
 
-Guarda, en capturas/<nombre>/:
+Guarda, en capturas/<nombre_seguro>_<hash8>/<AAAAMMDD-HHMMSS>/:
   - pagina.html          HTML ya renderizado (con JS y CSS aplicados)
   - arbol_ax.json        árbol de accesibilidad completo (CDP Accessibility.getFullAXTree)
   - aria_snapshot.txt    aria snapshot de Playwright
@@ -52,10 +52,12 @@ def _guardar_json(ruta: Path, datos) -> None:
 def capturar(url: str, base: Path = CARPETA_CAPTURAS) -> Path:
     """Captura `url` y devuelve la carpeta donde quedó todo.
 
-    Si ya existía una captura de la misma URL, se sobrescribe (misma carpeta por el hash).
+    Estructura: <base>/<nombre_seguro>_<hash8>/<AAAAMMDD-HHMMSS>/. Capturar la misma URL
+    otra vez crea una subcarpeta nueva; nunca sobrescribe (falla si coincide el segundo).
     """
-    carpeta = base / nombre_carpeta(url)
-    carpeta.mkdir(parents=True, exist_ok=True)
+    ahora = datetime.now().astimezone()
+    carpeta = base / nombre_carpeta(url) / ahora.strftime("%Y%m%d-%H%M%S")
+    carpeta.mkdir(parents=True, exist_ok=False)
 
     with sync_playwright() as p:
         navegador = p.chromium.launch()
@@ -84,7 +86,7 @@ def capturar(url: str, base: Path = CARPETA_CAPTURAS) -> Path:
             "url": url,
             "url_final": pagina.url,
             "estado_http": respuesta.status if respuesta else None,
-            "fecha_hora": datetime.now().astimezone().isoformat(timespec="seconds"),
+            "fecha_hora": ahora.isoformat(timespec="seconds"),
             "chromium_version": navegador.version,
             "playwright_version": version_paquete("playwright"),
             "viewport": VIEWPORT,
