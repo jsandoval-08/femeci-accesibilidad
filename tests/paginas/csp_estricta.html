@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <!-- CSP estricta: sin scripts ni estilos. Sirve para probar que axe se inyecta igual
+       (bypass_csp=True). Tiene a propósito una imagen sin alt: axe debe reportar image-alt. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:">
+  <title>Página con CSP estricta</title>
+</head>
+<body>
+  <h1>Página con CSP estricta</h1>
+  <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+</body>
+</html>

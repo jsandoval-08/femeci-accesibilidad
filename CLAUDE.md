@@ -97,7 +97,7 @@ Software libre, repositorio público.
 - **10 nov:** plan actualizado. **19 nov:** exposición. Fase de todos los municipios: al final, opcional.
 
 ## Estado actual
-**Fase 1 completa. Siguiente: Fase 2 (axe-core en vivo).**
+**Fase 2A y 2B completas. Siguiente: 2C (re-medir en vivo el piloto).**
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.
