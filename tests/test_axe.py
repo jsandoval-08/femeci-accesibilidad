@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from src.captura import capturar
 from src.puntajes import calcular_puntajes, puntajes_de_captura
 
@@ -106,3 +105,35 @@ def test_puntaje_sin_denominador_es_none():
 def test_axe_con_error_no_da_puntaje():
     with pytest.raises(ValueError):
         calcular_puntajes({"error": "falló"})
+
+
+def test_puntaje_conservador_cuentas_conocidas():
+    axe = {
+        "violations": [_regla("a", 2), _regla("b", 1)],
+        "passes": [_regla("b", 4), _regla("c", 3), _regla("d", 1), _regla("e", 2)],
+        "incomplete": [_regla("e", 5), _regla("g", 1)],  # e también pasa en 2 nodos; g solo incompleta
+        "inapplicable": [],
+    }
+    p = calcular_puntajes(axe)
+    # normal: aprobadas c, d, e; violadas a, b
+    assert (p["reglas_aprobadas"], p["reglas_violadas"]) == (3, 2)
+    assert p["reglas"] == 3 / 5
+    assert (p["nodos_pasan"], p["nodos_fallan"]) == (10, 3)
+    assert p["elementos"] == 10 / 13
+    # conservador: e y g pasan a violadas -> aprobadas c, d; violadas a, b, e, g
+    assert p["reglas_conservador"] == 2 / 6
+    assert p["elementos_conservador"] == 10 / (10 + 3 + 6)
+
+
+def test_conservador_nunca_supera_al_normal_y_sin_incompletas_son_iguales():
+    sin = {"violations": [_regla("a", 1)], "passes": [_regla("c", 3)], "incomplete": [], "inapplicable": []}
+    p = calcular_puntajes(sin)
+    assert p["reglas_conservador"] == p["reglas"] and p["elementos_conservador"] == p["elementos"]
+    con = {**sin, "incomplete": [_regla("c", 2)]}
+    q = calcular_puntajes(con)
+    assert q["reglas_conservador"] < q["reglas"] and q["elementos_conservador"] < q["elementos"]
+
+
+def test_conservador_sin_denominador_es_none():
+    p = calcular_puntajes({"violations": [], "passes": [], "incomplete": [], "inapplicable": []})
+    assert p["reglas_conservador"] is None and p["elementos_conservador"] is None

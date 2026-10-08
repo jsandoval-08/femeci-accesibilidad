@@ -23,9 +23,9 @@ def _pct(x):
 
 
 def main() -> None:
-    print("| Página | Reglas | Elementos | Aprob/Viol | Nodos pasan/fallan | Incompl. (reglas/nodos) "
+    print("| Página | Reglas | Reglas cons. | Elementos | Elementos cons. | Aprob/Viol | Nodos pasan/fallan | Incompl. (reglas/nodos) "
           "| Fricción A | B | C | D |")
-    print("|---|---|---|---|---|---|---|---|---|---|")
+    print("|---|---|---|---|---|---|---|---|---|---|---|---|")
     with tempfile.TemporaryDirectory() as tmp:
         for n in NOMBRES:
             carpeta = capturar((PAGINAS / f"{n}.html").as_uri(), base=Path(tmp))
@@ -33,7 +33,8 @@ def main() -> None:
             t = yaml.safe_load((PAGINAS / f"{n}.esperado.yaml").read_text(encoding="utf-8"))["tareas"]
             fr = " | ".join(str(t[k]["friccion_esperada"]) + ("*" if t[k]["estado"] == "no_completable" else "")
                             for k in "ABCD")
-            print(f"| {n} | {_pct(p['reglas'])} | {_pct(p['elementos'])} "
+            print(f"| {n} | {_pct(p['reglas'])} | {_pct(p['reglas_conservador'])} "
+                  f"| {_pct(p['elementos'])} | {_pct(p['elementos_conservador'])} "
                   f"| {p['reglas_aprobadas']}/{p['reglas_violadas']} | {p['nodos_pasan']}/{p['nodos_fallan']} "
                   f"| {p['incompletas_reglas']}/{p['incompletas_nodos']} | {fr} |")
     print("\n* = no completable (la fricción declarada no decide el estado)")
