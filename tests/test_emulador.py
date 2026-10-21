@@ -386,9 +386,6 @@ def _yaml(nombre):
 RUTAS = [(n, t) for n in NOMBRES for t in "ABCD"]
 # Rutas que cruzan páginas o activan un documento: corren EN VIVO (servidor local, Fase 3B).
 EN_VIVO = {("enlaces_ambiguos", "B")} | {(n, "C") for n in NOMBRES}
-MOTIVO_SKIP = {
-    "C": "3B paso 5: el Enter descarga el PDF y se registra si tiene capa de texto",
-}
 
 
 def _avanzar_hasta(emu, tecla, rol, nombre):
@@ -431,9 +428,16 @@ def recorrer_ruta(emu, ruta):
                 _avanzar_hasta(emu, "flecha", hasta["rol"], hasta["nombre"])
         elif tecla == "probar_enlaces":
             _probar_enlaces(emu, paso["nombres"], paso["destino"])
+        elif tecla == "lista_enlaces":
+            # La posición es la del primer enlace con ese nombre (orden del documento).
+            nombres = [p.nombre for p in emu.lista_elementos("enlaces")]
+            emu.elegir_de_lista("enlaces", nombres.index(paso["nombre"]))
         elif tecla == "Enter":
-            emu.pulsar("Enter")
-            assert emu.url.endswith("/" + paso["destino"]), emu.url
+            llegada = emu.pulsar("Enter")
+            if paso["destino"].endswith(".pdf"):  # se activó el documento correcto
+                assert llegada.documento.url.endswith("/" + paso["destino"])
+            else:
+                assert emu.url.endswith("/" + paso["destino"]), emu.url
         elif tecla == "volver":
             emu.pulsar("volver")
         else:
@@ -443,11 +447,15 @@ def recorrer_ruta(emu, ruta):
 
 @pytest.mark.parametrize("nombre,tarea", RUTAS, ids=[f"{n}-{t}" for n, t in RUTAS])
 def test_rutas_yaml(nombre, tarea, arboles, request):
-    if tarea == "C":
-        pytest.skip(MOTIVO_SKIP["C"])
     t = _yaml(nombre)["tareas"][tarea]
     if (nombre, tarea) in EN_VIVO:
         emu = request.getfixturevalue("vivo")(t["entrada"])
     else:
         emu = _emu(arboles, t["entrada"].removesuffix(".html"))
     assert recorrer_ruta(emu, t["ruta"]) == t["friccion_esperada"]
+    if tarea == "C":
+        # Hecho medido al activar el PDF: tiene capa de texto salvo en el escaneado (yaml:
+        # cierre_roto). El veredicto completable / no completable lo pone 3D.
+        documento = emu.trayectoria[-1].documento
+        assert documento.es_pdf
+        assert documento.capa_texto is (t["tipo_falla"] != "cierre_roto")

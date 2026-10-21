@@ -591,6 +591,12 @@ class Emulador:
         r = self.navegador.navegar(parada)
         if isinstance(r, Falla):
             return self._terminar("Enter", r.motivo, r.detalle, contada=True)
+        if isinstance(r, Documento):
+            # Descarga: no cambia de página ni apila nivel; el cursor sigue en el enlace.
+            # Se registra el hecho medido (¿PDF con capa de texto?); el veredicto es de 3D.
+            nombre = Path(urlparse(r.url).path).name or r.url
+            return self._registrar("Enter", f"documento descargado: {nombre}",
+                                   se_movio=False, documento=r)
         if self.profundidad + 1 > PROFUNDIDAD_MAX:
             self.navegador.volver()  # la página del nivel 4 no se muestra
             return self._terminar(

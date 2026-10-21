@@ -9,6 +9,7 @@ solo hace lo que necesita red, con Playwright sobre el sitio EN VIVO:
     ejecuta su onclick (medido el 20-oct: 150 de 164 enlaces de las 5 portadas tienen URL
     navegable y ninguno usa javascript:).
   - recapturar el árbol de accesibilidad (CDP) de cada página nueva.
+  - descargar los documentos (PDF) sin abrir visor y medir si tienen capa de texto.
 No se corre axe aquí: las páginas que puntúa axe están fijas de antemano (CLAUDE.md).
 Nunca envía formularios: el emulador no le pide activar campos ni botones de envío.
 
@@ -18,15 +19,18 @@ Uso típico (las pruebas comparten un mismo Chromium):
         emu = Emulador.en_vivo(nav, url_entrada)
 """
 
+import io
 import json
+import mimetypes
 import time
 from pathlib import Path
 
 from playwright.sync_api import Error as ErrorPlaywright
 from playwright.sync_api import TimeoutError as TimeoutPlaywright
+from pypdf import PdfReader
 
 from src.captura import VIEWPORT, arbol_ax
-from src.emulador import Falla, Pagina, Parada
+from src.emulador import Documento, Falla, Pagina, Parada
 
 TIEMPO_LIMITE_MS = 30_000  # carga de cada página
 ESPERA_EXTRA_MS = 2_000  # tras el evento load, para el JS tardío (igual que la captura)
@@ -52,11 +56,11 @@ class NavegadorEnVivo:
 
     # ---------- Acciones que pide el emulador ----------
 
-    def abrir(self, url: str) -> Pagina | Falla:
+    def abrir(self, url: str) -> Pagina | Documento | Falla:
         """Punto de entrada (nivel 0)."""
         return self._cargar(url, referer=None)
 
-    def navegar(self, parada: Parada) -> Pagina | Falla:
+    def navegar(self, parada: Parada) -> Pagina | Documento | Falla:
         """Enter en un enlace: abre su URL en una pestaña nueva. Si el árbol no trae url
         (menuitem), se lee el href del elemento en el DOM."""
         url = parada.url or self._href_dom(parada)
@@ -70,9 +74,11 @@ class NavegadorEnVivo:
 
     # ---------- Interno ----------
 
-    def _cargar(self, url: str, referer: str | None) -> Pagina | Falla:
+    def _cargar(self, url: str, referer: str | None) -> Pagina | Documento | Falla:
         time.sleep(self.pausa_s)
         pestana = self.contexto.new_page()
+        descargas = []
+        pestana.on("download", lambda d: descargas.append(d))
         try:
             respuesta = pestana.goto(url, wait_until="load", timeout=self.timeout_ms,
                                      referer=referer)
@@ -80,6 +86,18 @@ class NavegadorEnVivo:
             pestana.close()
             return Falla("timeout", _primera_linea(e))
         except ErrorPlaywright as e:
+            # Un PDF (o cualquier archivo que el navegador descarga) no abre visor: Chromium
+            # sin interfaz lo descarga y goto falla con "Download is starting" (comprobado
+            # 20-oct). Los bytes llegan por la misma sesión (mismas cookies).
+            if descargas or "Download is starting" in str(e):
+                try:
+                    descarga = descargas[0] if descargas else pestana.wait_for_event(
+                        "download", timeout=self.timeout_ms)
+                    return self._documento(descarga)
+                except ErrorPlaywright as e2:
+                    return Falla("falla_tecnica", _primera_linea(e2))
+                finally:
+                    pestana.close()
             pestana.close()
             return Falla("falla_tecnica", _primera_linea(e))
         if self.espera_ms:
@@ -89,6 +107,14 @@ class NavegadorEnVivo:
         return Pagina(url_pedida=url, url=pestana.url,
                       estado_http=respuesta.status if respuesta else None,
                       titulo=pestana.title(), arbol=arbol)
+
+    def _documento(self, descarga) -> Documento:
+        datos = Path(descarga.path()).read_bytes()  # espera a que termine la descarga
+        nombre = descarga.suggested_filename
+        if self.carpeta:  # evidencia: el archivo tal como llegó
+            self.carpeta.mkdir(parents=True, exist_ok=True)
+            (self.carpeta / f"{self.capturas:02d}_{nombre}").write_bytes(datos)
+        return leer_documento(descarga.url, nombre, datos)
 
     def _capturar(self, pestana) -> dict:
         arbol = arbol_ax(pestana)
@@ -114,6 +140,28 @@ class NavegadorEnVivo:
 
     def _href_dom(self, parada: Parada) -> str | None:
         return self._en_dom(parada, "function () { return this.href || null; }")
+
+
+def leer_documento(url: str, nombre: str, datos: bytes) -> Documento:
+    """Hechos medidos de un archivo descargado (tarea C). Es PDF si los bytes empiezan con
+    %PDF- (no se confía en la extensión). Capa de texto = pypdf extrae al menos un carácter no
+    blanco; sin capa = escaneado (CLAUDE.md). El veredicto completable / cierre roto es de 3D.
+    tipo_contenido se deduce del nombre del archivo (la descarga no trae la cabecera)."""
+    tipo = mimetypes.guess_type(nombre)[0] or "desconocido"
+    if not datos.startswith(b"%PDF-"):
+        return Documento(url, tipo, es_pdf=False, capa_texto=None, paginas=None,
+                         caracteres=None)
+    try:
+        lector = PdfReader(io.BytesIO(datos))
+        if lector.is_encrypted:
+            lector.decrypt("")  # muchos PDF públicos están "cifrados" con contraseña vacía
+        texto = "".join(pagina.extract_text() or "" for pagina in lector.pages)
+    except Exception as e:  # noqa: BLE001 - se registra como no medido, no se oculta
+        return Documento(url, tipo, es_pdf=True, capa_texto=None, paginas=None,
+                         caracteres=None, error=f"{type(e).__name__}: {e}")
+    caracteres = len("".join(texto.split()))
+    return Documento(url, tipo, es_pdf=True, capa_texto=caracteres > 0,
+                     paginas=len(lector.pages), caracteres=caracteres)
 
 
 def _primera_linea(error: Exception) -> str:
