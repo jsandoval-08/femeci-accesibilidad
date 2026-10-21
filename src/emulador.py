@@ -1,6 +1,8 @@
-"""Emulador simplificado de lector de pantalla (Fase 3A): determinista, sin IA y sin red.
+"""Emulador simplificado de lector de pantalla (Fases 3A y 3B): determinista y sin IA.
 
-Opera sobre un arbol_ax.json ya capturado (CDP Accessibility.getFullAXTree). Está INSPIRADO
+Opera sobre árboles de accesibilidad (CDP Accessibility.getFullAXTree): uno ya capturado
+(3A, sin red) o los que va recapturando un navegador en vivo (3B, src/navegador.py; el
+emulador decide y cuenta, el navegador solo ejecuta). Está INSPIRADO
 en los comandos de NVDA en modo exploración, pero NO es equivalente a NVDA. Límites
 declarados (ver CLAUDE.md): no reproduce modo foco/exploración, no lee iframes, no anuncia
 aria-live, no lee contenido de PDFs, no modela el control de foco de modales.
@@ -230,15 +232,24 @@ def anuncio(parada: Parada | None, landmark: tuple[str, str] | None = None) -> s
 
 @dataclass(frozen=True)
 class Paso:
-    tecla: str  # "H", "K", "D", "F", "Tab", "flecha" o "leer"
+    # "H", "K", "D", "F", "Tab", "flecha", "leer", "Enter", "volver", "lista_enlaces",
+    # "lista_encabezados", "flecha_lista" o "entrada" (solo si falla la carga inicial)
+    tecla: str
     anuncio: str  # lo que se anunciaría
     parada: int | None  # dónde quedó el cursor (None = sigue antes de la primera)
-    se_movio: bool  # False si no había siguiente (D1)
+    se_movio: bool  # False si no había siguiente (D1) o si el cursor no cambió de lugar
     pulsaciones: int  # acumuladas después de este paso
     landmark: tuple[str, str] | None = None  # solo con D: landmark al que se llegó
+    # Fase 3B (para la evidencia y el veredicto de 3D):
+    profundidad: int = 0  # nivel de la página donde quedó el cursor (entrada = 0)
+    url: str | None = None  # página donde quedó el cursor (nunca se le da al agente)
+    estado_http: int | None = None  # solo al llegar a una página
+    captcha: tuple[str, ...] = ()  # marcadores de CAPTCHA de la página a la que se llegó
+    documento: "Documento | None" = None  # solo si Enter descargó un documento
+    no_evaluable: str | None = None  # motivo, si este paso dejó la tarea No evaluable
 
 
-# ---------- Fase 3B: límites y errores ----------
+# ---------- Fase 3B: límites, errores y resultados del navegador ----------
 
 # Profundidad máxima desde el punto de entrada (nivel 0). Es el tamaño de la pila de páginas,
 # no el número de páginas visitadas: ir y volver no acumula.
@@ -255,45 +266,182 @@ class SesionTerminada(Exception):
     """Se pulsó una tecla después de que la tarea quedó No evaluable."""
 
 
+@dataclass(frozen=True)
+class NoEvaluable:
+    """Por qué la tarea no se pudo evaluar. NUNCA cuenta como no completable (CLAUDE.md).
+    motivo: timeout | profundidad | tope_pulsaciones | falla_tecnica. El CAPTCHA no detiene
+    la sesión (decisión 20-oct): se registra y la regla se aplica en 3D."""
+    motivo: str
+    detalle: str
+    pulsaciones: int  # consumidas hasta detenerse
+
+
+@dataclass(frozen=True)
+class Documento:
+    """Lo que se descargó al activar un enlace (tarea C). Hechos medidos, no veredicto."""
+    url: str
+    tipo_contenido: str
+    es_pdf: bool  # los bytes empiezan con %PDF-
+    capa_texto: bool | None  # None = no medido (no es PDF o no se pudo leer)
+    paginas: int | None
+    caracteres: int | None  # caracteres no blancos del texto extraído
+    error: str | None = None
+
+
+@dataclass
+class Vista:
+    """Una página del historial: su árbol aplanado y dónde estaba el cursor. Al volver se
+    reusa tal cual (no se recaptura)."""
+    paradas: list[Parada]
+    landmarks_finales: tuple = ()
+    url: str | None = None
+    titulo: str = ""
+    estado_http: int | None = None
+    captcha: tuple[str, ...] = ()
+    cursor: int = -1  # antes de la primera parada
+    marca: int = -1  # último par (parada, landmark) al que llegó D; -1 si otra tecla movió
+    marcas: list = None  # todos los pares (parada, landmark) en orden, para D
+
+    def __post_init__(self):
+        # Varios landmarks pueden compartir parada. Los finales vacíos van con índice
+        # len(paradas): D los anuncia sin mover el cursor.
+        self.marcas = [(p.indice, lm) for p in self.paradas for lm in p.landmarks]
+        self.marcas += [(len(self.paradas), lm) for lm in self.landmarks_finales]
+
+
+TECLAS = {"H", "K", "D", "F", "Tab", "flecha", "Enter", "volver"}
+
+
 # ---------- Entorno ----------
 
 class Emulador:
-    """Entorno: un cursor sobre las paradas de una página ya capturada.
+    """Entorno: un cursor sobre las paradas de una página, con historial de páginas.
 
     Cada tecla cuesta 1 pulsación y queda en la trayectoria (reproducible: mismas teclas
-    sobre el mismo árbol dan la misma trayectoria). Enter, volver y la navegación entre
-    páginas son de la Fase 3B; el costo de la lista de elementos y de elegir en ella, de 3C.
+    sobre el mismo árbol dan la misma trayectoria). El emulador decide qué hace cada tecla y
+    cuenta; un navegador (src/navegador.py) solo ejecuta lo que necesita red. Sin navegador
+    funciona sobre un árbol ya capturado (Fase 3A).
+
+    Tope de pulsaciones (opcional): con tope N se ejecutan N pulsaciones; la N+1 no se
+    ejecuta y la tarea queda No evaluable con N consumidas. No tiene valor por omisión: se
+    fija con criterio escrito antes del estudio (CLAUDE.md).
     """
 
-    def __init__(self, paradas: list[Parada], landmarks_finales=()):
-        self.paradas = paradas
-        self.cursor = -1  # antes de la primera parada
+    def __init__(self, paradas: list[Parada], landmarks_finales=(), navegador=None,
+                 url=None, titulo="", estado_http=None, captcha=(),
+                 tope_pulsaciones: int | None = None):
+        self.navegador = navegador
+        self.tope_pulsaciones = tope_pulsaciones
         self.pulsaciones = 0
         self.trayectoria: list[Paso] = []
-        # Para D: todos los pares (parada, landmark) en orden. Varios pueden compartir parada.
-        # Los landmarks finales vacíos van con índice len(paradas): D los anuncia sin mover.
-        self._marcas = [(p.indice, lm) for p in paradas for lm in p.landmarks]
-        self._marcas += [(len(paradas), lm) for lm in landmarks_finales]
-        self._marca = -1  # último par al que llegó D (-1 si el cursor se movió con otra tecla)
+        self.no_evaluable: NoEvaluable | None = None
+        # Pila de páginas: [entrada, ..., actual]. La profundidad es su tamaño menos 1.
+        self._historial = [Vista(paradas, tuple(landmarks_finales), url, titulo,
+                                 estado_http, tuple(captcha))]
 
     @classmethod
     def desde_archivo(cls, ruta_arbol: Path) -> "Emulador":
         arbol = json.loads(Path(ruta_arbol).read_text(encoding="utf-8"))
         return cls(*aplanar_pagina(arbol))
 
-    def _registrar(self, tecla, texto, se_movio, landmark=None) -> Paso:
+    # La página actual es la última de la pila; estas propiedades conservan la interfaz de 3A.
+    @property
+    def vista(self) -> Vista:
+        return self._historial[-1]
+
+    @property
+    def paradas(self) -> list[Parada]:
+        return self.vista.paradas
+
+    @property
+    def cursor(self) -> int:
+        return self.vista.cursor
+
+    @cursor.setter
+    def cursor(self, valor: int):
+        self.vista.cursor = valor
+
+    @property
+    def _marcas(self) -> list:
+        return self.vista.marcas
+
+    @property
+    def _marca(self) -> int:
+        return self.vista.marca
+
+    @_marca.setter
+    def _marca(self, valor: int):
+        self.vista.marca = valor
+
+    @property
+    def profundidad(self) -> int:
+        return len(self._historial) - 1
+
+    @property
+    def url(self) -> str | None:
+        return self.vista.url
+
+    @property
+    def titulo(self) -> str:
+        return self.vista.titulo
+
+    @property
+    def captcha(self) -> tuple[str, ...]:
+        return self.vista.captcha
+
+    # ---------- Registro, tope y No evaluable ----------
+
+    def _registrar(self, tecla, texto, se_movio, landmark=None, **extra) -> Paso:
+        """Una pulsación ejecutada: cuenta 1 y queda en la trayectoria."""
         self.pulsaciones += 1
-        paso = Paso(tecla, texto, self.cursor if self.cursor >= 0 else None,
-                    se_movio, self.pulsaciones, landmark)
+        return self._anotar(tecla, texto, se_movio, landmark, **extra)
+
+    def _anotar(self, tecla, texto, se_movio, landmark=None, **extra) -> Paso:
+        paso = Paso(tecla, texto, self.cursor if self.cursor >= 0 else None, se_movio,
+                    self.pulsaciones, landmark, profundidad=self.profundidad, url=self.url,
+                    **extra)
         self.trayectoria.append(paso)
         return paso
 
+    def _terminar(self, tecla, motivo, detalle, contada=False, **extra) -> Paso:
+        """Deja la tarea No evaluable. contada=True si la tecla sí se ejecutó (p. ej. el
+        Enter que dio timeout); el paso final registra el motivo y las pulsaciones."""
+        if contada:
+            self.pulsaciones += 1
+        paso = self._anotar(tecla, f"no evaluable: {motivo}", False, no_evaluable=motivo,
+                            **extra)
+        self.no_evaluable = NoEvaluable(motivo, detalle, self.pulsaciones)
+        return paso
+
+    def _verificar_sesion(self):
+        if self.no_evaluable:
+            raise SesionTerminada(f"la tarea ya es No evaluable ({self.no_evaluable.motivo})")
+
+    def _tope_alcanzado(self, tecla) -> Paso | None:
+        """Si ya se gastó el tope, la tecla no se ejecuta y la tarea queda No evaluable."""
+        if self.tope_pulsaciones is not None and self.pulsaciones >= self.tope_pulsaciones:
+            return self._terminar(tecla, "tope_pulsaciones",
+                                  f"tope de {self.tope_pulsaciones} pulsaciones")
+        return None
+
+    # ---------- Teclas ----------
+
     def pulsar(self, tecla: str) -> Paso:
-        """Una pulsación: H, K, D, F, Tab o flecha (abajo). Siempre avanza hacia adelante."""
+        """Una pulsación: H, K, D, F, Tab, flecha (abajo), Enter o volver (Alt+←). Las de
+        salto siempre avanzan hacia adelante."""
+        self._verificar_sesion()
+        if tecla not in TECLAS:
+            raise ValueError(f"Tecla no soportada: {tecla}")
+        if tecla == "Enter":
+            accion = self._accion_enter()  # valida ANTES de contar: lo no permitido no cuenta
+        if fin := self._tope_alcanzado(tecla):
+            return fin
         if tecla == "D":
             return self._pulsar_D()
-        if tecla not in FILTROS or tecla == "leer":
-            raise ValueError(f"Tecla no soportada en 3A: {tecla}")
+        if tecla == "Enter":
+            return self._enter(accion)
+        if tecla == "volver":
+            return self._volver()
         return self._saltar(tecla)
 
     def _saltar(self, tecla) -> Paso:
@@ -329,13 +477,61 @@ class Emulador:
     def leer_de_corrido(self, n: int | None = None) -> list[Paso]:
         """Lee n paradas desde el cursor; cada una cuesta 1 (como flecha abajo). Con n=None
         lee hasta la última parada, sin pulsar de más. Si n pasa del final, las pulsaciones
-        sobrantes cuentan y no mueven (D1)."""
+        sobrantes cuentan y no mueven (D1). Si se alcanza el tope, se detiene ahí."""
+        self._verificar_sesion()
         if n is None:
             n = len(self.paradas) - 1 - self.cursor
-        return [self._saltar("leer") for _ in range(n)]
+        pasos = []
+        for _ in range(n):
+            if fin := self._tope_alcanzado("leer"):
+                pasos.append(fin)
+                break
+            pasos.append(self._saltar("leer"))
+        return pasos
 
     def lista_elementos(self, tipo: str) -> list[Parada]:
         """Lista de elementos (NVDA+F7): "enlaces" o "encabezados", en orden del documento.
-        No mueve el cursor ni suma pulsaciones: su costo se define en la Fase 3C."""
+        Solo consulta: no mueve el cursor ni suma pulsaciones (para eso, elegir_de_lista)."""
         rol = ELEMENTOS[tipo]
         return [p for p in self.paradas if p.rol == rol]
+
+    def elegir_de_lista(self, tipo: str, posicion: int) -> list[Paso]:
+        """Abre la lista de elementos (1 pulsación) y baja con flecha hasta `posicion`
+        (0 = el primero): 1 + posicion pulsaciones, una por paso (CLAUDE.md). La lista abre
+        en el primer elemento, en orden del documento, sin filtrar escribiendo (por verificar
+        en NVDA: si abre en el más cercano al cursor). El cursor sigue a la selección; el
+        Enter que activa el elemento es otra pulsación. Elegir QUÉ posición (por nombre,
+        probando los ambiguos) es de las estrategias (3C), no del emulador."""
+        self._verificar_sesion()
+        elementos = self.lista_elementos(tipo)
+        if not 0 <= posicion < len(elementos):
+            raise IndexError(f"La lista de {tipo} tiene {len(elementos)} elementos")
+        pasos = []
+        for i, parada in enumerate(elementos[:posicion + 1]):
+            tecla = f"lista_{tipo}" if i == 0 else "flecha_lista"
+            if fin := self._tope_alcanzado(tecla):
+                pasos.append(fin)
+                break
+            self.cursor = parada.indice
+            self._marca = -1
+            pasos.append(self._registrar(tecla, anuncio(parada), se_movio=True))
+        return pasos
+
+    # ---------- Enter y volver (Fase 3B) ----------
+
+    def _accion_enter(self) -> str:
+        """Qué hace Enter sobre la parada del cursor; lanza AccionNoPermitida si no se debe
+        ejecutar. La navegación se agrega en el paso 4 (con el navegador)."""
+        if self.cursor < 0:
+            raise AccionNoPermitida("el cursor está antes de la primera parada")
+        p = self.paradas[self.cursor]
+        raise AccionNoPermitida(f"Enter no está definido para {p.rol} '{p.nombre}'")
+
+    def _enter(self, accion: str) -> Paso:
+        raise NotImplementedError(accion)
+
+    def _volver(self) -> Paso:
+        """Alt+←: 1 pulsación. Sin página anterior no pasa nada y cuenta 1 (como D1)."""
+        if self.profundidad == 0:
+            return self._registrar("volver", "no hay página anterior", se_movio=False)
+        raise NotImplementedError("volver con historial: paso 4")
