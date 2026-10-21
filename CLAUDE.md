@@ -178,6 +178,10 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   - Enter en `#id` de la misma página → el cursor va a la primera parada desde ese elemento, cuesta
     1, sin recaptura ("Saltar al contenido" = 1: es el mecanismo de `bypass`). Sin destino → clic.
   - Enter en campos y botones sin `expanded` → no se ejecuta (nunca enviar formularios).
+  - Enlace a la misma página sin `#` → navegación normal (recarga). `href="#"` → clic en la
+    misma página. `mailto:`/`tel:` → no se ejecuta ni cuenta (abriría otra aplicación).
+    Medido en las 5 portadas del 5-oct (`scripts/medicion/enlaces_href.py`): de 164 enlaces,
+    150 con URL navegable, 6 `#id`, 7 `#` solo, 0 `javascript:`, 1 `mailto:`.
   - Descarga: no se abre visor; bytes por la misma sesión y se registra si el PDF tiene capa de
     texto. No apila nivel. El veredicto lo pone 3D.
   - Profundidad = tamaño de la pila (entrada = nivel 0, máx. 3). Toda pulsación ejecutada cuenta
@@ -187,6 +191,8 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   - Lista de elementos: `elegir_de_lista(tipo, posicion)` = 1 + posicion (empieza en el primero);
     elegir por nombre y probar ambiguos sigue en 3C.
 - **3C** Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
+  Las estrategias NO re-entran a la URL en la que ya están (un enlace a la misma página sin
+  `#`, p. ej. el logo en la portada, es navegación y gastaría profundidad sin avanzar).
 - **3D** Veredicto por tarea contra `*.esperado.yaml`; conjunto de prueba balanceado y reservado.
   El conjunto reservado y balanceado para la decisión del 1-nov son páginas **NUEVAS**, distintas
   de las 6 de desarrollo (perfecta, sin_encabezados, sin_contacto, enlaces_ambiguos,
@@ -195,6 +201,10 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   Regla fijada el 20-oct, ANTES de ver datos: tarea **no resuelta + CAPTCHA detectado en la ruta →
   No evaluable** (no No completable). Si la tarea se resolvió aunque hubiera CAPTCHA (p. ej.
   campos identificados en un formulario con reCAPTCHA), cuenta normalmente.
+  Regla fijada el 20-oct: en la tarea A, llegar a un enlace `mailto:`/`tel:` cuenta como
+  identificar el contacto aunque el nombre anunciado no incluya la dirección o el número (Enter
+  abriría el correo o el teléfono con el dato ya puesto; en 3B ese Enter no se ejecuta). La url
+  se usa solo para el veredicto, nunca para el anuncio ni para el agente.
 - **3E** Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
 
 **Pendientes:**
@@ -204,7 +214,8 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   rótulo = una sola línea (decidido 20-oct: se sigue el árbol; Chromium ignora el `<label>` de la
   casilla por `labelFor` porque ya es su nombre, mientras que el de un textbox sí es parada);
   NVDA se detiene en landmark vacío con D; la lista de elementos (NVDA+F7) abre en el primer
-  elemento o en el más cercano al cursor (el emulador asume el primero); F se detiene en `switch`.
+  elemento o en el más cercano al cursor (el emulador asume el primero); F se detiene en `switch`;
+  qué anuncia en un enlace `mailto:` (¿solo el texto o también la dirección?).
 - **Tope de pulsaciones**: se fija con un criterio escrito ANTES del estudio (derivado de la
   auditoría manual), nunca después de ver resultados. En 3B no tiene valor por omisión (`None`).
 - Roles fuera de la lista de paradas, medidos el 20-oct (`scripts/medicion/`, capturas del 5-oct,

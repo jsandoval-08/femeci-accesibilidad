@@ -16,6 +16,7 @@ paradas; un párrafo largo es 1 aunque NVDA lo parta en varias líneas).
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import urldefrag, urlparse
 
 # Campos de formulario (CLAUDE.md). Roles tal como los nombra Chromium en el árbol CDP.
 ROLES_CAMPO = {"textbox", "searchbox", "combobox", "checkbox", "radio", "listbox",
@@ -288,6 +289,31 @@ class Documento:
     error: str | None = None
 
 
+@dataclass(frozen=True)
+class Pagina:
+    """Una página cargada por el navegador: su árbol recién capturado y datos de la carga."""
+    url_pedida: str
+    url: str  # URL final (después de redirecciones)
+    estado_http: int | None
+    titulo: str
+    arbol: dict
+    captcha: tuple[str, ...] = ()  # marcadores de CAPTCHA detectados (heurística)
+    nueva_pestana: bool = True  # False si el navegador tuvo que hacer clic en la misma pestaña
+
+
+@dataclass(frozen=True)
+class Falla:
+    """El navegador no pudo cargar: motivo = timeout | falla_tecnica."""
+    motivo: str
+    detalle: str
+
+
+# Enter en un enlace (rol link o menuitem) según su URL. Medido el 20-oct en las 5 portadas
+# (scripts/medicion/enlaces_href.py): 150 de 164 enlaces tienen URL navegable.
+ESQUEMAS_NAVEGABLES = {"http", "https", "file"}
+ROLES_ENLACE = {"link", "menuitem"}
+
+
 @dataclass
 class Vista:
     """Una página del historial: su árbol aplanado y dónde estaba el cursor. Al volver se
@@ -520,18 +546,87 @@ class Emulador:
     # ---------- Enter y volver (Fase 3B) ----------
 
     def _accion_enter(self) -> str:
-        """Qué hace Enter sobre la parada del cursor; lanza AccionNoPermitida si no se debe
-        ejecutar. La navegación se agrega en el paso 4 (con el navegador)."""
+        """Qué hace Enter sobre la parada del cursor (sin red: solo decide). Devuelve
+        "navegar", "fragmento" o "en_sitio"; lanza AccionNoPermitida si no se debe ejecutar.
+
+        - Botón, enlace o menuitem con aria-expanded, o pestaña → "en_sitio": clic en la misma
+          página (expandir, colapsar, seleccionar pestaña).
+        - Enlace con "#id" de la misma página → "fragmento" (p. ej. "Saltar al contenido").
+        - Enlace con href="#" o javascript: → "en_sitio" (depende de JavaScript).
+        - Enlace con mailto:, tel:, etc. → no se ejecuta: abriría otra aplicación.
+        - Otro enlace (incluida la misma página sin "#", que recarga) → "navegar".
+          menuitem sin url en el árbol también: el navegador lee el href del DOM.
+        - Todo lo demás (campos, botones sin expanded, encabezados, texto) → no se ejecuta.
+        """
         if self.cursor < 0:
             raise AccionNoPermitida("el cursor está antes de la primera parada")
         p = self.paradas[self.cursor]
-        raise AccionNoPermitida(f"Enter no está definido para {p.rol} '{p.nombre}'")
+        if (p.rol in ROLES_EXPANDIBLES and p.expandido is not None) or p.rol == "tab":
+            return "en_sitio"
+        if p.rol not in ROLES_ENLACE:
+            raise AccionNoPermitida(f"Enter no se ejecuta en {p.rol} '{p.nombre}'")
+        if p.url is None:
+            return "navegar" if p.rol == "menuitem" else "en_sitio"
+        esquema = urlparse(p.url).scheme.lower()
+        if esquema == "javascript":
+            return "en_sitio"
+        if esquema not in ESQUEMAS_NAVEGABLES:
+            raise AccionNoPermitida(f"Enter en '{p.nombre}' abriría otra aplicación ({esquema})")
+        destino, fragmento = urldefrag(p.url)
+        if self.url and destino == urldefrag(self.url)[0] and p.url.endswith("#" + fragmento):
+            return "fragmento" if fragmento else "en_sitio"
+        return "navegar"
 
     def _enter(self, accion: str) -> Paso:
+        if self.navegador is None:
+            raise RuntimeError("Enter que navega o activa necesita un navegador en vivo")
+        parada = self.paradas[self.cursor]
+        if accion == "navegar":
+            return self._navegar(parada)
         raise NotImplementedError(accion)
 
+    def _navegar(self, parada: Parada) -> Paso:
+        """Enter en enlace: el navegador abre el destino en una pestaña nueva (una por nivel).
+        La pulsación cuenta aunque la carga falle o exceda la profundidad."""
+        r = self.navegador.navegar(parada)
+        if isinstance(r, Falla):
+            return self._terminar("Enter", r.motivo, r.detalle, contada=True)
+        if self.profundidad + 1 > PROFUNDIDAD_MAX:
+            self.navegador.volver()  # la página del nivel 4 no se muestra
+            return self._terminar(
+                "Enter", "profundidad",
+                f"el enlace lleva al nivel {self.profundidad + 1} (máx. {PROFUNDIDAD_MAX})",
+                contada=True)
+        paradas, finales = aplanar_pagina(r.arbol)
+        self._historial.append(Vista(paradas, finales, r.url, r.titulo, r.estado_http,
+                                     r.captcha))
+        # Al cargar, NVDA anuncia el título; su lectura automática no es una pulsación y no
+        # se cuenta. El cursor queda antes de la primera parada.
+        return self._registrar("Enter", r.titulo, se_movio=True, estado_http=r.estado_http,
+                               captcha=r.captcha)
+
     def _volver(self) -> Paso:
-        """Alt+←: 1 pulsación. Sin página anterior no pasa nada y cuenta 1 (como D1)."""
+        """Alt+←: 1 pulsación. Se cierra la pestaña del nivel actual y se reusa la página
+        anterior tal como quedó (mismo árbol, sin recapturar): el cursor queda en el enlace
+        que se activó. Sin página anterior no pasa nada y cuenta 1 (como D1)."""
         if self.profundidad == 0:
             return self._registrar("volver", "no hay página anterior", se_movio=False)
-        raise NotImplementedError("volver con historial: paso 4")
+        self.navegador.volver()
+        self._historial.pop()
+        return self._registrar("volver", self.titulo, se_movio=True)
+
+    @classmethod
+    def en_vivo(cls, navegador, url: str, tope_pulsaciones: int | None = None) -> "Emulador":
+        """Abre el punto de entrada (nivel 0). Si la carga falla, el emulador queda No
+        evaluable con 0 pulsaciones."""
+        r = navegador.abrir(url)
+        if isinstance(r, Pagina):
+            return cls(*aplanar_pagina(r.arbol), navegador=navegador, url=r.url,
+                       titulo=r.titulo, estado_http=r.estado_http, captcha=r.captcha,
+                       tope_pulsaciones=tope_pulsaciones)
+        emu = cls([], navegador=navegador, url=url, tope_pulsaciones=tope_pulsaciones)
+        if isinstance(r, Falla):
+            emu._terminar("entrada", r.motivo, r.detalle)
+        else:
+            emu._terminar("entrada", "falla_tecnica", "la entrada es un documento, no una página")
+        return emu

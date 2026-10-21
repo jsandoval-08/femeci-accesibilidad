@@ -135,21 +135,7 @@ def casos(arbol_casos):
     return Emulador(paradas, finales)
 
 
-@pytest.fixture
-def vivo(servidor, chromium):
-    """Fábrica de emuladores en vivo sobre el servidor local; cierra todo al terminar."""
-    from src.navegador import NavegadorEnVivo  # aquí: las pruebas sin red no dependen de él
-    abiertos = []
-
-    def abrir(pagina, tope=None, **opciones):
-        opciones = {"timeout_ms": 5_000, "espera_ms": 0, "pausa_s": 0, **opciones}
-        nav = NavegadorEnVivo(chromium, **opciones)
-        abiertos.append(nav)
-        return Emulador.en_vivo(nav, servidor + pagina, tope_pulsaciones=tope)
-
-    yield abrir
-    for nav in abiertos:
-        nav.cerrar()
+# La fixture `vivo` (emuladores en vivo sobre el servidor local) está en tests/conftest.py.
 
 
 def _hasta(emu, tecla, nombre):

@@ -384,10 +384,10 @@ def _yaml(nombre):
 
 
 RUTAS = [(n, t) for n in NOMBRES for t in "ABCD"]
+# Rutas que cruzan páginas o activan un documento: corren EN VIVO (servidor local, Fase 3B).
+EN_VIVO = {("enlaces_ambiguos", "B")} | {(n, "C") for n in NOMBRES}
 MOTIVO_SKIP = {
-    "C": "3B: el Enter abre el PDF y el cierre se evalúa al llegar (y el costo de la lista "
-         "de enlaces es de 3C)",
-    "B_enlaces_ambiguos": "3B: la ruta cruza a enlaces_ambiguos_tramite.html",
+    "C": "3B paso 5: el Enter descarga el PDF y se registra si tiene capa de texto",
 }
 
 
@@ -399,6 +399,22 @@ def _avanzar_hasta(emu, tecla, rol, nombre):
         p = emu.paradas[paso.parada]
         if (p.rol, p.nombre) == (rol, nombre):
             return
+
+
+def _probar_enlaces(emu, nombres, destino):
+    """Sin conocer el objetivo: K hasta el siguiente enlace con uno de esos nombres, Enter;
+    si no se llegó al destino, volver (Alt+←) y seguir. La URL de llegada se usa SOLO aquí,
+    como oráculo de la prueba (igual que en test_paginas_prueba); las estrategias de 3C
+    decidirán con lo anunciado."""
+    while True:
+        paso = emu.pulsar("K")
+        assert paso.se_movio, f"Ningún candidato llevó a {destino}"
+        if emu.paradas[paso.parada].nombre not in nombres:
+            continue
+        emu.pulsar("Enter")
+        if emu.url.endswith("/" + destino):
+            return
+        emu.pulsar("volver")
 
 
 def recorrer_ruta(emu, ruta):
@@ -413,17 +429,25 @@ def recorrer_ruta(emu, ruta):
                 emu.leer_de_corrido()
             else:
                 _avanzar_hasta(emu, "flecha", hasta["rol"], hasta["nombre"])
+        elif tecla == "probar_enlaces":
+            _probar_enlaces(emu, paso["nombres"], paso["destino"])
+        elif tecla == "Enter":
+            emu.pulsar("Enter")
+            assert emu.url.endswith("/" + paso["destino"]), emu.url
+        elif tecla == "volver":
+            emu.pulsar("volver")
         else:
-            raise AssertionError(f"Tecla fuera de 3A: {tecla}")
+            raise AssertionError(f"Tecla no soportada en la ruta: {tecla}")
     return emu.pulsaciones
 
 
 @pytest.mark.parametrize("nombre,tarea", RUTAS, ids=[f"{n}-{t}" for n, t in RUTAS])
-def test_rutas_yaml(nombre, tarea, arboles):
+def test_rutas_yaml(nombre, tarea, arboles, request):
     if tarea == "C":
         pytest.skip(MOTIVO_SKIP["C"])
-    if (nombre, tarea) == ("enlaces_ambiguos", "B"):
-        pytest.skip(MOTIVO_SKIP["B_enlaces_ambiguos"])
     t = _yaml(nombre)["tareas"][tarea]
-    emu = _emu(arboles, t["entrada"].removesuffix(".html"))
+    if (nombre, tarea) in EN_VIVO:
+        emu = request.getfixturevalue("vivo")(t["entrada"])
+    else:
+        emu = _emu(arboles, t["entrada"].removesuffix(".html"))
     assert recorrer_ruta(emu, t["ruta"]) == t["friccion_esperada"]

@@ -63,6 +63,16 @@ def _guardar_json(ruta: Path, datos) -> None:
     ruta.write_text(json.dumps(datos, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def arbol_ax(pagina) -> dict:
+    """Árbol de accesibilidad completo de la página vía CDP (Accessibility.getFullAXTree).
+    Incluye los nodos ignorados; no se filtra aquí. Solo cubre el marco principal."""
+    cdp = pagina.context.new_cdp_session(pagina)
+    cdp.send("Accessibility.enable")
+    arbol = cdp.send("Accessibility.getFullAXTree")
+    cdp.detach()
+    return arbol
+
+
 def _correr_axe(pagina) -> dict:
     """Inyecta y ejecuta axe-core en la página ya cargada (solo lectura, no toca el DOM).
 
@@ -98,9 +108,7 @@ def capturar(url: str, base: Path = CARPETA_CAPTURAS) -> Path:
         (carpeta / "pagina.html").write_text(pagina.content(), encoding="utf-8")
 
         # Árbol de accesibilidad completo vía CDP (incluye nodos ignorados; no se filtra aquí)
-        cdp = contexto.new_cdp_session(pagina)
-        cdp.send("Accessibility.enable")
-        arbol = cdp.send("Accessibility.getFullAXTree")
+        arbol = arbol_ax(pagina)
         _guardar_json(carpeta / "arbol_ax.json", arbol)
 
         # Aria snapshot de Playwright
