@@ -16,7 +16,7 @@ paradas; un párrafo largo es 1 aunque NVDA lo parta en varias líneas).
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.parse import urldefrag, urlparse
+from urllib.parse import unquote, urldefrag, urlparse
 
 # Campos de formulario (CLAUDE.md). Roles tal como los nombra Chromium en el árbol CDP.
 ROLES_CAMPO = {"textbox", "searchbox", "combobox", "checkbox", "radio", "listbox",
@@ -334,6 +334,12 @@ class Vista:
         self.marcas = [(p.indice, lm) for p in self.paradas for lm in p.landmarks]
         self.marcas += [(len(self.paradas), lm) for lm in self.landmarks_finales]
 
+    def reemplazar(self, paradas, landmarks_finales, captcha, cursor):
+        """Tras un clic en la misma página (expandir, pestaña): árbol nuevo, misma Vista."""
+        self.paradas, self.landmarks_finales, self.captcha = paradas, landmarks_finales, captcha
+        self.cursor, self.marca = cursor, -1
+        self.__post_init__()
+
 
 TECLAS = {"H", "K", "D", "F", "Tab", "flecha", "Enter", "volver"}
 
@@ -583,7 +589,39 @@ class Emulador:
         parada = self.paradas[self.cursor]
         if accion == "navegar":
             return self._navegar(parada)
-        raise NotImplementedError(accion)
+        if accion == "fragmento":
+            return self._fragmento(parada)
+        return self._tras_clic(parada, self.navegador.activar_en_sitio(parada))
+
+    def _fragmento(self, parada: Parada) -> Paso:
+        """Enter en "#id" de la misma página (p. ej. "Saltar al contenido"): el cursor va a
+        la primera parada desde el destino; 1 pulsación, sin recapturar ni apilar nivel. Es
+        el mecanismo de bypass: si costara más, el emulador castigaría lo que axe pide.
+        Si la página no tiene ese id (ruta de SPA), se hace clic como en cualquier control."""
+        fragmento = unquote(urldefrag(parada.url)[1])
+        destino = self.navegador.ubicar_fragmento(fragmento, self.paradas)
+        if destino is None:
+            return self._tras_clic(parada, self.navegador.activar_en_sitio(parada))
+        self.cursor = destino
+        self._marca = -1
+        return self._registrar("Enter", anuncio(self.paradas[destino]), se_movio=True)
+
+    def _tras_clic(self, parada: Parada, r) -> Paso:
+        """Resultado de un clic en la misma página: se recapturó el árbol. El cursor se queda
+        en la parada activada (se reubica por su id del DOM, que no cambia con el clic;
+        comprobado 20-oct). Las paradas nuevas quedan en su lugar del documento: el emulador
+        no las reordena (si el sitio pone un submenú lejos del botón, eso es un hallazgo)."""
+        if isinstance(r, Falla):
+            return self._terminar("Enter", r.motivo, r.detalle, contada=True)
+        paradas, finales = aplanar_pagina(r.arbol)
+        nuevo = next((q.indice for q in paradas if q.id_dom == parada.id_dom), None)
+        if nuevo is None:
+            return self._terminar("Enter", "falla_tecnica",
+                                  f"'{parada.nombre}' ya no está en el árbol tras el clic",
+                                  contada=True)
+        self.vista.reemplazar(paradas, finales, r.captcha, nuevo)
+        return self._registrar("Enter", anuncio(paradas[nuevo]), se_movio=False,
+                               captcha=r.captcha)
 
     def _navegar(self, parada: Parada) -> Paso:
         """Enter en enlace: el navegador abre el destino en una pestaña nueva (una por nivel).
@@ -597,6 +635,8 @@ class Emulador:
             nombre = Path(urlparse(r.url).path).name or r.url
             return self._registrar("Enter", f"documento descargado: {nombre}",
                                    se_movio=False, documento=r)
+        if not r.nueva_pestana:  # menuitem sin href: el navegador hizo clic en la página
+            return self._tras_clic(parada, r)
         if self.profundidad + 1 > PROFUNDIDAD_MAX:
             self.navegador.volver()  # la página del nivel 4 no se muestra
             return self._terminar(

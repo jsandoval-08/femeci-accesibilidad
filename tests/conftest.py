@@ -11,6 +11,7 @@ Rutas especiales del servidor (además de los archivos de tests/paginas):
 
 import functools
 import http.server
+import sys
 import threading
 import time
 from pathlib import Path
@@ -38,12 +39,23 @@ class _Manejador(http.server.SimpleHTTPRequestHandler):
         super().do_GET()
 
 
+class _Servidor(http.server.ThreadingHTTPServer):
+    # Hilos no daemon: server_close() espera a que terminen (p. ej. la petición /lento/ que
+    # sigue dormida después del timeout). Con hilos daemon, ese hilo escribía en stderr
+    # durante el cierre del intérprete y Python abortaba ("Fatal Python error").
+    daemon_threads = False
+
+    def handle_error(self, request, client_address):
+        # El navegador cierra la conexión al dar timeout: es lo esperado, no un error.
+        if not issubclass(sys.exc_info()[0], ConnectionError):
+            super().handle_error(request, client_address)
+
+
 @pytest.fixture(scope="session")
 def servidor():
     """URL base (termina en /) del servidor local sobre tests/paginas."""
     manejador = functools.partial(_Manejador, directory=str(PAGINAS))
-    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), manejador)
-    srv.daemon_threads = True  # una petición lenta no bloquea el cierre
+    srv = _Servidor(("127.0.0.1", 0), manejador)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     yield f"http://127.0.0.1:{srv.server_address[1]}/"
     srv.shutdown()

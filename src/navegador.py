@@ -10,6 +10,7 @@ solo hace lo que necesita red, con Playwright sobre el sitio EN VIVO:
     navegable y ninguno usa javascript:).
   - recapturar el árbol de accesibilidad (CDP) de cada página nueva.
   - descargar los documentos (PDF) sin abrir visor y medir si tienen capa de texto.
+  - hacer clic en la misma página (expandir, pestañas) y ubicar el destino de un "#id".
 No se corre axe aquí: las páginas que puntúa axe están fijas de antemano (CLAUDE.md).
 Nunca envía formularios: el emulador no le pide activar campos ni botones de envío.
 
@@ -24,6 +25,7 @@ import json
 import mimetypes
 import time
 from pathlib import Path
+from urllib.parse import urldefrag
 
 from playwright.sync_api import Error as ErrorPlaywright
 from playwright.sync_api import TimeoutError as TimeoutPlaywright
@@ -34,18 +36,20 @@ from src.emulador import Documento, Falla, Pagina, Parada
 
 TIEMPO_LIMITE_MS = 30_000  # carga de cada página
 ESPERA_EXTRA_MS = 2_000  # tras el evento load, para el JS tardío (igual que la captura)
+ESPERA_CLIC_MS = 500  # tras un clic en la misma página, para que el JS actualice el DOM
 PAUSA_S = 1.0  # antes de cada petición al sitio (cortesía); no antes de volver
 
 
 class NavegadorEnVivo:
     def __init__(self, navegador, timeout_ms: int = TIEMPO_LIMITE_MS,
-                 espera_ms: int = ESPERA_EXTRA_MS, pausa_s: float = PAUSA_S,
-                 carpeta: Path | None = None):
+                 espera_ms: int = ESPERA_EXTRA_MS, espera_clic_ms: int = ESPERA_CLIC_MS,
+                 pausa_s: float = PAUSA_S, carpeta: Path | None = None):
         """navegador: un Browser de Playwright (Chromium). carpeta: si se da, ahí se guarda
         el árbol de cada página cargada (NN_arbol_ax.json), como evidencia reproducible."""
         self.contexto = navegador.new_context(viewport=VIEWPORT, accept_downloads=True)
         self.timeout_ms = timeout_ms
         self.espera_ms = espera_ms
+        self.espera_clic_ms = espera_clic_ms
         self.pausa_s = pausa_s
         self.carpeta = Path(carpeta) if carpeta else None
         self._pestanas = []  # pila: una pestaña por nivel (entrada = la primera)
@@ -64,13 +68,62 @@ class NavegadorEnVivo:
         """Enter en un enlace: abre su URL en una pestaña nueva. Si el árbol no trae url
         (menuitem), se lee el href del elemento en el DOM."""
         url = parada.url or self._href_dom(parada)
-        if not url:
-            return Falla("falla_tecnica", f"'{parada.nombre}' no tiene URL a dónde navegar")
+        if not url:  # menuitem sin href: se activa como cualquier control de la página
+            return self.activar_en_sitio(parada)
         return self._cargar(url, referer=self._pestanas[-1].url)
 
     def volver(self) -> None:
         """Alt+←: cierra la pestaña del nivel actual. No recaptura nada."""
         self._pestanas.pop().close()
+
+    def activar_en_sitio(self, parada: Parada) -> Pagina | Falla:
+        """Enter que no cambia de página (expandir, colapsar, seleccionar pestaña, href="#"):
+        clic en el elemento del DOM (la acción por omisión, que es lo que hace NVDA en modo
+        exploración) y recaptura en la MISMA pestaña. Si el clic termina navegando a otro
+        documento, se reporta como falla técnica: no está modelado en 3B (al volver, la página
+        anterior ya no estaría viva). Medido el 20-oct: 7 de 164 enlaces son href="#"."""
+        pestana = self._pestanas[-1]
+        antes = urldefrag(pestana.url)[0]
+        try:
+            self._en_dom(parada, "function () { this.click(); }")
+            pestana.wait_for_timeout(self.espera_clic_ms)
+            if urldefrag(pestana.url)[0] != antes:
+                return Falla("falla_tecnica",
+                             f"el clic en '{parada.nombre}' navegó a {pestana.url} (no modelado)")
+            arbol = self._capturar(pestana)
+        except ErrorPlaywright as e:
+            return Falla("falla_tecnica", _primera_linea(e))
+        return Pagina(url_pedida=pestana.url, url=pestana.url, estado_http=None,
+                      titulo=pestana.title(), arbol=arbol, nueva_pestana=False)
+
+    def ubicar_fragmento(self, fragmento: str, paradas: list[Parada]) -> int | None:
+        """Enter en "#id" de la misma página: índice de la primera parada que está dentro
+        del elemento destino o después de él, en orden del documento. None si la página no
+        tiene ese id (p. ej. rutas de SPA con "#/..."): entonces el emulador hace clic."""
+        pestana = self._pestanas[-1]
+        cdp = self.contexto.new_cdp_session(pestana)
+        try:
+            destino = cdp.send("Runtime.evaluate", {"expression": (
+                f"document.getElementById({json.dumps(fragmento)}) || "
+                f"document.getElementsByName({json.dumps(fragmento)})[0] || null")})["result"]
+            if "objectId" not in destino:
+                return None
+            for p in paradas:
+                if p.id_dom is None:
+                    continue
+                nodo = cdp.send("DOM.resolveNode", {"backendNodeId": p.id_dom})["object"]
+                r = cdp.send("Runtime.callFunctionOn", {
+                    "objectId": nodo["objectId"], "returnByValue": True,
+                    "arguments": [{"objectId": destino["objectId"]}],
+                    "functionDeclaration": (
+                        "function (d) { return d === this || d.contains(this) || "
+                        "!!(d.compareDocumentPosition(this) & Node.DOCUMENT_POSITION_FOLLOWING); }"),
+                })
+                if r["result"].get("value"):
+                    return p.indice
+            return None
+        finally:
+            cdp.detach()
 
     # ---------- Interno ----------
 
