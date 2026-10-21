@@ -15,7 +15,9 @@
          6. tabindex="-1": se puede enfocar por script pero no con Tab. Predicción: el árbol
             lo marca focusable (el emulador no lo distingue; limitación declarada).
          7. Landmarks anidados: main y la región "Región anidada" empiezan en la misma parada.
-         8. form con nombre (aria-label) sí es landmark; casilla con etiqueta; botón en form. -->
+         8. form con nombre (aria-label) sí es landmark; botón en form. Casilla con etiqueta:
+            el <label> NO es parada (Chromium lo ignora porque ya es el nombre de la casilla);
+            en los textbox sí lo es. Por verificar en NVDA: casilla + rótulo = una sola línea. -->
   <style>
     body { font-family: sans-serif; max-width: 52rem; margin: 0 auto; padding: 1rem; }
   </style>

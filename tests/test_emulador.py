@@ -178,8 +178,9 @@ CASOS_PARADAS = [
     # tabindex="-1": PREDICCIÓN, el árbol lo marca enfocable (Tab llegaría; limitación)
     ("link", "Enlace fuera del orden de tabulación", None, True, ()),
     ("link", "Enlace normal", None, True, ()),
-    ("StaticText", "Acepto", None, False, (("form", "Formulario de prueba"),)),
-    ("checkbox", "Acepto", None, True, ()),
+    # El <label> de la casilla NO es parada: Chromium lo ignora (labelFor) porque ya es su
+    # nombre. Corregido el 20-oct por decisión (a); el valor original lo contaba como texto.
+    ("checkbox", "Acepto", None, True, (("form", "Formulario de prueba"),)),
     ("button", "Botón del formulario", None, True, ()),
     ("StaticText", "Pie", None, False, (("contentinfo", ""),)),
 ]
@@ -192,11 +193,6 @@ def test_normalizar():
     assert normalizar("") == ""
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "DISCREPANCIA pendiente de decisión (20-oct): Chromium ignora el <label> de la casilla "
-    "(ignoredReasons: labelFor), así que 'Acepto' no sale como texto suelto; en los textbox "
-    "el <label> sí sale como LabelText. Las otras 18 paradas coinciden. El valor esperado "
-    "no se cambia hasta decidir si el error está en él o en el emulador."))
 def test_casos_emulador_paradas(arboles):
     paradas = _emu(arboles, "casos_emulador").paradas
     obtenido = [(p.rol, p.nombre, p.nivel, p.enfocable, p.landmarks) for p in paradas]
@@ -298,8 +294,7 @@ def test_anuncios(arboles):
     assert anuncios[5] == "Texto con espacios de sobra"  # texto suelto: solo el texto
     assert anuncios[10] == "gráfico, Escudo municipal"
     assert anuncios[11] == "gráfico"  # imagen sin alt
-    # La casilla se alcanza con F (2.º campo según la secuencia escrita a mano), no por
-    # índice: el índice depende de la discrepancia del <label> (ver xfail arriba).
+    # La casilla se alcanza con F (2.º campo según la secuencia escrita a mano), no por índice.
     emu = _emu(arboles, "casos_emulador")
     emu.pulsar("F")
     assert emu.pulsar("F").anuncio == "casilla de verificación, Acepto"

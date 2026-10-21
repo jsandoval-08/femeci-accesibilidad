@@ -169,10 +169,9 @@ Fase 3 (en este orden; marcar el sub-paso actual):
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.
-- **Decidir (discrepancia 3A):** Chromium ignora el `<label>` de una casilla (`labelFor`), así que
-  su rótulo no sale como texto suelto; en los textbox sí sale (`LabelText`). El valor escrito a mano
-  en `casos_emulador` esperaba la parada; la prueba está en `xfail` estricto hasta decidir.
 - **Por verificar en NVDA** (durante la auditoría manual): F incluye botones; sin vuelta al llegar
-  al final; qué anuncia con imagen sin alt; regiones con nombre como landmark de D.
+  al final; qué anuncia con imagen sin alt; regiones con nombre como landmark de D; casilla +
+  rótulo = una sola línea (decidido 20-oct: se sigue el árbol; Chromium ignora el `<label>` de la
+  casilla por `labelFor` porque ya es su nombre, mientras que el de un textbox sí es parada).
 - Roles fuera de la lista de paradas (p. ej. `menuitem`, `tab`, `switch`, `slider`, `treeitem`)
   hoy caen como texto suelto y K no los alcanza; revisar su frecuencia en sitios reales en 3B.

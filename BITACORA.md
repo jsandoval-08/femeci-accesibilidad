@@ -88,9 +88,9 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - D3: 1 StaticText = 1 parada, declarado como limitación.
   - D4: las imágenes son parada con o sin alt; las de `alt=""` quedan fuera.
   - Comprobado: el árbol marca enfocable lo que tiene `tabindex="-1"` → limitación declarada de Tab.
-  - **Discrepancia abierta:** Chromium ignora el `<label>` de una casilla (`labelFor`), así que su rótulo no sale como parada. Mi valor esperado sí lo contaba. No lo cambié: la prueba queda en xfail estricto hasta que se decida cuál está mal.
+  - **Discrepancia:** Chromium ignora el `<label>` de una casilla (`labelFor`), así que su rótulo no sale como parada. Mi valor esperado sí lo contaba. Quedó en xfail estricto hasta decidir; **decidido (a):** se sigue el árbol, se corrigió el valor esperado y se quitó el xfail. Queda por verificar en NVDA que casilla + rótulo se lean como una sola línea.
 - **Siguiente:**
-  - Decidir la discrepancia del `<label>`.
+  - Medir en las 5 portadas los roles fuera de la lista de paradas (menuitem, tab, switch…) antes de 3B.
   - Fase 3B: navegación en vivo (Enter, recaptura, profundidad, No evaluable).
   - Verificar en NVDA los puntos marcados en CLAUDE.md durante la auditoría manual.
 
