@@ -23,6 +23,7 @@ Uso típico (las pruebas comparten un mismo Chromium):
 import io
 import json
 import mimetypes
+import re
 import time
 from pathlib import Path
 from urllib.parse import urldefrag
@@ -38,6 +39,24 @@ TIEMPO_LIMITE_MS = 30_000  # carga de cada página
 ESPERA_EXTRA_MS = 2_000  # tras el evento load, para el JS tardío (igual que la captura)
 ESPERA_CLIC_MS = 500  # tras un clic en la misma página, para que el JS actualice el DOM
 PAUSA_S = 1.0  # antes de cada petición al sitio (cortesía); no antes de volver
+
+# Detección de CAPTCHA: HEURÍSTICA declarada. Se registra por página y NO detiene la sesión
+# (decisión 20-oct); la regla "no resuelta + CAPTCHA en la ruta → No evaluable" es de 3D.
+# Falsos negativos: CAPTCHAs propios o de imagen sin estos marcadores. Falsos positivos: un
+# widget presente que no bloquea la tarea (p. ej. reCAPTCHA v3 invisible, que se marca aparte
+# como "recaptcha-v3-insignia" para que 3D pueda distinguirlo).
+SELECTORES_CAPTCHA = {
+    "g-recaptcha": ".g-recaptcha",
+    "iframe-recaptcha": "iframe[src*='recaptcha']",
+    "recaptcha-v3-insignia": ".grecaptcha-badge",
+    "hcaptcha": ".h-captcha, iframe[src*='hcaptcha']",
+    "turnstile": ".cf-turnstile, iframe[src*='challenges.cloudflare.com']",
+    "data-sitekey": "[data-sitekey]",
+}
+# Texto en el árbol de accesibilidad (solo el marco principal: el texto dentro del iframe de
+# reCAPTCHA no se ve, pero el iframe sí se detecta por su src).
+TEXTO_CAPTCHA = re.compile(r"no soy un robot|i'?m not a robot|verifica que eres humano",
+                           re.IGNORECASE)
 
 
 class NavegadorEnVivo:
@@ -91,10 +110,12 @@ class NavegadorEnVivo:
                 return Falla("falla_tecnica",
                              f"el clic en '{parada.nombre}' navegó a {pestana.url} (no modelado)")
             arbol = self._capturar(pestana)
+            captcha = detectar_captcha(pestana, arbol)
         except ErrorPlaywright as e:
             return Falla("falla_tecnica", _primera_linea(e))
         return Pagina(url_pedida=pestana.url, url=pestana.url, estado_http=None,
-                      titulo=pestana.title(), arbol=arbol, nueva_pestana=False)
+                      titulo=pestana.title(), arbol=arbol, captcha=captcha,
+                      nueva_pestana=False)
 
     def ubicar_fragmento(self, fragmento: str, paradas: list[Parada]) -> int | None:
         """Enter en "#id" de la misma página: índice de la primera parada que está dentro
@@ -159,7 +180,8 @@ class NavegadorEnVivo:
         arbol = self._capturar(pestana)
         return Pagina(url_pedida=url, url=pestana.url,
                       estado_http=respuesta.status if respuesta else None,
-                      titulo=pestana.title(), arbol=arbol)
+                      titulo=pestana.title(), arbol=arbol,
+                      captcha=detectar_captcha(pestana, arbol))
 
     def _documento(self, descarga) -> Documento:
         datos = Path(descarga.path()).read_bytes()  # espera a que termine la descarga
@@ -193,6 +215,16 @@ class NavegadorEnVivo:
 
     def _href_dom(self, parada: Parada) -> str | None:
         return self._en_dom(parada, "function () { return this.href || null; }")
+
+
+def detectar_captcha(pestana, arbol: dict) -> tuple[str, ...]:
+    """Marcadores de CAPTCHA presentes en la página (ver SELECTORES_CAPTCHA). Solo lectura."""
+    marcadores = [m for m, selector in SELECTORES_CAPTCHA.items()
+                  if pestana.locator(selector).count() > 0]
+    if any(TEXTO_CAPTCHA.search(n.get("name", {}).get("value") or "")
+           for n in arbol["nodes"] if not n.get("ignored")):
+        marcadores.append("texto")
+    return tuple(marcadores)
 
 
 def leer_documento(url: str, nombre: str, datos: bytes) -> Documento:
