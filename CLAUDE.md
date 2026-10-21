@@ -33,8 +33,15 @@ Software libre, repositorio público.
    modo foco/exploración, no lee iframes, no anuncia aria-live, no lee contenido de PDFs, no modela
    el control de foco de modales. Es un ENTORNO: cursor sobre el árbol,
    acciones H, K, D, F (siguiente campo de formulario), Tab, flecha, **leer de corrido**, Enter; devuelve lo que se anunciaría.
-   La tecla F debe reconocer todos los roles de campo de formulario (textbox, combobox, checkbox,
-   radio, listbox, spinbutton y campos de fecha).
+   La tecla F reconoce todos los roles de campo de formulario (textbox, searchbox, combobox,
+   checkbox, radio, listbox, spinbutton y campos de fecha) **y los botones**, como NVDA (F = cualquier
+   campo de formulario; B sería solo botones). Constante `ROLES_F` en `src/emulador.py`.
+   *Por verificar en NVDA.*
+   Límites del aplanado (declarados): **1 StaticText = 1 parada** (un párrafo con un enlace en medio
+   son 3 paradas; un párrafo largo es 1 aunque NVDA lo parta en líneas); el árbol marca enfocable lo
+   que tiene `tabindex="-1"` (Tab llega a donde el teclado real no; comprobado); un landmark sin
+   paradas adentro no es alcanzable con D; lo que está dentro de `aria-hidden` no existe para el
+   emulador aunque sea enfocable.
    Fricción = total de pulsaciones de la ruta (salto + lectura). Tab solo llega a enfocables.
    Estrategias programadas (p. ej. "H hasta la sección, luego leer") corren sobre este entorno.
    Deciden la relevancia con una lista declarada de palabras clave por tarea (se definirá en la
@@ -95,12 +102,20 @@ Software libre, repositorio público.
   contenido del PDF).
   - "Dirigida / no dirigida" queda como campo descriptivo (`estrategia`); ya NO decide el estado.
 - **Elemento (parada)** = cada parada de flecha abajo: encabezado, enlace, botón, campo de
-  formulario y texto suelto (párrafo, elemento de lista, rótulo). El texto dentro de una parada
-  no es otra parada; el contenedor de una lista no cuenta.
+  formulario, **imagen** y texto suelto (párrafo, elemento de lista, rótulo). El texto dentro de una
+  parada no es otra parada; el contenedor de una lista no cuenta.
+  - Imagen: con o sin nombre (anuncio "gráfico" + nombre si lo tiene). Si solo contaran las que
+    tienen alt, una imagen sin alt bajaría la fricción y premiaría el error. Las de `alt=""` o de
+    presentación quedan fuera porque Chromium ya no las expone como imagen (comprobado).
+    *Por verificar en NVDA: qué anuncia con una imagen sin alt.*
 - **Conteo de pulsaciones**: el cursor empieza antes de la primera parada. H / K / F = 1 por cada
   encabezado / enlace / campo saltado. Flecha abajo = 1 por parada. Lista de enlaces (NVDA+F7)
   = 1 + flechas hasta el enlace, en orden del documento (no se filtra escribiendo). Enter = 1.
   Volver (Alt+←) = 1.
+  **Sin siguiente** (H sin más encabezados, flecha al final, Tab tras el último enfocable): el
+  cursor no se mueve ni da la vuelta al inicio, se anuncia "no hay más …" y la pulsación **cuenta 1**
+  (la persona sí presionó; así descubre que no hay más). NVDA por omisión no da la vuelta (JAWS sí).
+  *Por verificar en NVDA.*
 - **Mejor estrategia** = mínimo de fricción dentro del conjunto declarado: H+leer, D+leer, lista
   de elementos + elegir por nombre (probando en orden los ambiguos), F a campos, leer desde el
   inicio, Tab desde el inicio (solo objetivos enfocables). El mínimo absoluto queda excluido
@@ -136,16 +151,28 @@ Software libre, repositorio público.
   coinciden y uno donde Atorapp se equivoca, todos con evidencia.
 
 ## Estado actual
-**Fase 2 completa (axe en vivo + puntaje conservador, commit ab81c20). Siguiente: Fase 3.**
+**Fase 3A completa (emulador núcleo, `src/emulador.py`, 20-oct). Siguiente: 3B.**
 
 Fase 3 (en este orden; marcar el sub-paso actual):
-- **3A** Emulador núcleo sobre un árbol ya capturado: paradas, cursor, H/K/D/F/Tab/flecha/leer de
-  corrido, anuncio (rol + nombre). Pruebas con las páginas de prueba.
-- **3B** Navegación en vivo: Enter en enlace navega y recaptura; Enter en botón colapsado expande y
+- **3A** ✅ HECHA. Emulador núcleo sobre un árbol ya capturado: paradas, cursor, H/K/D/F/Tab/flecha/leer de
+  corrido, anuncio (rol + nombre). Pruebas con las páginas de prueba (`tests/test_emulador.py`):
+  las 17 rutas de una sola página dan exactamente su `friccion_esperada`.
+- **3B** ← SIGUIENTE. Navegación en vivo: Enter en enlace navega y recaptura; Enter en botón colapsado expande y
   recaptura; profundidad máx. 3; estado No evaluable por timeout/CAPTCHA/límite.
 - **3C** Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
 - **3D** Veredicto por tarea contra `*.esperado.yaml`; conjunto de prueba balanceado y reservado.
+  El conjunto reservado y balanceado para la decisión del 1-nov son páginas **NUEVAS**, distintas
+  de las 6 de desarrollo (perfecta, sin_encabezados, sin_contacto, enlaces_ambiguos,
+  formulario_sin_etiquetas, pdf_escaneado; ni sus destinos ni `casos_emulador`), y **no se tocan
+  hasta 3D**.
 - **3E** Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.
+- **Decidir (discrepancia 3A):** Chromium ignora el `<label>` de una casilla (`labelFor`), así que
+  su rótulo no sale como texto suelto; en los textbox sí sale (`LabelText`). El valor escrito a mano
+  en `casos_emulador` esperaba la parada; la prueba está en `xfail` estricto hasta decidir.
+- **Por verificar en NVDA** (durante la auditoría manual): F incluye botones; sin vuelta al llegar
+  al final; qué anuncia con imagen sin alt; regiones con nombre como landmark de D.
+- Roles fuera de la lista de paradas (p. ej. `menuitem`, `tab`, `switch`, `slider`, `treeitem`)
+  hoy caen como texto suelto y K no los alcanza; revisar su frecuencia en sitios reales en 3B.

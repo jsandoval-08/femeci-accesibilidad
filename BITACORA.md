@@ -71,6 +71,29 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Registro extendido al 23-oct; por indicación del Dr. Alonso y la Dra. Kim, primero se envía lo que pueda llenar solo.
 - **Siguiente:** escribir el Anexo 2, actualizar los textos registrados y empezar la auditoría manual con NVDA.
 
+## 20-oct-2026 — Fase 3A: emulador núcleo
+
+- **Qué hice:**
+  - Escribí `src/emulador.py`: aplana el árbol CDP en paradas; cursor; teclas H, K, D, F, Tab, flecha y leer de corrido; lista de elementos; anuncio (rol + nombre); trayectoria reproducible.
+  - Agregué la página de casos límite `tests/paginas/casos_emulador.html` y `tests/test_emulador.py`.
+  - Los valores esperados se escribieron **a mano, antes de implementar**, y se guardaron en un commit propio (5d060ae). Cada uno cita su fuente: yaml o HTML.
+- **Resultado:**
+  - Las **17 rutas de una sola página** de los `.esperado.yaml` dan **exactamente** su `friccion_esperada`.
+  - Las 7 rutas que cruzan páginas o abren el PDF quedan en skip, porque son de 3B.
+  - Las secuencias H, K, D, F y Tab y los conteos de paradas de las 6 páginas coinciden con lo escrito a mano.
+  - Suite completa: 93 pasan, 7 skip, 1 xfail.
+- **Problemas y decisiones:**
+  - D1: si no hay siguiente, el cursor no se mueve, no da la vuelta y la pulsación cuenta 1.
+  - D2: F incluye botones (por verificar en NVDA).
+  - D3: 1 StaticText = 1 parada, declarado como limitación.
+  - D4: las imágenes son parada con o sin alt; las de `alt=""` quedan fuera.
+  - Comprobado: el árbol marca enfocable lo que tiene `tabindex="-1"` → limitación declarada de Tab.
+  - **Discrepancia abierta:** Chromium ignora el `<label>` de una casilla (`labelFor`), así que su rótulo no sale como parada. Mi valor esperado sí lo contaba. No lo cambié: la prueba queda en xfail estricto hasta que se decida cuál está mal.
+- **Siguiente:**
+  - Decidir la discrepancia del `<label>`.
+  - Fase 3B: navegación en vivo (Enter, recaptura, profundidad, No evaluable).
+  - Verificar en NVDA los puntos marcados en CLAUDE.md durante la auditoría manual.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
