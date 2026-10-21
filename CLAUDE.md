@@ -159,19 +159,42 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   las 17 rutas de una sola página dan exactamente su `friccion_esperada`.
 - **3B** ← SIGUIENTE. Navegación en vivo: Enter en enlace navega y recaptura; Enter en botón colapsado expande y
   recaptura; profundidad máx. 3; estado No evaluable por timeout/CAPTCHA/límite.
-  Además (decidido 20-oct; casos primero en `casos_emulador` con valores a mano, luego código):
+  Además (decidido 20-oct; casos primero con valores a mano, luego código):
   - Roles interactivos que no son enlace (`tab`, `menuitem`, `menuitemcheckbox`, `menuitemradio`,
     `switch`, `option` fuera de select, `treeitem`) → parada propia, texto interno fundido, K NO se
     detiene (si una tarea depende de ellos con K, es barrera real del sitio).
   - Tab en rol `tab`: solo se detiene si `selected=true` (patrón ARIA de pestañas); las demás solo
     con flecha. El anuncio incluye "seleccionada" cuando aplique.
   - Landmark sin paradas propias: se anota en la SIGUIENTE parada, para que D lo cuente.
+    (1) Si es lo último del documento (no hay siguiente parada), D lo anuncia sin mover el cursor
+    y la pulsación cuenta 1. (2) Limitación declarada: el anuncio de D combina el landmark con una
+    parada que está FUERA de él. No se crea una parada vacía porque inflaría la fricción de flecha.
+  Plan aprobado 20-oct (casos en `casos_navegacion.html`, servidor local http, no file://):
+  - Enter en enlace → pestaña NUEVA del mismo contexto (una por nivel); volver = cerrar esa
+    pestaña y reusar el árbol guardado, cursor en el enlace activado, sin recapturar. Limitación:
+    se navega a la URL, no se ejecuta el `onclick` del enlace.
+  - Enter en botón/enlace/menuitem con `expanded`, en pestaña no seleccionada o en enlace sin URL
+    navegable → clic en la misma página y recaptura; el cursor se queda (se reubica por id del DOM).
+  - Enter en `#id` de la misma página → el cursor va a la primera parada desde ese elemento, cuesta
+    1, sin recaptura ("Saltar al contenido" = 1: es el mecanismo de `bypass`). Sin destino → clic.
+  - Enter en campos y botones sin `expanded` → no se ejecuta (nunca enviar formularios).
+  - Descarga: no se abre visor; bytes por la misma sesión y se registra si el PDF tiene capa de
+    texto. No apila nivel. El veredicto lo pone 3D.
+  - Profundidad = tamaño de la pila (entrada = nivel 0, máx. 3). Toda pulsación ejecutada cuenta
+    (también el Enter que excede la profundidad o da timeout); con tope N, la N+1 no se ejecuta.
+  - CAPTCHA (heurística declarada: g-recaptcha, hcaptcha, turnstile, data-sitekey, "No soy un
+    robot"): se detecta y se registra por página, NO detiene la sesión (ver regla en 3D).
+  - Lista de elementos: `elegir_de_lista(tipo, posicion)` = 1 + posicion (empieza en el primero);
+    elegir por nombre y probar ambiguos sigue en 3C.
 - **3C** Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
 - **3D** Veredicto por tarea contra `*.esperado.yaml`; conjunto de prueba balanceado y reservado.
   El conjunto reservado y balanceado para la decisión del 1-nov son páginas **NUEVAS**, distintas
   de las 6 de desarrollo (perfecta, sin_encabezados, sin_contacto, enlaces_ambiguos,
   formulario_sin_etiquetas, pdf_escaneado; ni sus destinos ni `casos_emulador`), y **no se tocan
   hasta 3D**.
+  Regla fijada el 20-oct, ANTES de ver datos: tarea **no resuelta + CAPTCHA detectado en la ruta →
+  No evaluable** (no No completable). Si la tarea se resolvió aunque hubiera CAPTCHA (p. ej.
+  campos identificados en un formulario con reCAPTCHA), cuenta normalmente.
 - **3E** Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
 
 **Pendientes:**
@@ -180,7 +203,10 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   al final; qué anuncia con imagen sin alt; regiones con nombre como landmark de D; casilla +
   rótulo = una sola línea (decidido 20-oct: se sigue el árbol; Chromium ignora el `<label>` de la
   casilla por `labelFor` porque ya es su nombre, mientras que el de un textbox sí es parada);
-  NVDA se detiene en landmark vacío con D.
+  NVDA se detiene en landmark vacío con D; la lista de elementos (NVDA+F7) abre en el primer
+  elemento o en el más cercano al cursor (el emulador asume el primero); F se detiene en `switch`.
+- **Tope de pulsaciones**: se fija con un criterio escrito ANTES del estudio (derivado de la
+  auditoría manual), nunca después de ver resultados. En 3B no tiene valor por omisión (`None`).
 - Roles fuera de la lista de paradas, medidos el 20-oct (`scripts/medicion/`, capturas del 5-oct,
   estado inicial sin expandir menús): 0 `menuitem`/`switch`/`treeitem`/`option` suelto en las 5
   portadas; 4 `tab` en Culiacán (hoy quedan como texto suelto); 1 landmark vacío en Atención

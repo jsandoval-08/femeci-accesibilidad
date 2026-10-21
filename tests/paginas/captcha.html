@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verificación</title>
+  <!-- CAPTCHA simulado, sin cargar nada externo. Tiene tres marcadores de la heurística de
+       detección: la clase g-recaptcha, el atributo data-sitekey y el texto "No soy un robot".
+       Atorapp lo detecta y lo registra, pero la sesión NO se detiene (decisión 20-oct); la
+       regla "no resuelta + CAPTCHA en la ruta → No evaluable" se aplica en 3D. -->
+</head>
+<body>
+  <main>
+    <h1>Verificación de seguridad</h1>
+    <div class="g-recaptcha" data-sitekey="prueba-local">
+      <label><input type="checkbox"> No soy un robot</label>
+    </div>
+  </main>
+</body>
+</html>

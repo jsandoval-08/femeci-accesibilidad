@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fallas simuladas</title>
+  <!-- Entrada para simular fallas en el servidor local de las pruebas (tests/conftest.py):
+         /lento/...     el servidor tarda más que el timeout → No evaluable (timeout)
+         captcha.html   CAPTCHA reconocible → se registra, la sesión sigue
+         no_existe.html 404 → se registra el estado HTTP; NO es No evaluable (enlace roto)
+         /redirige/...  302 → se registra la URL final -->
+</head>
+<body>
+  <main>
+    <h1>Fallas simuladas</h1>
+    <ul>
+      <li><a href="/lento/perfecta.html">Página lenta</a></li>
+      <li><a href="captcha.html">Verificación</a></li>
+      <li><a href="no_existe.html">Página inexistente</a></li>
+      <li><a href="/redirige/perfecta.html">Redirección</a></li>
+    </ul>
+  </main>
+</body>
+</html>

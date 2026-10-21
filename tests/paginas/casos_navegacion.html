@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casos de navegación</title>
+  <!-- Página de prueba de la Fase 3B (sin tareas, sin .esperado.yaml). Se sirve por el
+       servidor local de las pruebas (http, no file://). Las paradas esperadas, antes y
+       después de expandir, están escritas a mano en tests/test_navegacion.py, deducidas de
+       este HTML. Casos:
+         1. "Saltar al contenido" (#contenido): Enter cuesta 1 y deja el cursor en el primer
+            elemento del contenido (mecanismo de bypass).
+         2. Landmark vacío en medio (nav "Migas"): se anota en la siguiente parada (el botón),
+            junto con la nav "Principal" que empieza ahí mismo.
+         3. Botón colapsado (aria-expanded=false) que controla un submenú oculto con 2 enlaces
+            normales y un role=menu con menuitem (con href: Chromium no le pone url en el
+            árbol), menuitemcheckbox y menuitemradio. Al expandir, las nuevas paradas quedan
+            en su lugar del documento: justo después del botón.
+         4. Pestañas (patrón ARIA): Tab solo se detiene en la seleccionada; Enter en otra la
+            selecciona y cambia el panel visible, sin cambiar de página.
+         5. switch y treeitem: parada propia, K no se detiene.
+         6. Formulario con botón de enviar: Enter NO se ejecuta (nunca enviar formularios).
+         7. Landmark vacío al final (footer): D lo anuncia sin mover el cursor y cuenta 1.
+       Nota: role="option" suelto no se incluye; Chromium no lo expone como option
+       (comprobado el 20-oct), así que no hay forma de probarlo. -->
+  <style>
+    body { font-family: sans-serif; max-width: 52rem; margin: 0 auto; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <p><a href="#contenido">Saltar al contenido</a></p>
+
+  <header>
+    <h1>Casos de navegación</h1>
+    <nav aria-label="Migas"></nav>
+  </header>
+
+  <nav aria-label="Principal">
+    <button type="button" id="b-tramites" aria-expanded="false" aria-controls="sub-tramites">Trámites</button>
+    <div id="sub-tramites" hidden>
+      <ul>
+        <li><a href="destino_menu.html">Licencias de construcción</a></li>
+        <li><a href="perfecta.html">Pagos en línea</a></li>
+      </ul>
+      <div role="menu" aria-label="Más trámites">
+        <a role="menuitem" href="destino_menu.html">Catastro</a>
+        <div role="menuitemcheckbox" aria-checked="false" tabindex="-1">Solo en línea</div>
+        <div role="menuitemradio" aria-checked="true" tabindex="-1">Ordenar por nombre</div>
+      </div>
+    </div>
+    <a href="destino_menu.html">Directorio</a>
+  </nav>
+
+  <main id="contenido">
+    <h2>Contenido</h2>
+
+    <h2>Pestañas</h2>
+    <div role="tablist" aria-label="Horarios">
+      <button type="button" role="tab" id="t1" aria-selected="true" aria-controls="p1">Lunes a viernes</button>
+      <button type="button" role="tab" id="t2" aria-selected="false" aria-controls="p2" tabindex="-1">Sábado</button>
+      <button type="button" role="tab" id="t3" aria-selected="false" aria-controls="p3" tabindex="-1">Domingo</button>
+    </div>
+    <div role="tabpanel" id="p1" aria-labelledby="t1"><p>De 8:00 a 15:00 horas.</p></div>
+    <div role="tabpanel" id="p2" aria-labelledby="t2" hidden><p>De 9:00 a 13:00 horas.</p></div>
+    <div role="tabpanel" id="p3" aria-labelledby="t3" hidden><p>Cerrado.</p></div>
+
+    <h2>Otros controles</h2>
+    <p><button type="button" role="switch" aria-checked="false">Recibir avisos</button></p>
+    <div role="tree" aria-label="Dependencias">
+      <div role="treeitem" aria-selected="false" tabindex="0">Secretaría de Obras</div>
+    </div>
+
+    <h2>Formulario</h2>
+    <form action="#" method="post">
+      <label for="correo">Correo electrónico</label>
+      <input id="correo" type="email">
+      <button type="submit">Enviar</button>
+    </form>
+  </main>
+
+  <footer></footer>
+
+  <script>
+    // Botón de submenú (patrón disclosure): alterna aria-expanded y el atributo hidden.
+    var boton = document.getElementById("b-tramites");
+    boton.addEventListener("click", function () {
+      var abierto = boton.getAttribute("aria-expanded") === "true";
+      boton.setAttribute("aria-expanded", String(!abierto));
+      document.getElementById("sub-tramites").hidden = abierto;
+    });
+    // Pestañas: la elegida queda seleccionada y con tabindex 0; solo su panel es visible.
+    var pestanas = document.querySelectorAll('[role="tab"]');
+    pestanas.forEach(function (pestana) {
+      pestana.addEventListener("click", function () {
+        pestanas.forEach(function (t) {
+          var elegida = t === pestana;
+          t.setAttribute("aria-selected", String(elegida));
+          t.tabIndex = elegida ? 0 : -1;
+          document.getElementById(t.getAttribute("aria-controls")).hidden = !elegida;
+        });
+      });
+    });
+    // El formulario nunca debe enviarse en las pruebas: si llegara a pasar, queda marcado.
+    document.querySelector("form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      document.title = "FORMULARIO ENVIADO";
+    });
+  </script>
+</body>
+</html>
