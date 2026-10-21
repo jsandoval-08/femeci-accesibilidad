@@ -28,7 +28,6 @@ import pytest
 from src.captura import capturar
 from src.emulador import (PROFUNDIDAD_MAX, AccionNoPermitida, Emulador, SesionTerminada,
                           aplanar, aplanar_pagina)
-from src.navegador import NavegadorEnVivo
 
 PAGINAS = Path(__file__).parent / "paginas"
 
@@ -139,6 +138,7 @@ def casos(arbol_casos):
 @pytest.fixture
 def vivo(servidor, chromium):
     """Fábrica de emuladores en vivo sobre el servidor local; cierra todo al terminar."""
+    from src.navegador import NavegadorEnVivo  # aquí: las pruebas sin red no dependen de él
     abiertos = []
 
     def abrir(pagina, tope=None, **opciones):

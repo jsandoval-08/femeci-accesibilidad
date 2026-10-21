@@ -21,8 +21,14 @@ ROLES_CAMPO = {"textbox", "searchbox", "combobox", "checkbox", "radio", "listbox
 # Tecla F (D2): cualquier campo de formulario, incluidos los botones, como en NVDA
 # (por verificar en NVDA). Configurable.
 ROLES_F = ROLES_CAMPO | {"button"}
+# Roles interactivos que no son enlace (decidido 20-oct, Fase 3B): parada propia con su texto
+# fundido, pero K NO se detiene en ellos (si una tarea depende de ellos con K, es barrera real
+# del sitio). "option" suelta: Chromium no la expone como option (comprobado 20-oct); dentro
+# de un listbox o un select ya queda fundida en el campo.
+ROLES_INTERACTIVOS = {"tab", "menuitem", "menuitemcheckbox", "menuitemradio", "switch",
+                      "option", "treeitem"}
 # Paradas cuyo subárbol se funde en su nombre (no se baja a sus hijos).
-ROLES_PARADA = {"heading", "link", "button", "image"} | ROLES_CAMPO
+ROLES_PARADA = {"heading", "link", "button", "image"} | ROLES_CAMPO | ROLES_INTERACTIVOS
 TEXTO = "StaticText"
 # Nodos que nunca son parada ni aportan texto propio: las cajas de texto internas de
 # Chromium y la viñeta de los elementos de lista (se lee junto con su elemento).
@@ -48,6 +54,12 @@ class Parada:
     # primera región), y en NVDA eso son dos pulsaciones de D.
     landmarks: tuple[tuple[str, str], ...]
     id_nodo: str  # nodeId CDP, para rastrear la parada en el árbol
+    # Fase 3B. De estos, solo los estados van en el anuncio (la url nunca: el agente no ve
+    # URLs).
+    id_dom: int | None = None  # backendDOMNodeId: para hacer clic y reubicar el cursor
+    url: str | None = None  # propiedad url del árbol (enlaces; menuitem no la trae)
+    expandido: bool | None = None  # aria-expanded
+    seleccionado: bool | None = None  # aria-selected (pestañas, elementos de árbol)
 
 
 def normalizar(texto: str) -> str:
@@ -74,7 +86,13 @@ def _landmark(rol: str, nombre: str) -> tuple[str, str] | None:
 
 
 def aplanar(arbol: dict) -> list[Parada]:
+    """Paradas de la página en orden del documento (ver aplanar_pagina)."""
+    return aplanar_pagina(arbol)[0]
+
+
+def aplanar_pagina(arbol: dict) -> tuple[list[Parada], tuple[tuple[str, str], ...]]:
     """Lineariza el árbol CDP en paradas, en orden del documento (orden de childIds).
+    Devuelve también los landmarks finales: los que quedaron sin ninguna parada después.
 
     - Nodo ignorado: no es parada, pero se baja a sus hijos (Chromium envuelve el contenido
       visible en nodos ignorados). Excepción: si lo oculta aria-hidden, se poda todo.
@@ -85,7 +103,10 @@ def aplanar(arbol: dict) -> list[Parada]:
     - InlineTextBox y ListMarker: se descartan.
     - Cualquier otro rol (generic, paragraph, list, listitem, LabelText, form...): contenedor;
       si es landmark se anota en su primera parada.
-    Limitación: un landmark sin ninguna parada adentro no se registra (D no llega a él).
+    Landmark sin paradas adentro (3B): se anota en la SIGUIENTE parada, para que D lo cuente
+    (limitación declarada: el anuncio lo combina con una parada que está fuera de él). Si es
+    lo último del documento, queda en los landmarks finales. No se crea una parada vacía
+    porque inflaría la fricción de flecha.
     """
     nodos = {n["nodeId"]: n for n in arbol["nodes"]}
     raiz = next(n for n in arbol["nodes"] if "parentId" not in n)
@@ -98,6 +119,9 @@ def aplanar(arbol: dict) -> list[Parada]:
             indice=len(paradas), rol=rol, nombre=nombre, nivel=nivel,
             enfocable=bool(_propiedad(nodo, "focusable")),
             landmarks=tuple(pendientes), id_nodo=nodo["nodeId"],
+            id_dom=nodo.get("backendDOMNodeId"), url=_propiedad(nodo, "url"),
+            expandido=_propiedad(nodo, "expanded"),
+            seleccionado=_propiedad(nodo, "selected"),
         ))
         pendientes.clear()
 
@@ -119,10 +143,8 @@ def aplanar(arbol: dict) -> list[Parada]:
                 return
             marca = _landmark(rol, nombre)
             if marca:
-                pendientes.append(marca)
+                pendientes.append(marca)  # si queda vacío, pasa a la parada siguiente
                 visitar_hijos(nodo)
-                if marca in pendientes:  # landmark vacío: no se arrastra a la parada siguiente
-                    pendientes.remove(marca)
                 return
         visitar_hijos(nodo)
 
@@ -132,7 +154,7 @@ def aplanar(arbol: dict) -> list[Parada]:
                 visitar(nodos[hijo])
 
     visitar(raiz)
-    return paradas
+    return paradas, tuple(pendientes)
 
 
 # ---------- Anuncio ----------
@@ -143,7 +165,15 @@ ROTULOS = {
     "checkbox": "casilla de verificación", "radio": "botón de opción", "listbox": "lista",
     "spinbutton": "selector numérico", "date": "campo de fecha",
     "DateTime": "campo de fecha y hora", "InputTime": "campo de hora",
+    "tab": "pestaña", "menuitem": "elemento de menú",
+    "menuitemcheckbox": "elemento de menú de verificación",
+    "menuitemradio": "elemento de menú de opción", "switch": "conmutador",
+    "option": "opción", "treeitem": "elemento de árbol",
 }
+# Roles en los que se anuncia "contraído" / "expandido" (los que Enter expande en la misma
+# página). No combobox: NVDA sí lo diría, pero Enter no abre campos y así no cambia el
+# anuncio de 3A. Limitación: no se anuncia el estado marcado de switch ni de menuitemcheckbox.
+ROLES_EXPANDIBLES = {"button", "link", "menuitem"}
 ROTULOS_LANDMARK = {
     "banner": "banner", "navigation": "navegación", "main": "principal",
     "contentinfo": "información de contenido", "complementary": "complementario",
@@ -165,28 +195,36 @@ FILTROS = {
     "F": lambda p: p.rol in ROLES_F,
     # Tab solo llega a enfocables. Limitación: el árbol marca enfocable también lo que
     # tiene tabindex="-1", al que el Tab real no llega (comprobado en casos_emulador).
-    "Tab": lambda p: p.enfocable,
+    # Pestañas (patrón ARIA): Tab solo se detiene en la seleccionada; las demás, con flecha.
+    "Tab": lambda p: p.enfocable and (p.rol != "tab" or p.seleccionado is True),
     "flecha": lambda p: True,
     "leer": lambda p: True,
 }
 ELEMENTOS = {"enlaces": "link", "encabezados": "heading"}
 
 
-def anuncio(parada: Parada, landmark: tuple[str, str] | None = None) -> str:
-    """Rol + nombre de la parada; el texto suelto se anuncia solo con su texto. Con D se
-    antepone el landmark al que se llegó."""
-    if parada.rol == TEXTO:
+def anuncio(parada: Parada | None, landmark: tuple[str, str] | None = None) -> str:
+    """Rol + nombre (+ estado) de la parada; el texto suelto se anuncia solo con su texto.
+    Con D se antepone el landmark al que se llegó. parada=None: landmark final vacío, se
+    anuncia solo el landmark."""
+    base = None
+    if parada is not None and parada.rol == TEXTO:
         base = parada.nombre
-    else:
+    elif parada is not None:
         if parada.rol == "heading":
             rotulo = f"encabezado nivel {parada.nivel}" if parada.nivel else "encabezado"
         else:
             rotulo = ROTULOS.get(parada.rol, parada.rol)
-        base = f"{rotulo}, {parada.nombre}" if parada.nombre else rotulo
+        partes = [rotulo] + ([parada.nombre] if parada.nombre else [])
+        if parada.rol == "tab" and parada.seleccionado:
+            partes.append("seleccionada")
+        if parada.rol in ROLES_EXPANDIBLES and parada.expandido is not None:
+            partes.append("expandido" if parada.expandido else "contraído")
+        base = ", ".join(partes)
     if landmark:
         rol, nombre = landmark
         marca = ROTULOS_LANDMARK[rol] + (f" {nombre}" if nombre else "")
-        return f"{marca}, punto de referencia; {base}"
+        return f"{marca}, punto de referencia" + (f"; {base}" if base is not None else "")
     return base
 
 
@@ -200,6 +238,23 @@ class Paso:
     landmark: tuple[str, str] | None = None  # solo con D: landmark al que se llegó
 
 
+# ---------- Fase 3B: límites y errores ----------
+
+# Profundidad máxima desde el punto de entrada (nivel 0). Es el tamaño de la pila de páginas,
+# no el número de páginas visitadas: ir y volver no acumula.
+PROFUNDIDAD_MAX = 3
+
+
+class AccionNoPermitida(Exception):
+    """Enter sobre algo que no se debe activar (campo, botón que podría enviar un formulario,
+    encabezado, texto) o con el cursor antes de la primera parada. No se ejecuta ni cuenta:
+    es un error de quien llama (estrategia o agente), no una pulsación de la persona."""
+
+
+class SesionTerminada(Exception):
+    """Se pulsó una tecla después de que la tarea quedó No evaluable."""
+
+
 # ---------- Entorno ----------
 
 class Emulador:
@@ -210,19 +265,21 @@ class Emulador:
     páginas son de la Fase 3B; el costo de la lista de elementos y de elegir en ella, de 3C.
     """
 
-    def __init__(self, paradas: list[Parada]):
+    def __init__(self, paradas: list[Parada], landmarks_finales=()):
         self.paradas = paradas
         self.cursor = -1  # antes de la primera parada
         self.pulsaciones = 0
         self.trayectoria: list[Paso] = []
         # Para D: todos los pares (parada, landmark) en orden. Varios pueden compartir parada.
+        # Los landmarks finales vacíos van con índice len(paradas): D los anuncia sin mover.
         self._marcas = [(p.indice, lm) for p in paradas for lm in p.landmarks]
+        self._marcas += [(len(paradas), lm) for lm in landmarks_finales]
         self._marca = -1  # último par al que llegó D (-1 si el cursor se movió con otra tecla)
 
     @classmethod
     def desde_archivo(cls, ruta_arbol: Path) -> "Emulador":
         arbol = json.loads(Path(ruta_arbol).read_text(encoding="utf-8"))
-        return cls(aplanar(arbol))
+        return cls(*aplanar_pagina(arbol))
 
     def _registrar(self, tecla, texto, se_movio, landmark=None) -> Paso:
         self.pulsaciones += 1
@@ -249,10 +306,10 @@ class Emulador:
         return self._registrar(tecla, anuncio(destino), se_movio=True)
 
     def _pulsar_D(self) -> Paso:
-        # Si el cursor sigue donde lo dejó D, se continúa desde ese par (así los landmarks
-        # que empiezan en la misma parada cuestan una pulsación cada uno); si no, desde el
-        # primer landmark que empieza después del cursor.
-        if self._marca >= 0 and self._marcas[self._marca][0] == self.cursor:
+        # Si el cursor sigue donde lo dejó D (ninguna otra tecla lo movió), se continúa desde
+        # ese par (así los landmarks que empiezan en la misma parada cuestan una pulsación
+        # cada uno); si no, desde el primer landmark que empieza después del cursor.
+        if self._marca >= 0:
             inicio = self._marca + 1
         else:
             inicio = next((i for i, (j, _) in enumerate(self._marcas) if j > self.cursor),
@@ -261,6 +318,10 @@ class Emulador:
             return self._registrar("D", SIN_SIGUIENTE["D"], se_movio=False)
         self._marca = inicio
         indice, landmark = self._marcas[inicio]
+        if indice == len(self.paradas):
+            # Landmark final vacío: se anuncia sin mover el cursor y la pulsación cuenta 1.
+            return self._registrar("D", anuncio(None, landmark), se_movio=False,
+                                   landmark=landmark)
         self.cursor = indice
         return self._registrar("D", anuncio(self.paradas[indice], landmark),
                                se_movio=True, landmark=landmark)
