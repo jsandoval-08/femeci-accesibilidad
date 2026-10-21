@@ -40,7 +40,7 @@ Software libre, repositorio público.
    Límites del aplanado (declarados): **1 StaticText = 1 parada** (un párrafo con un enlace en medio
    son 3 paradas; un párrafo largo es 1 aunque NVDA lo parta en líneas); el árbol marca enfocable lo
    que tiene `tabindex="-1"` (Tab llega a donde el teclado real no; comprobado); un landmark sin
-   paradas adentro no es alcanzable con D; lo que está dentro de `aria-hidden` no existe para el
+   paradas adentro no es alcanzable con D (se cambia en 3B); lo que está dentro de `aria-hidden` no existe para el
    emulador aunque sea enfocable.
    Fricción = total de pulsaciones de la ruta (salto + lectura). Tab solo llega a enfocables.
    Estrategias programadas (p. ej. "H hasta la sección, luego leer") corren sobre este entorno.
@@ -159,6 +159,13 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   las 17 rutas de una sola página dan exactamente su `friccion_esperada`.
 - **3B** ← SIGUIENTE. Navegación en vivo: Enter en enlace navega y recaptura; Enter en botón colapsado expande y
   recaptura; profundidad máx. 3; estado No evaluable por timeout/CAPTCHA/límite.
+  Además (decidido 20-oct; casos primero en `casos_emulador` con valores a mano, luego código):
+  - Roles interactivos que no son enlace (`tab`, `menuitem`, `menuitemcheckbox`, `menuitemradio`,
+    `switch`, `option` fuera de select, `treeitem`) → parada propia, texto interno fundido, K NO se
+    detiene (si una tarea depende de ellos con K, es barrera real del sitio).
+  - Tab en rol `tab`: solo se detiene si `selected=true` (patrón ARIA de pestañas); las demás solo
+    con flecha. El anuncio incluye "seleccionada" cuando aplique.
+  - Landmark sin paradas propias: se anota en la SIGUIENTE parada, para que D lo cuente.
 - **3C** Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
 - **3D** Veredicto por tarea contra `*.esperado.yaml`; conjunto de prueba balanceado y reservado.
   El conjunto reservado y balanceado para la decisión del 1-nov son páginas **NUEVAS**, distintas
@@ -172,6 +179,9 @@ Fase 3 (en este orden; marcar el sub-paso actual):
 - **Por verificar en NVDA** (durante la auditoría manual): F incluye botones; sin vuelta al llegar
   al final; qué anuncia con imagen sin alt; regiones con nombre como landmark de D; casilla +
   rótulo = una sola línea (decidido 20-oct: se sigue el árbol; Chromium ignora el `<label>` de la
-  casilla por `labelFor` porque ya es su nombre, mientras que el de un textbox sí es parada).
-- Roles fuera de la lista de paradas (p. ej. `menuitem`, `tab`, `switch`, `slider`, `treeitem`)
-  hoy caen como texto suelto y K no los alcanza; revisar su frecuencia en sitios reales en 3B.
+  casilla por `labelFor` porque ya es su nombre, mientras que el de un textbox sí es parada);
+  NVDA se detiene en landmark vacío con D.
+- Roles fuera de la lista de paradas, medidos el 20-oct (`scripts/medicion/`, capturas del 5-oct,
+  estado inicial sin expandir menús): 0 `menuitem`/`switch`/`treeitem`/`option` suelto en las 5
+  portadas; 4 `tab` en Culiacán (hoy quedan como texto suelto); 1 landmark vacío en Atención
+  Ciudadana. Los submenús colapsados pueden traer `menuitem` al expandir en 3B. Reglas: ver 3B.

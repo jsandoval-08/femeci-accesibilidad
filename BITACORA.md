@@ -89,8 +89,15 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - D4: las imágenes son parada con o sin alt; las de `alt=""` quedan fuera.
   - Comprobado: el árbol marca enfocable lo que tiene `tabindex="-1"` → limitación declarada de Tab.
   - **Discrepancia:** Chromium ignora el `<label>` de una casilla (`labelFor`), así que su rótulo no sale como parada. Mi valor esperado sí lo contaba. Quedó en xfail estricto hasta decidir; **decidido (a):** se sigue el árbol, se corrigió el valor esperado y se quitó el xfail. Queda por verificar en NVDA que casilla + rótulo se lean como una sola línea.
+  - Medí en las 5 portadas (capturas del 5-oct) los roles fuera de la lista de paradas, con `scripts/medicion/roles_fuera.py` y `detalle.py`:
+    - 0 `menuitem`, `switch`, `treeitem` y `option` suelto;
+    - 4 `tab` en Culiacán, que hoy quedan como texto suelto;
+    - 1 landmark vacío en Atención Ciudadana.
+  - Con eso se decidió, para 3B:
+    - roles interactivos no-enlace como parada propia (K no se detiene);
+    - Tab en `tab` solo si está seleccionada;
+    - landmark vacío anotado en la siguiente parada.
 - **Siguiente:**
-  - Medir en las 5 portadas los roles fuera de la lista de paradas (menuitem, tab, switch…) antes de 3B.
   - Fase 3B: navegación en vivo (Enter, recaptura, profundidad, No evaluable).
   - Verificar en NVDA los puntos marcados en CLAUDE.md durante la auditoría manual.
 
