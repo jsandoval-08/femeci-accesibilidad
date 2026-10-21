@@ -298,7 +298,11 @@ def test_anuncios(arboles):
     assert anuncios[5] == "Texto con espacios de sobra"  # texto suelto: solo el texto
     assert anuncios[10] == "gráfico, Escudo municipal"
     assert anuncios[11] == "gráfico"  # imagen sin alt
-    assert anuncios[16] == "casilla de verificación, Acepto"
+    # La casilla se alcanza con F (2.º campo según la secuencia escrita a mano), no por
+    # índice: el índice depende de la discrepancia del <label> (ver xfail arriba).
+    emu = _emu(arboles, "casos_emulador")
+    emu.pulsar("F")
+    assert emu.pulsar("F").anuncio == "casilla de verificación, Acepto"
 
     assert _emu(arboles, "formulario_sin_etiquetas").pulsar("F").anuncio == "edición"
     emu = _emu(arboles, "sin_contacto")
@@ -357,9 +361,10 @@ def test_no_hay_siguiente_desde_el_inicio(arboles):
 
 
 def test_no_hay_siguiente_flecha_y_tab(arboles):
-    emu = _emu(arboles, "casos_emulador")
+    # perfecta: 44 paradas (yaml); la última es el pie y el último enfocable es el botón.
+    emu = _emu(arboles, "perfecta")
     emu.leer_de_corrido()
-    n = len(CASOS_PARADAS)
+    n = ESPERADO_N_PARADAS["perfecta"]
     paso = emu.pulsar("flecha")
     assert not paso.se_movio and paso.anuncio == "fin del documento"
     assert paso.parada == n - 1 and paso.pulsaciones == n + 1
@@ -370,10 +375,11 @@ def test_no_hay_siguiente_flecha_y_tab(arboles):
 
 def test_leer_n_mas_alla_del_final(arboles):
     """leer_de_corrido(n) pulsa n veces: las que pasan del final cuentan y no mueven (D1)."""
-    emu = _emu(arboles, "casos_emulador")
-    pasos = emu.leer_de_corrido(len(CASOS_PARADAS) + 2)
+    emu = _emu(arboles, "perfecta")
+    n = ESPERADO_N_PARADAS["perfecta"]
+    pasos = emu.leer_de_corrido(n + 2)
     assert [p.se_movio for p in pasos[-3:]] == [True, False, False]
-    assert emu.pulsaciones == len(CASOS_PARADAS) + 2
+    assert emu.pulsaciones == n + 2
 
 
 # ---------- Rutas de los .esperado.yaml (paso 4) ----------

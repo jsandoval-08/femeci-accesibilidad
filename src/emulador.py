@@ -135,14 +135,146 @@ def aplanar(arbol: dict) -> list[Parada]:
     return paradas
 
 
+# ---------- Anuncio ----------
+# Redacción propia, inspirada en NVDA en español; no es su texto literal.
+ROTULOS = {
+    "link": "enlace", "button": "botón", "image": "gráfico", "textbox": "edición",
+    "searchbox": "cuadro de búsqueda", "combobox": "cuadro combinado",
+    "checkbox": "casilla de verificación", "radio": "botón de opción", "listbox": "lista",
+    "spinbutton": "selector numérico", "date": "campo de fecha",
+    "DateTime": "campo de fecha y hora", "InputTime": "campo de hora",
+}
+ROTULOS_LANDMARK = {
+    "banner": "banner", "navigation": "navegación", "main": "principal",
+    "contentinfo": "información de contenido", "complementary": "complementario",
+    "search": "búsqueda", "region": "región", "form": "formulario",
+}
+# Decisión D1 (aprobada 20-oct): si no hay siguiente, el cursor no se mueve ni da la vuelta
+# al inicio (NVDA por omisión no da la vuelta; JAWS sí), se anuncia esto y la pulsación
+# CUENTA: la persona sí presionó la tecla y así descubre que no hay más.
+SIN_SIGUIENTE = {
+    "H": "no hay más encabezados", "K": "no hay más enlaces",
+    "D": "no hay más puntos de referencia", "F": "no hay más campos de formulario",
+    "Tab": "fin de los elementos enfocables", "flecha": "fin del documento",
+    "leer": "fin del documento",
+}
+# Qué paradas alcanza cada tecla de salto (D va aparte: salta por landmarks).
+FILTROS = {
+    "H": lambda p: p.rol == "heading",
+    "K": lambda p: p.rol == "link",
+    "F": lambda p: p.rol in ROLES_F,
+    # Tab solo llega a enfocables. Limitación: el árbol marca enfocable también lo que
+    # tiene tabindex="-1", al que el Tab real no llega (comprobado en casos_emulador).
+    "Tab": lambda p: p.enfocable,
+    "flecha": lambda p: True,
+    "leer": lambda p: True,
+}
+ELEMENTOS = {"enlaces": "link", "encabezados": "heading"}
+
+
+def anuncio(parada: Parada, landmark: tuple[str, str] | None = None) -> str:
+    """Rol + nombre de la parada; el texto suelto se anuncia solo con su texto. Con D se
+    antepone el landmark al que se llegó."""
+    if parada.rol == TEXTO:
+        base = parada.nombre
+    else:
+        if parada.rol == "heading":
+            rotulo = f"encabezado nivel {parada.nivel}" if parada.nivel else "encabezado"
+        else:
+            rotulo = ROTULOS.get(parada.rol, parada.rol)
+        base = f"{rotulo}, {parada.nombre}" if parada.nombre else rotulo
+    if landmark:
+        rol, nombre = landmark
+        marca = ROTULOS_LANDMARK[rol] + (f" {nombre}" if nombre else "")
+        return f"{marca}, punto de referencia; {base}"
+    return base
+
+
+@dataclass(frozen=True)
+class Paso:
+    tecla: str  # "H", "K", "D", "F", "Tab", "flecha" o "leer"
+    anuncio: str  # lo que se anunciaría
+    parada: int | None  # dónde quedó el cursor (None = sigue antes de la primera)
+    se_movio: bool  # False si no había siguiente (D1)
+    pulsaciones: int  # acumuladas después de este paso
+    landmark: tuple[str, str] | None = None  # solo con D: landmark al que se llegó
+
+
+# ---------- Entorno ----------
+
 class Emulador:
-    """Entorno: un cursor sobre las paradas de una página ya capturada."""
+    """Entorno: un cursor sobre las paradas de una página ya capturada.
+
+    Cada tecla cuesta 1 pulsación y queda en la trayectoria (reproducible: mismas teclas
+    sobre el mismo árbol dan la misma trayectoria). Enter, volver y la navegación entre
+    páginas son de la Fase 3B; el costo de la lista de elementos y de elegir en ella, de 3C.
+    """
 
     def __init__(self, paradas: list[Parada]):
         self.paradas = paradas
         self.cursor = -1  # antes de la primera parada
+        self.pulsaciones = 0
+        self.trayectoria: list[Paso] = []
+        # Para D: todos los pares (parada, landmark) en orden. Varios pueden compartir parada.
+        self._marcas = [(p.indice, lm) for p in paradas for lm in p.landmarks]
+        self._marca = -1  # último par al que llegó D (-1 si el cursor se movió con otra tecla)
 
     @classmethod
     def desde_archivo(cls, ruta_arbol: Path) -> "Emulador":
         arbol = json.loads(Path(ruta_arbol).read_text(encoding="utf-8"))
         return cls(aplanar(arbol))
+
+    def _registrar(self, tecla, texto, se_movio, landmark=None) -> Paso:
+        self.pulsaciones += 1
+        paso = Paso(tecla, texto, self.cursor if self.cursor >= 0 else None,
+                    se_movio, self.pulsaciones, landmark)
+        self.trayectoria.append(paso)
+        return paso
+
+    def pulsar(self, tecla: str) -> Paso:
+        """Una pulsación: H, K, D, F, Tab o flecha (abajo). Siempre avanza hacia adelante."""
+        if tecla == "D":
+            return self._pulsar_D()
+        if tecla not in FILTROS or tecla == "leer":
+            raise ValueError(f"Tecla no soportada en 3A: {tecla}")
+        return self._saltar(tecla)
+
+    def _saltar(self, tecla) -> Paso:
+        filtro = FILTROS[tecla]
+        destino = next((p for p in self.paradas[self.cursor + 1:] if filtro(p)), None)
+        if destino is None:
+            return self._registrar(tecla, SIN_SIGUIENTE[tecla], se_movio=False)
+        self.cursor = destino.indice
+        self._marca = -1
+        return self._registrar(tecla, anuncio(destino), se_movio=True)
+
+    def _pulsar_D(self) -> Paso:
+        # Si el cursor sigue donde lo dejó D, se continúa desde ese par (así los landmarks
+        # que empiezan en la misma parada cuestan una pulsación cada uno); si no, desde el
+        # primer landmark que empieza después del cursor.
+        if self._marca >= 0 and self._marcas[self._marca][0] == self.cursor:
+            inicio = self._marca + 1
+        else:
+            inicio = next((i for i, (j, _) in enumerate(self._marcas) if j > self.cursor),
+                          len(self._marcas))
+        if inicio >= len(self._marcas):
+            return self._registrar("D", SIN_SIGUIENTE["D"], se_movio=False)
+        self._marca = inicio
+        indice, landmark = self._marcas[inicio]
+        self.cursor = indice
+        return self._registrar("D", anuncio(self.paradas[indice], landmark),
+                               se_movio=True, landmark=landmark)
+
+    def leer_de_corrido(self, n: int | None = None) -> list[Paso]:
+        """Lee n paradas desde el cursor; cada una cuesta 1 (como flecha abajo). Con n=None
+        lee hasta la última parada, sin pulsar de más. Si n pasa del final, las pulsaciones
+        sobrantes cuentan y no mueven (D1)."""
+        if n is None:
+            n = len(self.paradas) - 1 - self.cursor
+        return [self._saltar("leer") for _ in range(n)]
+
+    def lista_elementos(self, tipo: str) -> list[Parada]:
+        """Lista de elementos (NVDA+F7): "enlaces" o "encabezados", en orden del documento.
+        No mueve el cursor ni suma pulsaciones: su costo se define en la Fase 3C."""
+        rol = ELEMENTOS[tipo]
+        return [p for p in self.paradas if p.rol == rol]
