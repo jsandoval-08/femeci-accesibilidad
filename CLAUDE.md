@@ -151,14 +151,17 @@ Software libre, repositorio público.
   coinciden y uno donde Atorapp se equivoca, todos con evidencia.
 
 ## Estado actual
-**Fase 3A completa (emulador núcleo, `src/emulador.py`, 20-oct). Siguiente: 3B.**
+**Fase 3B completa (navegación en vivo, `src/navegador.py`, 20-oct). Siguiente: 3C.**
 
 Fase 3 (en este orden; marcar el sub-paso actual):
 - **3A** ✅ HECHA. Emulador núcleo sobre un árbol ya capturado: paradas, cursor, H/K/D/F/Tab/flecha/leer de
   corrido, anuncio (rol + nombre). Pruebas con las páginas de prueba (`tests/test_emulador.py`):
   las 17 rutas de una sola página dan exactamente su `friccion_esperada`.
-- **3B** ← SIGUIENTE. Navegación en vivo: Enter en enlace navega y recaptura; Enter en botón colapsado expande y
-  recaptura; profundidad máx. 3; estado No evaluable por timeout/CAPTCHA/límite.
+- **3B** ✅ HECHA. Navegación en vivo: Enter en enlace navega y recaptura; Enter en botón colapsado expande y
+  recaptura; profundidad máx. 3; estado No evaluable por timeout/límite/falla técnica (el CAPTCHA
+  se registra, ver 3D). Pruebas: `tests/test_navegacion.py` (26) y las 24 rutas de los
+  `.esperado.yaml` dan exactamente su `friccion_esperada` (las 7 que cruzan páginas o activan
+  el PDF, en vivo), 0 skip.
   Además (decidido 20-oct; casos primero con valores a mano, luego código):
   - Roles interactivos que no son enlace (`tab`, `menuitem`, `menuitemcheckbox`, `menuitemradio`,
     `switch`, `option` fuera de select, `treeitem`) → parada propia, texto interno fundido, K NO se
@@ -190,13 +193,19 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     robot"): se detecta y se registra por página, NO detiene la sesión (ver regla en 3D).
   - Lista de elementos: `elegir_de_lista(tipo, posicion)` = 1 + posicion (empieza en el primero);
     elegir por nombre y probar ambiguos sigue en 3C.
-- **3C** Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
+  - Limitaciones declaradas de 3B: un clic en la misma página que termina navegando se reporta
+    como falla técnica (no modelado); `tipo_contenido` de una descarga se deduce del nombre del
+    archivo; no se anuncia el estado marcado de `switch`/`menuitemcheckbox` ni "contraído" en
+    `combobox`; Enter en `switch`, `treeitem` sin `expanded` y `menuitemcheckbox/radio` no se
+    ejecuta; `option` suelta no existe en el árbol de Chromium (comprobado).
+- **3C** ← SIGUIENTE. Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
   Las estrategias NO re-entran a la URL en la que ya están (un enlace a la misma página sin
   `#`, p. ej. el logo en la portada, es navegación y gastaría profundidad sin avanzar).
 - **3D** Veredicto por tarea contra `*.esperado.yaml`; conjunto de prueba balanceado y reservado.
   El conjunto reservado y balanceado para la decisión del 1-nov son páginas **NUEVAS**, distintas
   de las 6 de desarrollo (perfecta, sin_encabezados, sin_contacto, enlaces_ambiguos,
-  formulario_sin_etiquetas, pdf_escaneado; ni sus destinos ni `casos_emulador`), y **no se tocan
+  formulario_sin_etiquetas, pdf_escaneado; ni sus destinos, ni `casos_emulador`, ni las de 3B:
+  `casos_navegacion`, `destino_menu`, `cadena_0..4`, `fallas`, `captcha`), y **no se tocan
   hasta 3D**.
   Regla fijada el 20-oct, ANTES de ver datos: tarea **no resuelta + CAPTCHA detectado en la ruta →
   No evaluable** (no No completable). Si la tarea se resolvió aunque hubiera CAPTCHA (p. ej.

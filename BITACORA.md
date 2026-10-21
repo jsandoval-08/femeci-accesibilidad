@@ -101,6 +101,54 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Fase 3B: navegación en vivo (Enter, recaptura, profundidad, No evaluable).
   - Verificar en NVDA los puntos marcados en CLAUDE.md durante la auditoría manual.
 
+## 20-oct-2026 — Fase 3B: navegación en vivo
+
+- **Qué hice:**
+  - Plan primero, aprobado con 5 decisiones. Después: valores esperados a mano en su propio commit (e90106d), código en 6 pasos chicos y un commit de medición.
+  - Páginas nuevas (solo locales, servidas por http desde un servidor de pruebas en puerto libre):
+    - `casos_navegacion`: submenú colapsado con `menuitem`, pestañas, `switch`, `treeitem`, "Saltar al contenido" y landmarks vacíos;
+    - `destino_menu`;
+    - `cadena_0..4` para la profundidad;
+    - `fallas` y `captcha`.
+  - `src/navegador.py`:
+    - una pestaña nueva por nivel; volver = cerrar la pestaña y reusar el árbol guardado;
+    - clic en la misma página para expandir y para las pestañas;
+    - destino de `#id`;
+    - descarga de PDF y capa de texto con pypdf;
+    - CAPTCHA heurístico.
+  - En el emulador: Enter, volver, tope de pulsaciones, No evaluable, `elegir_de_lista`, roles interactivos no-enlace y landmark vacío.
+  - Medición sobre las capturas del 5-oct (`scripts/medicion/enlaces_href.py`), antes de fijar la pestaña por nivel.
+- **Resultado:**
+  - Las **24 rutas** de los `.esperado.yaml` dan **exactamente** su `friccion_esperada`, con 0 skip.
+    - Las 6 tareas C activan el PDF correcto. La capa de texto falta solo en `pdf_escaneado`.
+    - La B de enlaces_ambiguos da 35 en vivo: probando enlaces, volver regresa al enlace activado.
+  - "Saltar al contenido" cuesta 1 y deja el cursor en el contenido.
+  - Todas las paradas escritas a mano para `casos_navegacion`, antes y después de expandir, coincidieron con el árbol real. También las predicciones de enfocable en los `menuitem`.
+  - Suite completa: 127 pasan, 0 skip.
+- **Problemas y decisiones:**
+  - Comprobado en Chromium:
+    - un PDF en headless se descarga ("Download is starting"), no abre visor;
+    - los id del DOM no cambian tras un clic;
+    - `<a role="menuitem" href>` no trae `url` en el árbol, así que se lee el href del DOM;
+    - `role="option"` suelto no se expone.
+  - Pestaña por nivel en vez de clic + `go_back`: así volver no recarga y los id siguen sirviendo.
+    - Medido antes de decidir: de 164 enlaces de las 5 portadas, 150 tienen URL navegable, 6 son `#id`, 7 `#` solo, 0 `javascript:` y 1 `mailto:`.
+    - Los 22 `<a>` sin href están dentro de botones con `aria-expanded`, es decir, acordeones.
+    - Error mío en la primera versión de la medición: mezclaba `href="#"` con enlaces a la misma página. Corregido.
+  - Profundidad: entrada = nivel 0; por eso son 5 páginas de cadena. La profundidad es el tamaño de la pila; toda pulsación ejecutada cuenta.
+  - CAPTCHA: se registra y no detiene. Regla fijada en 3D antes de ver datos: "no resuelta + CAPTCHA en la ruta → No evaluable".
+  - `mailto:`/`tel:` no se ejecutan. En 3D, llegar a ese enlace cuenta como identificar el contacto en la tarea A.
+  - El enlace a la misma página sin `#` es navegación. En 3C, las estrategias no re-entran a la URL actual.
+  - Tope de pulsaciones sin valor por omisión: se fija con criterio escrito antes del estudio.
+  - Bug de las pruebas corregido: el hilo del servidor que atendía `/lento/` hacía abortar a Python al cerrar ("Fatal Python error"). Ahora usa hilos no daemon.
+  - Limitaciones nuevas declaradas en CLAUDE.md (3B). Nuevos puntos por verificar en NVDA:
+    - si la lista de elementos abre en el primero o en el más cercano al cursor;
+    - si F se detiene en `switch`;
+    - qué anuncia en un enlace `mailto:`.
+- **Siguiente:**
+  - Fase 3C: estrategias programadas, palabras clave por tarea, mejor estrategia y fricción.
+  - Seguir la auditoría manual con NVDA a ciegas.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
