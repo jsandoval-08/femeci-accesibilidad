@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Casos límite del emulador</title>
+  <!-- Página de prueba de la Fase 3A (sin tareas, sin .esperado.yaml). Cada caso aísla una
+       regla de aplanado del árbol; las paradas esperadas están escritas a mano en
+       tests/test_emulador.py (CASOS_PARADAS), deducidas de este HTML.
+         1. Texto anidado dentro de encabezado, enlace y botón: se funde en el nombre (1 parada).
+         2. aria-hidden: ni el texto ni el enlace de adentro son paradas.
+         3. aria-label con espacios de sobra: el nombre se normaliza.
+         4. Párrafo con un enlace en medio: 3 paradas (limitación declarada D3).
+         5. Imágenes: con alt (parada con nombre), sin alt (parada sin nombre), alt="" (fuera).
+         6. tabindex="-1": se puede enfocar por script pero no con Tab. Predicción: el árbol
+            lo marca focusable (el emulador no lo distingue; limitación declarada).
+         7. Landmarks anidados: main y la región "Región anidada" empiezan en la misma parada.
+         8. form con nombre (aria-label) sí es landmark; casilla con etiqueta; botón en form. -->
+  <style>
+    body { font-family: sans-serif; max-width: 52rem; margin: 0 auto; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Casos <em>límite</em> del emulador</h1>
+  </header>
+
+  <main>
+    <section aria-label="Región anidada">
+      <h2>Texto fundido</h2>
+      <p><a href="#uno">Enlace con <strong>texto</strong> anidado</a></p>
+      <p><button type="button">Botón <span>con</span> texto anidado</button></p>
+      <p aria-hidden="true">Texto oculto con aria-hidden</p>
+      <div aria-hidden="true"><a href="#oculto">Enlace oculto</a></div>
+      <p><a href="#dos" aria-label="   Nombre    con   espacios  ">x</a></p>
+      <p>   Texto    con   espacios   de sobra   </p>
+      <p>Llame al <a href="#tel">667 555 0142</a> en horario de oficina.</p>
+    </section>
+
+    <section aria-labelledby="h-imagenes">
+      <h2 id="h-imagenes">Imágenes</h2>
+      <p><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="24" height="24" alt="Escudo municipal"></p>
+      <p><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="24" height="24"></p>
+      <p><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="24" height="24" alt=""></p>
+    </section>
+
+    <section aria-labelledby="h-foco">
+      <h2 id="h-foco">Foco</h2>
+      <p><a href="#tres" tabindex="-1">Enlace fuera del orden de tabulación</a></p>
+      <p><a href="#cuatro">Enlace normal</a></p>
+    </section>
+
+    <form action="#" aria-label="Formulario de prueba">
+      <label for="acepto">Acepto</label>
+      <input id="acepto" type="checkbox">
+      <button type="button">Botón del formulario</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>Pie</p>
+  </footer>
+</body>
+</html>
