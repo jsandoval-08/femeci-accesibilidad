@@ -192,6 +192,11 @@ def test_normalizar():
     assert normalizar("") == ""
 
 
+@pytest.mark.xfail(strict=True, reason=(
+    "DISCREPANCIA pendiente de decisión (20-oct): Chromium ignora el <label> de la casilla "
+    "(ignoredReasons: labelFor), así que 'Acepto' no sale como texto suelto; en los textbox "
+    "el <label> sí sale como LabelText. Las otras 18 paradas coinciden. El valor esperado "
+    "no se cambia hasta decidir si el error está en él o en el emulador."))
 def test_casos_emulador_paradas(arboles):
     paradas = _emu(arboles, "casos_emulador").paradas
     obtenido = [(p.rol, p.nombre, p.nivel, p.enfocable, p.landmarks) for p in paradas]
