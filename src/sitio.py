@@ -6,8 +6,11 @@ son las que visiten las estrategias. objetivo_correcto: varios valores se separa
 referencia dice que el sitio no lo tiene, se escribe NO_EXISTE (vacío es un error: no se distingue
 de un olvido). veredicto_nvda y vidente_lo_encuentra vacíos = no medido.
 
-Seguro: correr_sitio() rechaza por omisión cualquier URL que no sea local. Atorapp corre solo
-sobre páginas de prueba; nada de sitios reales mientras la auditoría esté pospuesta.
+Seguro: correr_sitio() rechaza por omisión cualquier URL que no sea local. Un sitio real solo corre
+con sitio_real=<su host> y con veredicto_nvda lleno en TODAS las filas: así la regla "auditoría antes
+de Atorapp" queda en el código. Comprueba que hay veredictos, no que se hicieron a ciegas ni antes:
+eso sigue siendo disciplina del auditor. Limitación declarada: una estrategia puede seguir un enlace
+con palabra clave a otro dominio (bloquearlo daría no_encontrado falso con PDF oficiales en otro host).
 """
 
 import csv
@@ -44,6 +47,10 @@ class ErrorAuditoria(ValueError):
     """El CSV de auditoría no es válido. El mensaje dice en qué línea."""
 
 
+class AuditoriaIncompleta(ValueError):
+    """Modo sitio real sin veredicto_nvda en todas las filas: se niega a correr."""
+
+
 @dataclass(frozen=True)
 class FilaAuditoria:
     tarea: str
@@ -53,6 +60,7 @@ class FilaAuditoria:
     veredicto_nvda: str | None  # None = no medido
     vidente_lo_encuentra: bool | None  # None = no medido
     pagina_axe: str
+    linea: int = 0  # línea del CSV, para los mensajes
 
 
 @dataclass(frozen=True)
@@ -111,12 +119,31 @@ def _fila(datos: dict, linea: int, vistas: set) -> FilaAuditoria:
         raise error(f"vidente_lo_encuentra debe ser sí, no o vacío: '{vidente}'")
     return FilaAuditoria(tarea, valor["entrada"], valor["tramite"] or None,
                          valor["objetivo_correcto"], nvda or None, VIDENTE.get(vidente),
-                         valor.get("pagina_axe") or valor["entrada"])
+                         valor.get("pagina_axe") or valor["entrada"], linea)
 
 
 def _exigir_local(url: str) -> None:
     if urlparse(url).hostname not in HOSTS_LOCALES:
         raise ValueError(f"solo se permiten páginas locales; se rechazó: {url}")
+
+
+def faltan_veredictos(filas) -> list[FilaAuditoria]:
+    """Filas sin veredicto_nvda. "no_evaluable" cuenta como lleno: la auditoría sí se hizo."""
+    return [f for f in filas if f.veredicto_nvda is None]
+
+
+def _exigir_sitio_real(sitio_real: str, url_base: str, urls: list[str], filas, pausa_s: float) -> None:
+    """Todo lo que debe cumplirse para tocar un sitio real, antes de tocar la red."""
+    if urlparse(url_base).hostname != sitio_real:
+        raise ValueError(f"el host de {url_base} no es el autorizado: {sitio_real}")
+    for url in urls:
+        if urlparse(url).hostname != sitio_real:
+            raise ValueError(f"{url} está en otro host; solo se autorizó {sitio_real}")
+    if faltan := faltan_veredictos(filas):
+        tareas = ", ".join(f"{f.tarea} (línea {f.linea})" for f in faltan)
+        raise AuditoriaIncompleta(f"falta veredicto_nvda en: {tareas}. La auditoría va antes de Atorapp.")
+    if pausa_s < PAUSA_S:
+        raise ValueError(f"en un sitio real la pausa no baja de {PAUSA_S} s: {pausa_s}")
 
 
 def _puntuar(url: str, carpeta: Path) -> tuple[dict | None, str | None]:
@@ -128,19 +155,21 @@ def _puntuar(url: str, carpeta: Path) -> tuple[dict | None, str | None]:
     return {k: todos[k] for k in PUNTAJES}, None
 
 
-def correr_sitio(ruta_csv, url_base: str, carpeta, solo_local: bool = True,
+def correr_sitio(ruta_csv, url_base: str, carpeta, sitio_real: str | None = None,
                  timeout_ms: int = TIEMPO_LIMITE_MS, espera_ms: int = ESPERA_EXTRA_MS,
                  pausa_s: float = PAUSA_S, tope: int = TOPE_PULSACIONES,
                  tope_nav: int = TOPE_NAVEGACIONES) -> ReporteSitio:
-    """Corre todas las tareas del CSV. axe corre primero: capturar() abre su propio Playwright y
-    la API síncrona no admite dos abiertos en el mismo hilo."""
+    """Corre todas las tareas del CSV. sitio_real: el host autorizado; sin él, solo páginas locales.
+    axe corre primero: capturar() abre su propio Playwright y la API síncrona no admite dos
+    abiertos en el mismo hilo."""
     filas = leer_auditoria(ruta_csv)
     urls = {f: (urljoin(url_base, f.entrada), urljoin(url_base, f.pagina_axe)) for f in filas}
-    if solo_local:  # antes de tocar la red
-        _exigir_local(url_base)
-        for entrada, pagina_axe in urls.values():
-            _exigir_local(entrada)
-            _exigir_local(pagina_axe)
+    todas = [u for par in urls.values() for u in par]
+    if sitio_real is not None:  # todo antes de tocar la red
+        _exigir_sitio_real(sitio_real, url_base, todas, filas, pausa_s)
+    else:
+        for url in [url_base, *todas]:
+            _exigir_local(url)
     carpeta = Path(carpeta)
     axe = {}  # una sola medición por página, aunque la compartan varias tareas
     for _, pagina_axe in urls.values():
