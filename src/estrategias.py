@@ -333,11 +333,22 @@ def _tras_elegir(emu, b):
         return enlace_por_nombre(emu, b)
     if b.letra == "D":
         return _recorrer(emu, b, "F")
-    return _recorrer(emu, b, "leer", _leer_inicio)
+    return no_dirigida(emu, b)
 
 
-def _leer_inicio(emu, b):
-    return _recorrer(emu, b, "leer", _leer_inicio)
+def f_a_campos(emu, b):
+    """Solo F, solo tarea D. No cruza de página: F nunca se detiene en un enlace."""
+    return _recorrer(emu, b, "F")
+
+
+def no_dirigida(emu, b):
+    """Leer desde el inicio: lo único que no depende de la estructura de la página."""
+    return _recorrer(emu, b, "leer", no_dirigida)
+
+
+def tab_inicio(emu, b):
+    """Tab desde el inicio. Solo sirve con objetivos enfocables: un texto no se alcanza."""
+    return _recorrer(emu, b, "Tab", tab_inicio)
 
 
 # El orden es el de desempate: no cambia la fricción, solo el nombre reportado.
@@ -345,6 +356,9 @@ ESTRATEGIAS = {
     "H_a_seccion": h_a_seccion,
     "D_a_seccion": d_a_seccion,
     "enlace_por_nombre": enlace_por_nombre,
+    "F_a_campos": f_a_campos,
+    "no_dirigida": no_dirigida,
+    "Tab_inicio": tab_inicio,
 }
 SOLO_TAREA_D = {"F_a_campos"}
 # Las dos variantes de probar_enlaces se reportan con el mismo nombre (vocabulario de los yaml).
