@@ -112,8 +112,8 @@ Software libre, repositorio público.
   conocen y se detienen en lo que creen que es. Las que llegaron a otra cosa no cambian el estado,
   pero se reportan como **falsas llegadas** (en el reporte, "Llegó primero a otra cosa"; en el
   análisis, conteo aparte), porque en un sitio real eso también le puede pasar a una persona.
-- **Conjunto declarado de estrategias**: H+leer, D+leer, lista
-  de enlaces + elegir por nombre, F a campos, leer desde el inicio, Tab desde el inicio (solo
+- **Conjunto declarado de estrategias**: H+leer, D+leer, D a `main` y leer hasta el final del
+  documento, lista de enlaces + elegir por nombre, F a campos, leer desde el inicio, Tab desde el inicio (solo
   objetivos enfocables) y probar en orden los enlaces ambiguos (H a la sección, o desde el inicio;
   K + Enter + volver). En ese orden se desempata: no cambia la fricción, solo el nombre reportado.
   El mínimo absoluto queda excluido porque requiere conocer el objetivo. La lista de encabezados
@@ -165,9 +165,10 @@ estrategias programadas. Decidiría por significado donde ellas deciden por pala
 compararlos mediría cuánto aporta la IA. Control de gasto y corrida repetida de cada tarea.
 
 ## Estado actual
-**Fase 3D completa (veredicto, entrada por sitio, reporte y análisis, 6-nov). Siguiente: 3E.**
+**Fase 3D.1 completa (preparación para sitios reales, sin correrlos, 6-nov). Siguiente: 3E.**
 **Alcance vigente (5-nov):** Atorapp corre SOLO sobre páginas de prueba locales; nada de sitios
-reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye.
+reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye. El modo
+"sitio real" ya existe, pero no se ha usado: exige la auditoría antes (ver 3D.1).
 
 Fase 3 (en este orden; marcar el sub-paso actual):
 - **3A** ✅ HECHA. Emulador núcleo sobre un árbol ya capturado: paradas, cursor, H/K/D/F/Tab/flecha/leer de
@@ -267,7 +268,7 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     objetivos puede salir más alta que la real.
   - **Entrada** (`src/sitio.py`): CSV por sitio con `tarea, entrada, tramite, objetivo_correcto,
     veredicto_nvda, vidente_lo_encuentra` y `pagina_axe` opcional (vacía = la entrada). Objetivo
-    vacío es error. `correr_sitio` rechaza URL no locales mientras `solo_local=True`.
+    vacío es error. `correr_sitio` rechaza URL no locales si no recibe `sitio_real` (ver 3D.1).
   - **Reporte** (`src/reporte.py`): JSON + Markdown por sitio, con la sección "Llegó primero a otra
     cosa". **Análisis** (`src/analisis.py`), definido ANTES de ver datos: matriz y acuerdo (3 clases y
     binario) contra NVDA; AUC de los 4 puntajes contra NVDA (principal: excluye `con_dificultad`;
@@ -276,6 +277,34 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     reales:** lo inventado vive solo en `tests/test_analisis.py` y nunca se reporta.
   - **Limitación:** un enlace roto (404) al documento correcto da `no_encontrado`, aunque quizá
     debería ser `cierre_roto`.
+- **3D.1** ✅ HECHA (6-nov). Preparación para sitios reales, sin correrlos. Pruebas:
+  `tests/test_preparacion.py`, `test_sitio_real.py`.
+  - **Topes, por estrategia y por tarea, fijados por escrito el 6-nov ANTES de ver datos** (`src/sitio.py`):
+    - `TOPE_PULSACIONES = 508`. Criterio: 4 niveles que permite la profundidad × 127 paradas, la
+      portada más larga de las 5 del 5-oct (`scripts/medicion/paradas.py`: 104, 71, 123, 127, 87; solo
+      se midió el número de paradas, sin correr estrategias ni veredictos). Alto a propósito: uno
+      bajo volvería No evaluable un "no existe" real y escondería barreras. Reemplaza el criterio
+      anterior ("derivado de la auditoría manual"), porque la auditoría está pospuesta.
+    - `TOPE_NAVEGACIONES = 30` páginas cargadas (Enter que navega o descarga; volver, un `#id` y un
+      clic en la misma página no cuentan; la entrada tampoco). Criterio: acota peticiones al sitio y
+      tiempo de corrida; `enlaces_ambiguos` B usa 9, así que 30 deja margen amplio.
+    - Agotar cualquiera sin resolver = No evaluable con motivo `tope_pulsaciones` o
+      `tope_navegaciones`; el Enter que excede no hace la petición ni cuenta. Si otra estrategia llega
+      al objetivo correcto, cuenta esa. **Si muchas tareas agotan un tope, se reporta como hallazgo y
+      no se cambia el valor**; un cambio exige razón en la bitácora y repetir todos los sitios.
+  - **Títulos iguales**: si el título al llegar es igual al de origen, no dice nada: la página se
+    inspecciona con H + leer, con su costo. **Limitación:** un título distinto, pero poco informativo
+    ("Detalle"), se rechaza aunque sea el enlace correcto.
+  - **`main` sin nombre**: variante `D_a_main`: D hasta `main` y leer hasta el final del documento (el
+    contacto suele estar en el pie); en la tarea D, F desde ahí.
+  - **Marcador en la misma parada**: cuenta si el texto EMPIEZA con el marcador, tiene texto después
+    y no termina en ":". **Limitación:** "Para este trámite debes presentar INE" no se reconoce.
+  - **Modo sitio real**: `correr_sitio(..., sitio_real=<host>)` o `python -m src.correr_sitio ...
+    --sitio-real <host>`. Se niega antes de tocar la red si: el host no coincide con `url_base`, alguna
+    URL del CSV está en otro host, falta `veredicto_nvda` en alguna fila o la pausa baja de 1 s.
+    **Limitaciones:** comprueba que hay veredictos, no que la auditoría se hizo a ciegas ni antes
+    (sigue siendo disciplina del auditor); una estrategia puede seguir un enlace con palabra clave a
+    otro dominio (bloquearlo daría `no_encontrado` falso con PDF oficiales en otro host).
 - **3E** ← SIGUIENTE. Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
 
 **Pendientes:**
@@ -290,11 +319,6 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   `formulario_sin_etiquetas`: los rótulos son `<span>` justo antes de cada campo, así que con
   flechas sí se oye "Nombre completo" y luego "edición" (`no_identificable` vale para F, quizá no
   para una persona real).
-- **Antes de tocar sitios reales** (omisiones de 3C que pueden dar `no_encontrado` falsos): un
-  título igual en todo el sitio haría rechazar el enlace correcto en `probar_enlaces`; D no usa un `main` sin nombre como punto de partida; un
-  marcador con los requisitos en la misma parada ("Requisitos: INE, CURP") no cuenta como bloque.
-- **Tope de pulsaciones**: se fija con un criterio escrito ANTES del estudio (derivado de la
-  auditoría manual), nunca después de ver resultados. En 3B no tiene valor por omisión (`None`).
 - Roles fuera de la lista de paradas, medidos el 20-oct (`scripts/medicion/`, capturas del 5-oct,
   estado inicial sin expandir menús): 0 `menuitem`/`switch`/`treeitem`/`option` suelto en las 5
   portadas; 4 `tab` en Culiacán (hoy quedan como texto suelto); 1 landmark vacío en Atención

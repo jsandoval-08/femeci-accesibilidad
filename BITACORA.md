@@ -209,6 +209,34 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Fase 3E: interfaz local (Streamlit).
   - Decidir qué se mostrará el 19-nov sin auditoría NVDA.
 
+## 06-nov-2026 — Fase 3D.1: preparación para sitios reales (sin correrlos)
+
+- **Qué hice:**
+  - Plan primero, aprobado con 3 decisiones y un segundo tope pedido por mí. Valores esperados a mano en su propio commit (83081fe), código en pasos chicos.
+  - Medí el **número de paradas** de las 5 portadas del 5-oct (`scripts/medicion/paradas.py`). No corrí estrategias ni veredictos sobre ellas: 104, 71, 123, 127 y 87.
+  - Fijé los dos topes y resolví los 3 pendientes de 3C.
+  - Agregué el modo "sitio real" y `python -m src.correr_sitio`. **No se usó sobre ningún sitio real.**
+- **Resultado:**
+  - **Topes fijados por escrito el 6-nov, antes de ver datos:**
+    - `TOPE_PULSACIONES = 508`: 4 niveles que permite la profundidad × 127 paradas de la portada más larga. Alto a propósito: uno bajo volvería No evaluable un "no existe" real y escondería barreras.
+    - `TOPE_NAVEGACIONES = 30` páginas cargadas por estrategia y por tarea (Enter que navega o descarga; volver no cuenta). Acota peticiones al sitio y tiempo de corrida; `enlaces_ambiguos` B usa 9, así que 30 deja margen amplio.
+    - Agotar cualquiera sin resolver da No evaluable con su motivo.
+  - Las 24 tareas siguen dando su estrategia, fricción, estado y `tipo_falla` en cada paso, sin tocar ningún yaml.
+  - Suite completa: 361 pasan, 0 skip, en 2 corridas seguidas (44 son de 3D.1).
+  - Rompí 11 reglas a propósito y las pruebas detectaron las 11. Las negativas tienen la red reemplazada por una falla: si un seguro falla, la prueba falla sin conectarse.
+- **Problemas y decisiones:**
+  - **El tope ya no se deriva de la auditoría:** CLAUDE.md lo pedía así, pero la auditoría está pospuesta. Reemplazado por el criterio de arriba. Si muchas tareas agotan un tope, se reporta como hallazgo; no se cambia el valor.
+  - **Límites de la medición:** 5 portadas de hace un mes, sin menús abiertos, sin iframes y sin páginas interiores.
+  - **Títulos iguales:** si el título es igual al de origen, la página se inspecciona con su costo. Queda declarado que un título distinto, pero poco informativo, se rechaza.
+  - **`main` sin nombre:** nueva variante `D_a_main`, que lee hasta el final del documento porque el contacto suele estar en el pie. Modifica el conjunto declarado de estrategias. En las 24 tareas nunca gana.
+  - **Marcador en la misma parada:** regla estrecha (empieza con el marcador, tiene texto después, no termina en ":"). Una regla más amplia detenía la lectura en "Consulta los requisitos en línea". Queda declarado que "Para este trámite debes presentar INE" no se reconoce.
+  - **Modo sitio real:** exige el host por escrito y `veredicto_nvda` en todas las filas. Elimina `solo_local=False`, que yo había agregado en 3D y permitía saltarse la auditoría. No comprueba que la auditoría se hiciera a ciegas ni antes; una estrategia puede seguir un enlace a otro dominio.
+  - **Palabras clave:** sin cambios, siguen en la versión 2.
+- **Siguiente:**
+  - Fase 3E: interfaz local (Streamlit).
+  - Para correr un sitio real: hacer su auditoría con NVDA y exportar su CSV.
+  - Decidir qué se mostrará el 19-nov.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
