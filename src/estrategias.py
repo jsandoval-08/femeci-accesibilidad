@@ -298,10 +298,53 @@ def d_a_seccion(emu, b):
     return _por_saltos(emu, b, "D", d_a_seccion)
 
 
+def _elegir(emu, posicion):
+    emu.elegir_de_lista("enlaces", posicion)
+    if emu.no_evaluable:
+        raise SesionTerminada(emu.no_evaluable.motivo)
+
+
+def enlace_por_nombre(emu, b):
+    """Lista de enlaces (NVDA+F7): elige por nombre, en orden del documento. Cada elección abre la
+    lista de nuevo: 1 + posición. Si ninguno coincide, la recorre completa para comprobarlo.
+    La lista de encabezados no se usa: cuesta n + 1 contra n de H, así que nunca gana."""
+    probados = set()
+    while True:
+        enlaces = emu.lista_elementos("enlaces")
+        posicion = next((i for i, p in enumerate(enlaces)
+                         if p.id_dom not in probados and coincide(p.nombre, b.clave.enlace)
+                         and not _ya_abierta(emu, p)), None)
+        if posicion is None:
+            if enlaces and not probados:
+                _elegir(emu, len(enlaces) - 1)
+            return None
+        probados.add(enlaces[posicion].id_dom)
+        _elegir(emu, posicion)
+        if hallazgo := _Cierre(b).ver(emu.paradas[emu.cursor]):
+            return hallazgo
+        if hallazgo := _activar(emu, b, _tras_elegir):
+            return hallazgo
+
+
+def _tras_elegir(emu, b):
+    """En la página nueva: la tarea C vuelve a la lista. Lo demás no está en la lista de enlaces:
+    D sigue con F, y A y B leen desde el inicio."""
+    if b.letra == "C":
+        return enlace_por_nombre(emu, b)
+    if b.letra == "D":
+        return _recorrer(emu, b, "F")
+    return _recorrer(emu, b, "leer", _leer_inicio)
+
+
+def _leer_inicio(emu, b):
+    return _recorrer(emu, b, "leer", _leer_inicio)
+
+
 # El orden es el de desempate: no cambia la fricción, solo el nombre reportado.
 ESTRATEGIAS = {
     "H_a_seccion": h_a_seccion,
     "D_a_seccion": d_a_seccion,
+    "enlace_por_nombre": enlace_por_nombre,
 }
 SOLO_TAREA_D = {"F_a_campos"}
 # Las dos variantes de probar_enlaces se reportan con el mismo nombre (vocabulario de los yaml).
