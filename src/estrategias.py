@@ -8,10 +8,12 @@ import re
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import urldefrag
 
 import yaml
 
-from src.emulador import ROLES_CAMPO, TEXTO, normalizar
+from src.emulador import (FILTROS, ROLES_CAMPO, TEXTO, AccionNoPermitida, NoEvaluable, Paso,
+                          SesionTerminada, normalizar)
 
 RUTA_PALABRAS = Path(__file__).parent.parent / "config" / "palabras_clave.yaml"
 
@@ -167,3 +169,212 @@ class _Cierre:
         if self.b.letra == "D" and self.campos and rol in (None, "button", "link", "heading"):
             return {"campos": self.campos}
         return None
+
+
+# ---------- Motor: recorrer una página y activar enlaces relevantes ----------
+
+def _pulsar(emu, tecla):
+    """Una pulsación. Si dejó la tarea No evaluable (timeout, profundidad, tope, falla técnica),
+    se corta la estrategia: correr() lo reporta aparte, nunca como "no llegó"."""
+    paso = emu.leer_de_corrido(1)[0] if tecla == "leer" else emu.pulsar(tecla)
+    if emu.no_evaluable:
+        raise SesionTerminada(emu.no_evaluable.motivo)
+    return paso
+
+
+def _siguiente(emu, tecla):
+    """Siguiente parada a la que llegaría esta tecla, sin pulsarla. Quien llama usa solo su rol
+    (y su nivel o sus landmarks, que también son estructura), nunca su nombre."""
+    filtro = FILTROS[tecla]
+    return next((p for p in emu.paradas[emu.cursor + 1:] if filtro(p)), None)
+
+
+def _ya_abierta(emu, parada) -> bool:
+    """No se re-entra a una URL abierta en la pila: gastaría profundidad sin avanzar. Una página
+    ya cerrada sí se puede reabrir: con enlaces ambiguos, la persona no sabe por el nombre que
+    llevan al mismo lugar. Un "#id" de la misma página no es re-entrar. Este es el único uso de
+    la URL, además de cierra_contacto, y no decide relevancia."""
+    if not parada.url:
+        return False
+    destino = urldefrag(parada.url)[0]
+    if "#" in parada.url and destino == urldefrag(emu.url or "")[0]:
+        return False
+    return destino in {urldefrag(u)[0] for u in emu.urls_abiertas}
+
+
+def _activar(emu, b, continuar, aceptar=None) -> dict | None:
+    """Enter en el enlace del cursor. Si navega, sigue en la página nueva con `continuar` y, si
+    no se resolvió, vuelve: cada intento fallido acumula su costo. Si `aceptar` rechaza la
+    página (por su título), vuelve sin pulsar nada más."""
+    if _ya_abierta(emu, emu.paradas[emu.cursor]):
+        return None
+    nivel = emu.profundidad
+    try:
+        paso = _pulsar(emu, "Enter")
+    except AccionNoPermitida:  # mailto:, tel:: abriría otra aplicación; no se ejecuta ni cuenta
+        return None
+    if paso.documento:
+        return {"documento": paso.documento} if b.letra == "C" else None
+    if emu.profundidad == nivel:  # misma página (fragmento o clic): se sigue desde el cursor
+        return None
+    if aceptar is None or aceptar(emu):
+        if hallazgo := continuar(emu, b):
+            return hallazgo
+    _pulsar(emu, "volver")
+    return None
+
+
+def _procesar(emu, b, cierre, continuar) -> dict | None:
+    """Lo que se hace en la parada donde quedó el cursor."""
+    p = emu.paradas[emu.cursor]
+    if hallazgo := cierre.ver(p):
+        return hallazgo
+    if continuar and p.rol == "link" and coincide(p.nombre, b.clave.enlace):
+        return _activar(emu, b, continuar)
+    return None
+
+
+def _recorrer(emu, b, tecla, continuar=None, es_fin=None) -> dict | None:
+    """Avanza con `tecla` parada por parada hasta resolver, hasta que `es_fin` diga que acabó la
+    sección o hasta que no haya más. "leer" se detiene sola al final del documento (no se cobra
+    una de más; yaml: sin_contacto A = 42 con 42 paradas). F y Tab cuestan 1 al descubrir que no
+    hay más (D1)."""
+    cierre = _Cierre(b)
+    if emu.cursor >= 0:  # ya está en la parada a la que saltó H o D
+        if hallazgo := _procesar(emu, b, cierre, continuar):
+            return hallazgo
+    while True:
+        siguiente = _siguiente(emu, tecla)
+        if hallazgo := cierre.fin(siguiente):
+            return hallazgo
+        if siguiente is None:
+            if tecla != "leer":
+                _pulsar(emu, tecla)
+            return None
+        if es_fin and es_fin(siguiente):
+            return None
+        _pulsar(emu, tecla)
+        if hallazgo := _procesar(emu, b, cierre, continuar):
+            return hallazgo
+
+
+def _por_saltos(emu, b, tecla, continuar) -> dict | None:
+    """H o D hasta una sección con palabra clave, luego lee esa sección (en la tarea D, F desde
+    ahí). Si no se resolvió, sigue saltando desde donde quedó."""
+    while True:
+        paso = _pulsar(emu, tecla)
+        if tecla == "D":
+            if paso.landmark is None:  # no hay más
+                return None
+            nombre = paso.landmark[1]
+            es_fin = lambda q: bool(q.landmarks)  # noqa: E731 - empieza otro landmark
+            if not paso.se_movio:  # landmark final vacío: no hay nada que leer
+                continue
+        else:
+            if not paso.se_movio:
+                return None
+            nombre = emu.paradas[emu.cursor].nombre
+            nivel = emu.paradas[emu.cursor].nivel or 1
+            es_fin = lambda q: q.rol == "heading" and (q.nivel or 1) <= nivel  # noqa: B023, E731
+        if not coincide(nombre, b.clave.seccion):
+            continue
+        if b.letra == "D":
+            hallazgo = _recorrer(emu, b, "F")
+        else:
+            hallazgo = _recorrer(emu, b, "leer", continuar, es_fin)
+        if hallazgo:
+            return hallazgo
+
+
+# ---------- Estrategias ----------
+# Firma común: (emu, b) -> hallazgo o None. Con el cursor antes de la primera parada, también al
+# llegar a una página nueva: tras cruzar se conserva la misma estrategia.
+
+def h_a_seccion(emu, b):
+    return _por_saltos(emu, b, "H", h_a_seccion)
+
+
+def d_a_seccion(emu, b):
+    return _por_saltos(emu, b, "D", d_a_seccion)
+
+
+# El orden es el de desempate: no cambia la fricción, solo el nombre reportado.
+ESTRATEGIAS = {
+    "H_a_seccion": h_a_seccion,
+    "D_a_seccion": d_a_seccion,
+}
+SOLO_TAREA_D = {"F_a_campos"}
+# Las dos variantes de probar_enlaces se reportan con el mismo nombre (vocabulario de los yaml).
+ETIQUETAS = {"probar_enlaces_inicio": "probar_enlaces"}
+
+
+# ---------- Resultados ----------
+
+@dataclass(frozen=True)
+class Intento:
+    """Una estrategia en una tarea. llego = "cree que llegó", con lo anunciado; NO es completable
+    (el veredicto contra el objetivo correcto es de 3D)."""
+    estrategia: str
+    llego: bool
+    pulsaciones: int
+    trayectoria: tuple[Paso, ...]
+    motivo: str | None  # por qué no llegó
+    no_evaluable: NoEvaluable | None
+    hallazgo: dict | None  # contacto, requisitos, documento o campos
+    captcha: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class ResultadoTarea:
+    tarea: Tarea
+    estrategia: str  # la mejor; si nadie llegó, la que más consumió
+    mejor: Intento | None
+    friccion: int | None
+    consumidas: int | None  # si nadie llegó: máximo entre estrategias (la comprobación más larga)
+    motivo: str | None
+    no_evaluable: NoEvaluable | None  # solo si nadie llegó y alguna quedó No evaluable
+    captcha: tuple[str, ...]  # marcadores vistos en cualquier intento; la regla es de 3D
+    intentos: tuple[Intento, ...]
+
+
+def correr(clave: str, fabrica, tarea: Tarea, palabras: PalabrasClave) -> Intento:
+    """Corre una estrategia con un emulador nuevo: ninguna hereda el cursor ni la pila de otra.
+    fabrica(entrada) -> Emulador. Nunca recibe el objetivo."""
+    emu = fabrica(tarea.entrada)
+    captcha_entrada = emu.captcha
+    hallazgo = None
+    if not emu.no_evaluable:
+        try:
+            hallazgo = ESTRATEGIAS[clave](emu, _Busqueda(tarea, palabras))
+        except SesionTerminada:
+            hallazgo = None
+    motivo = None
+    if emu.no_evaluable:
+        motivo = f"no evaluable: {emu.no_evaluable.motivo}"
+    elif hallazgo is None:
+        motivo = "no encontró el objetivo con lo anunciado"
+    marcas = dict.fromkeys(captcha_entrada)
+    for paso in emu.trayectoria:
+        marcas.update(dict.fromkeys(paso.captcha))
+    return Intento(ETIQUETAS.get(clave, clave), hallazgo is not None, emu.pulsaciones,
+                   tuple(emu.trayectoria), motivo, emu.no_evaluable, hallazgo, tuple(marcas))
+
+
+def mejor_estrategia(fabrica, tarea: Tarea, palabras: PalabrasClave) -> ResultadoTarea:
+    """Mínima fricción entre las que llegan; en empate, la primera en el orden declarado. Si
+    ninguna llega: lo más consumido y el motivo. Si además alguna quedó No evaluable, la tarea no
+    se resolvió dentro del presupuesto: nunca cuenta como "no llegó"."""
+    intentos = tuple(correr(clave, fabrica, tarea, palabras) for clave in ESTRATEGIAS
+                     if clave not in SOLO_TAREA_D or tarea.letra == "D")
+    marcas = dict.fromkeys(m for i in intentos for m in i.captcha)
+    llegaron = [i for i in intentos if i.llego]
+    if llegaron:
+        mejor = min(llegaron, key=lambda i: i.pulsaciones)
+        return ResultadoTarea(tarea, mejor.estrategia, mejor, mejor.pulsaciones, None, None, None,
+                              tuple(marcas), intentos)
+    mas_larga = max(intentos, key=lambda i: i.pulsaciones)
+    no_evaluable = next((i.no_evaluable for i in intentos if i.no_evaluable), None)
+    motivo = (f"no resuelta dentro del presupuesto: {no_evaluable.motivo}" if no_evaluable
+              else "ninguna estrategia encontró el objetivo")
+    return ResultadoTarea(tarea, mas_larga.estrategia, None, None, mas_larga.pulsaciones, motivo,
+                          no_evaluable, tuple(marcas), intentos)

@@ -414,6 +414,11 @@ class Emulador:
         return self.vista.url
 
     @property
+    def urls_abiertas(self) -> list[str]:
+        """URLs de la pila de páginas, de la entrada a la actual (Fase 3C: no re-entrar)."""
+        return [v.url for v in self._historial if v.url]
+
+    @property
     def titulo(self) -> str:
         return self.vista.titulo
 
