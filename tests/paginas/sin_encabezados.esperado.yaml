@@ -17,10 +17,10 @@ tareas:
     estado: con_dificultad
     estrategia: no_dirigida
     tipo_falla: null
-    friccion_esperada: 31
+    friccion_esperada: 32
     ruta:
-      - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Croquis del terreno"}}
-    razon: "Los requisitos son divs sueltos sin encabezado ni lista; leyendo desde el inicio: 1 + 3 + 20 + 7 = 31 paradas (> 25)."
+      - {tecla: leer_de_corrido, hasta: {rol: StaticText, nombre: "Descargas"}}
+    razon: "Los requisitos son divs sueltos sin encabezado ni lista; leyendo desde el inicio: 1 + 3 + 20 + 7 = 31 paradas hasta 'Croquis del terreno', + 1 = 32 (> 25): 'Descargas' también es texto suelto, sin marca que cierre el bloque; el siguiente rol distinto de texto es el enlace al PDF. Corregido el 5-nov: el 31 suponía comprensión semántica de 'Descargas'."
   C:
     entrada: sin_encabezados.html
     estado: completable
