@@ -115,6 +115,18 @@ def cierra_contacto(parada) -> bool:
     return parada.rol == "link" and (parada.url or "").lower().startswith(ESQUEMAS_CONTACTO)
 
 
+def marcador_con_contenido(texto: str, marcadores) -> bool:
+    """¿La misma parada trae el marcador y los requisitos? ("Requisitos: INE, CURP"; 1 StaticText =
+    1 parada). Debe EMPEZAR con el marcador, tener texto después y no terminar en ":", porque eso
+    anuncia una lista que viene después ("Requisitos para tramitar la licencia:"). Empezar con él
+    evita que "Consulta los requisitos en línea" detenga la lectura. Limitación declarada: "Para
+    este trámite debes presentar INE" no se reconoce."""
+    texto = normalizar_busqueda(texto)
+    if texto.endswith(":"):
+        return False
+    return any(re.match(rf"{re.escape(m)}(?!\w)\W*\w", texto) for m in marcadores)
+
+
 @dataclass(frozen=True)
 class _Busqueda:
     """Lo que una estrategia sabe de la tarea: su letra y las palabras. Nunca el objetivo."""
@@ -146,7 +158,9 @@ class _Cierre:
             return {"contacto": p.nombre, "url": p.url}  # la url es solo para el veredicto
         if self.b.letra == "B":
             if p.rol in ("heading", TEXTO) and coincide(p.nombre, self.b.clave.marcador):
-                self.marcador, self.requisitos = True, []
+                con_contenido = (p.rol == TEXTO
+                                 and marcador_con_contenido(p.nombre, self.b.clave.marcador))
+                self.marcador, self.requisitos = True, [p.nombre] if con_contenido else []
             elif self.marcador and p.rol == TEXTO:
                 self.requisitos.append(p.nombre)
         elif self.b.letra == "D" and self._es_campo_buscado(p):
