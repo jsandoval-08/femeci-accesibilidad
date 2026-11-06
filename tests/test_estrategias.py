@@ -18,8 +18,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-estrategias = pytest.importorskip("src.estrategias")
-from src.emulador import Parada  # noqa: E402
+from src import estrategias
+from src.emulador import Parada
 
 PAGINAS = Path(__file__).parent / "paginas"
 NOMBRES = ["perfecta", "sin_encabezados", "sin_contacto", "enlaces_ambiguos",

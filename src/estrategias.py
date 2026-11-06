@@ -351,6 +351,50 @@ def tab_inicio(emu, b):
     return _recorrer(emu, b, "Tab", tab_inicio)
 
 
+def _titulo_aceptable(emu, b) -> bool:
+    """Decide con el título anunciado al llegar, sin pulsar más (yaml: cada intento fallido = K +
+    Enter + volver = 3). En B se compara con el trámite buscado, no con la lista: "Otro trámite"
+    trae la palabra "trámite" y aun así es otra página. Limitación declarada: en un sitio con el
+    mismo título en todas sus páginas se rechazaría también el enlace correcto."""
+    if b.letra == "B":
+        frases = (normalizar_busqueda(b.tarea.tramite),)
+    else:
+        frases = b.clave.seccion + b.clave.enlace
+    return coincide(emu.titulo, frases)
+
+
+def _probar_con_k(emu, b):
+    """K por los enlaces. Los de nombre genérico no se distinguen, así que se prueban en orden y
+    el costo se acumula. Los enlaces sin nombre no se prueban: ese es el defecto del sitio.
+    En la página aceptada se sigue con H + leer, como en la ruta del yaml."""
+    while True:
+        paso = _pulsar(emu, "K")
+        if not paso.se_movio:
+            return None
+        p = emu.paradas[emu.cursor]
+        if hallazgo := _Cierre(b).ver(p):
+            return hallazgo
+        if normalizar_busqueda(p.nombre) in b.palabras.genericos:
+            if hallazgo := _activar(emu, b, h_a_seccion, lambda e: _titulo_aceptable(e, b)):
+                return hallazgo
+
+
+def probar_desde_seccion(emu, b):
+    """H a la sección con palabra clave y, desde ahí, probar enlaces en orden."""
+    while True:
+        paso = _pulsar(emu, "H")
+        if not paso.se_movio:
+            return None
+        if coincide(emu.paradas[emu.cursor].nombre, b.clave.seccion):
+            return _probar_con_k(emu, b)
+
+
+def probar_desde_inicio(emu, b):
+    """Para páginas sin sección: H ya gastó las pulsaciones y dejó el cursor lejos, así que esta
+    variante es un intento aparte, desde el inicio."""
+    return _probar_con_k(emu, b)
+
+
 # El orden es el de desempate: no cambia la fricción, solo el nombre reportado.
 ESTRATEGIAS = {
     "H_a_seccion": h_a_seccion,
@@ -359,6 +403,8 @@ ESTRATEGIAS = {
     "F_a_campos": f_a_campos,
     "no_dirigida": no_dirigida,
     "Tab_inicio": tab_inicio,
+    "probar_enlaces": probar_desde_seccion,
+    "probar_enlaces_inicio": probar_desde_inicio,
 }
 SOLO_TAREA_D = {"F_a_campos"}
 # Las dos variantes de probar_enlaces se reportan con el mismo nombre (vocabulario de los yaml).
