@@ -1,0 +1,41 @@
+# Palabras clave de las estrategias programadas de Atorapp (Fase 3C).
+#
+# VERSIÓN 1, CONGELADA el 5-nov-2026, ANTES de tocar sitios reales. Cualquier cambio posterior
+# sube la versión y se registra en BITACORA.md con su razón.
+#
+# Por qué: las estrategias deciden la relevancia con esta lista declarada, no por significado. Si
+# se pudiera retocar después de ver resultados, se ajustaría la regla a la respuesta.
+#
+# Cómo se comparan: sobre nombres normalizados (minúsculas, sin acentos, espacios colapsados) y
+# como palabra o frase completa: "ley" no coincide con "leyenda", y "pdf" sí con "(PDF)".
+#
+# seccion:  nombre de un encabezado o landmark al que vale la pena saltar.
+# enlace:   nombre de un enlace que vale la pena activar. Si falta, se usa la lista seccion.
+# marcador: (solo B) texto o encabezado que anuncia que siguen los requisitos.
+version: 1
+estado: congelada
+fecha: 2026-11-05
+
+# Nombres de enlace que no dicen a dónde llevan (se compara el nombre COMPLETO). Solo se prueban
+# en orden, en probar_enlaces. Los enlaces sin nombre no se prueban: ese es el defecto del sitio.
+genericos: [leer mas, clic aqui, click aqui, haz clic aqui, ver mas, mas informacion, mas info,
+            aqui, saber mas, conoce mas, detalles]
+
+# Un campo con este nombre (o de rol searchbox) es la búsqueda del sitio, no "el formulario".
+busqueda: [buscar, busqueda, search]
+
+tareas:
+  A:  # Contacto. "Transparencia" y "Gobierno" no están: son categorías de menú, no señales.
+    seccion: [contacto, contactanos, contactenos, comunicate, telefono, telefonos, directorio,
+              atencion ciudadana, ubicacion]
+  B:  # Requisitos de un trámite. El trámite buscado es parámetro de la tarea, no va aquí.
+    seccion: [tramite, tramites, servicio, servicios, requisito, requisitos, licencia, licencias,
+              permiso, permisos]
+    marcador: [requisito, requisitos, documentos necesarios, documentacion necesaria,
+               documentacion requerida, que necesitas, debes presentar]
+  C:  # Abrir un documento descargable.
+    seccion: [descarga, descargas, documento, documentos, publicaciones, archivos, biblioteca]
+    enlace: [pdf, descargar, descarga, documento, reglamento, informe, gaceta, formato, ley, leyes]
+  D:  # Llegar a un formulario e identificar sus campos.
+    seccion: [formulario, solicitud, solicitudes, quejas, denuncia, denuncias, registro, escribenos,
+              envianos, buzon, contacto, contactanos]
