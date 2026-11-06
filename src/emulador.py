@@ -270,7 +270,7 @@ class SesionTerminada(Exception):
 @dataclass(frozen=True)
 class NoEvaluable:
     """Por qué la tarea no se pudo evaluar. NUNCA cuenta como no completable (CLAUDE.md).
-    motivo: timeout | profundidad | tope_pulsaciones | falla_tecnica. El CAPTCHA no detiene
+    motivo: timeout | profundidad | tope_pulsaciones | tope_navegaciones | falla_tecnica. El CAPTCHA no detiene
     la sesión (decisión 20-oct): se registra y la regla se aplica en 3D."""
     motivo: str
     detalle: str
@@ -354,17 +354,21 @@ class Emulador:
     cuenta; un navegador (src/navegador.py) solo ejecuta lo que necesita red. Sin navegador
     funciona sobre un árbol ya capturado (Fase 3A).
 
-    Tope de pulsaciones (opcional): con tope N se ejecutan N pulsaciones; la N+1 no se
-    ejecuta y la tarea queda No evaluable con N consumidas. No tiene valor por omisión: se
-    fija con criterio escrito antes del estudio (CLAUDE.md).
+    Topes (opcionales; aquí no tienen valor por omisión, sus valores escritos están en
+    src/sitio.py). Pulsaciones: con tope N se ejecutan N; la N+1 no se ejecuta y la tarea queda No
+    evaluable con N consumidas. Navegaciones: igual con cada Enter que carga una página o
+    descarga un documento; el Enter que excede no hace la petición ni cuenta. Volver, un "#id"
+    y un clic en la misma página no son navegaciones.
     """
 
     def __init__(self, paradas: list[Parada], landmarks_finales=(), navegador=None,
                  url=None, titulo="", estado_http=None, captcha=(),
-                 tope_pulsaciones: int | None = None):
+                 tope_pulsaciones: int | None = None, tope_navegaciones: int | None = None):
         self.navegador = navegador
         self.tope_pulsaciones = tope_pulsaciones
+        self.tope_navegaciones = tope_navegaciones
         self.pulsaciones = 0
+        self.navegaciones = 0  # páginas cargadas o documentos descargados con Enter
         self.trayectoria: list[Paso] = []
         self.no_evaluable: NoEvaluable | None = None
         # Pila de páginas: [entrada, ..., actual]. La profundidad es su tamaño menos 1.
@@ -593,6 +597,9 @@ class Emulador:
             raise RuntimeError("Enter que navega o activa necesita un navegador en vivo")
         parada = self.paradas[self.cursor]
         if accion == "navegar":
+            if self.tope_navegaciones is not None and self.navegaciones >= self.tope_navegaciones:
+                return self._terminar("Enter", "tope_navegaciones",
+                                      f"tope de {self.tope_navegaciones} navegaciones")
             return self._navegar(parada)
         if accion == "fragmento":
             return self._fragmento(parada)
@@ -632,6 +639,8 @@ class Emulador:
         """Enter en enlace: el navegador abre el destino en una pestaña nueva (una por nivel).
         La pulsación cuenta aunque la carga falle o exceda la profundidad."""
         r = self.navegador.navegar(parada)
+        if not (isinstance(r, Pagina) and not r.nueva_pestana):  # un menuitem sin href no carga
+            self.navegaciones += 1
         if isinstance(r, Falla):
             return self._terminar("Enter", r.motivo, r.detalle, contada=True)
         if isinstance(r, Documento):
@@ -667,15 +676,17 @@ class Emulador:
         return self._registrar("volver", self.titulo, se_movio=True)
 
     @classmethod
-    def en_vivo(cls, navegador, url: str, tope_pulsaciones: int | None = None) -> "Emulador":
+    def en_vivo(cls, navegador, url: str, tope_pulsaciones: int | None = None,
+                tope_navegaciones: int | None = None) -> "Emulador":
         """Abre el punto de entrada (nivel 0). Si la carga falla, el emulador queda No
-        evaluable con 0 pulsaciones."""
+        evaluable con 0 pulsaciones. La entrada no cuenta como navegación."""
         r = navegador.abrir(url)
         if isinstance(r, Pagina):
             return cls(*aplanar_pagina(r.arbol), navegador=navegador, url=r.url,
                        titulo=r.titulo, estado_http=r.estado_http, captcha=r.captcha,
-                       tope_pulsaciones=tope_pulsaciones)
-        emu = cls([], navegador=navegador, url=url, tope_pulsaciones=tope_pulsaciones)
+                       tope_pulsaciones=tope_pulsaciones, tope_navegaciones=tope_navegaciones)
+        emu = cls([], navegador=navegador, url=url, tope_pulsaciones=tope_pulsaciones,
+                  tope_navegaciones=tope_navegaciones)
         if isinstance(r, Falla):
             emu._terminar("entrada", r.motivo, r.detalle)
         else:

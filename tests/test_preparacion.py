@@ -8,8 +8,6 @@ import pytest
 from src import estrategias, veredicto
 from src.estrategias import Tarea, cargar_palabras, mejor_estrategia
 
-pytestmark = pytest.mark.skip("se activa con el código de 3D.1")
-
 PALABRAS = cargar_palabras()
 TRAMITE = "Licencia de construcción"
 TELEFONO = "667 555 0100"

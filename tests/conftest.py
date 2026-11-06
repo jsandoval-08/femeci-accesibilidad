@@ -81,17 +81,18 @@ def chromium():
 @pytest.fixture
 def vivo(servidor, chromium):
     """Fábrica de emuladores en vivo sobre el servidor local; cierra todo al terminar.
-    vivo("pagina.html", tope=None, **opciones de NavegadorEnVivo)."""
+    vivo("pagina.html", tope=None, tope_nav=None, **opciones de NavegadorEnVivo)."""
     from src.emulador import Emulador
     from src.navegador import NavegadorEnVivo
 
     abiertos = []
 
-    def abrir(pagina, tope=None, **opciones):
+    def abrir(pagina, tope=None, tope_nav=None, **opciones):
         opciones = {"timeout_ms": 5_000, "espera_ms": 0, "pausa_s": 0, **opciones}
         nav = NavegadorEnVivo(chromium, **opciones)
         abiertos.append(nav)
-        return Emulador.en_vivo(nav, servidor + pagina, tope_pulsaciones=tope)
+        return Emulador.en_vivo(nav, servidor + pagina, tope_pulsaciones=tope,
+                                tope_navegaciones=tope_nav)
 
     yield abrir
     for nav in abiertos:

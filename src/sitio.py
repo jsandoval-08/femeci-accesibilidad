@@ -31,6 +31,13 @@ ESTADOS = {"completable", "con_dificultad", "no_completable", "no_evaluable"}
 VIDENTE = {"si": True, "sí": True, "no": False}
 PUNTAJES = ("reglas", "elementos", "reglas_conservador", "elementos_conservador")
 HOSTS_LOCALES = {"127.0.0.1", "localhost"}
+# Topes por estrategia y por tarea, fijados por escrito el 6-nov ANTES de ver datos (CLAUDE.md).
+# Agotar cualquiera sin resolver = No evaluable. No se cambian al ver resultados.
+# Pulsaciones: 4 niveles que permite la profundidad × 127 paradas, la portada más larga medida
+# (scripts/medicion/paradas.py). Alto a propósito: uno bajo volvería No evaluable un "no existe" real.
+TOPE_PULSACIONES = 508
+# Navegaciones: acota peticiones al sitio y tiempo de corrida. enlaces_ambiguos B usa 9.
+TOPE_NAVEGACIONES = 30
 
 
 class ErrorAuditoria(ValueError):
@@ -123,7 +130,8 @@ def _puntuar(url: str, carpeta: Path) -> tuple[dict | None, str | None]:
 
 def correr_sitio(ruta_csv, url_base: str, carpeta, solo_local: bool = True,
                  timeout_ms: int = TIEMPO_LIMITE_MS, espera_ms: int = ESPERA_EXTRA_MS,
-                 pausa_s: float = PAUSA_S) -> ReporteSitio:
+                 pausa_s: float = PAUSA_S, tope: int = TOPE_PULSACIONES,
+                 tope_nav: int = TOPE_NAVEGACIONES) -> ReporteSitio:
     """Corre todas las tareas del CSV. axe corre primero: capturar() abre su propio Playwright y
     la API síncrona no admite dos abiertos en el mismo hilo."""
     filas = leer_auditoria(ruta_csv)
@@ -150,7 +158,8 @@ def correr_sitio(ruta_csv, url_base: str, carpeta, solo_local: bool = True,
                 nav = NavegadorEnVivo(navegador, timeout_ms=timeout_ms, espera_ms=espera_ms,
                                       pausa_s=pausa_s)
                 abiertos.append(nav)
-                return Emulador.en_vivo(nav, entrada)
+                return Emulador.en_vivo(nav, entrada, tope_pulsaciones=tope,
+                                        tope_navegaciones=tope_nav)
 
             entrada, pagina_axe = urls[fila]
             resultado = mejor_estrategia(fabrica, Tarea(fila.tarea, entrada, fila.tramite), palabras)

@@ -12,8 +12,6 @@ import pytest
 
 from src import sitio
 
-pytestmark = pytest.mark.skip("se activa con el código de 3D.1")
-
 PAGINAS = Path(__file__).parent / "paginas"
 ENCABEZADO = "tarea,entrada,tramite,objetivo_correcto,veredicto_nvda,vidente_lo_encuentra,pagina_axe\n"
 BASE = "https://www.example.test/"
