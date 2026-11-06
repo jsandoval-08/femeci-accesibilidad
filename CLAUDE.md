@@ -126,7 +126,9 @@ Software libre, repositorio público.
   candidatos no se distinguen por nombre, se prueban en orden del documento y el costo se acumula
   (cada intento fallido = K + Enter + volver), sin conocimiento del objetivo. La URL no decide
   relevancia; solo se lee para dos cosas: el esquema `mailto:`/`tel:` de la parada donde YA está
-  el cursor (regla del 20-oct, ver 3D) e impedir re-entrar a una URL ya visitada en ese intento.
+  el cursor (regla del 20-oct, ver 3D) e impedir re-entrar a una URL abierta en la pila de ese
+  intento (la actual o una anterior). Una página ya visitada y cerrada sí se puede volver a abrir:
+  con enlaces ambiguos la persona no sabe por el nombre que llevan al mismo lugar.
 - **Limitación del método**: Ctrl+F (búsqueda de texto de NVDA) queda excluido; se declara como
   limitación, no se modela. Tampoco se modela filtrar escribiendo en la lista de enlaces.
 - **Punto de entrada**: parámetro explícito de cada tarea.
