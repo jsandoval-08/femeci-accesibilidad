@@ -363,11 +363,15 @@ def tab_inicio(emu, b):
     return _recorrer(emu, b, "Tab", tab_inicio)
 
 
-def _titulo_aceptable(emu, b) -> bool:
+def _titulo_aceptable(emu, b, titulo_origen: str) -> bool:
     """Decide con el título anunciado al llegar, sin pulsar más (yaml: cada intento fallido = K +
     Enter + volver = 3). En B se compara con el trámite buscado, no con la lista: "Otro trámite"
-    trae la palabra "trámite" y aun así es otra página. Limitación declarada: en un sitio con el
-    mismo título en todas sus páginas se rechazaría también el enlace correcto."""
+    trae la palabra "trámite" y aun así es otra página. Si el título es igual al de la página de
+    origen, no dice nada: no se rechaza y la página se inspecciona, con su costo. Limitación
+    declarada: un título distinto, pero poco informativo ("Detalle"), se rechaza aunque sea el
+    enlace correcto."""
+    if normalizar_busqueda(emu.titulo) == normalizar_busqueda(titulo_origen):
+        return True
     if b.letra == "B":
         frases = (normalizar_busqueda(b.tarea.tramite),)
     else:
@@ -387,7 +391,8 @@ def _probar_con_k(emu, b):
         if hallazgo := _Cierre(b).ver(p):
             return hallazgo
         if normalizar_busqueda(p.nombre) in b.palabras.genericos:
-            if hallazgo := _activar(emu, b, h_a_seccion, lambda e: _titulo_aceptable(e, b)):
+            origen = emu.titulo
+            if hallazgo := _activar(emu, b, h_a_seccion, lambda e: _titulo_aceptable(e, b, origen)):
                 return hallazgo
 
 
