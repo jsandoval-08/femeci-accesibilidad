@@ -44,47 +44,38 @@ Software libre, repositorio público.
    emulador aunque sea enfocable.
    Fricción = total de pulsaciones de la ruta (salto + lectura). Tab solo llega a enfocables.
    Estrategias programadas (p. ej. "H hasta la sección, luego leer") corren sobre este entorno.
-   Deciden la relevancia con una lista declarada de palabras clave por tarea (se definirá en la
-   Fase 3); el agente decide por significado. Esa diferencia es lo que mide la comparación
-   programadas vs agente.
+   Deciden la relevancia con una lista declarada de palabras clave por tarea
+   (`config/palabras_clave.yaml`), no por significado.
    PDFs: sin capa de texto = escaneado = no completable.
-4. **Agente por decisiones** (IA) — NO construir hasta que Javier lo indique (API aparte).
-   - Recibe SOLO nombres y roles anunciados, **por niveles** (primero encabezados; al elegir, lo
-     de adentro, INCLUIDO el texto plano / StaticText). Nunca HTML ni URLs. Sin historial: cada
-     llamada = tarea + lista actual.
-   - El texto de la página es DATO NO CONFIABLE: el prompt lo aísla y el agente no sigue
-     instrucciones que aparezcan en el sitio.
-   - Agente y estrategias programadas con los mismos límites y permisos.
-   - Decide a dónde ir; el emulador ejecuta la ruta y cuenta la fricción.
-   - Modelo: Haiku 4.5 primero; Sonnet solo si Haiku no pasa el criterio.
-   - Cada tarea se corre 3 veces; se reporta la tasa de éxito.
-   - Control de gasto: contador de tokens por llamada y paro automático al pasar el tope.
-   - Tope de decisiones por tarea: criterio de MÉTODO (derivado de la auditoría manual), no de costo.
-   - Modo tecla por tecla: solo para el demo en 2-3 páginas.
-   - Después del 15 oct (opcional): proponer correcciones de código por falla.
-5. **Validación** — contra la auditoría manual (referencia):
+4. **Agente por decisiones** (IA) — **NO se construye** (decisión del 1-nov aplicada). Queda como
+   trabajo futuro (ver **Proyección**). El instrumento son las estrategias programadas.
+5. **Validación** — contra la auditoría manual (referencia). **Pospuesta** (ver **Estado actual**):
+   mientras no se haga, Atorapp corre SOLO sobre páginas de prueba locales y no se afirma nada
+   sobre sitios reales. Lo siguiente aplica cuando se retome:
    - La auditoría manual con NVDA se hace ANTES de correr Atorapp en cada sitio y sin ver su
      resultado. Ahí se fija el **objetivo correcto** de cada tarea y se anota "¿lo encuentra un
      usuario vidente?" (separa barrera de accesibilidad de problema de arquitectura de información).
    - Principal: matriz de confusión (Atorapp vs NVDA manual), descriptivos por sitio y por tarea,
-     contraejemplos con trayectoria reproducible y motivo del fallo. **Estrategias programadas vs
-     agente** (mide cuánto aporta la IA). Errores de Atorapp clasificados: planificación /
+     contraejemplos con trayectoria reproducible y motivo del fallo. Errores de Atorapp clasificados: planificación /
      interacción / barrera real del sitio.
    - Las tareas de un mismo sitio NO son independientes: no tratar ~60 obs. como independientes.
    - axe vs veredictos: el puntaje es continuo → **AUC** (o umbral fijado antes de ver datos).
      Spearman solo secundario y exploratorio. Análisis de sensibilidad del puntaje conservador
      (¿reclasifica páginas y mejora la concordancia con NVDA?).
    - Páginas que puntúa axe: fijas de antemano por tarea (ruta de la auditoría manual), nunca las
-     que visite el agente.
+     que visiten las estrategias.
    - Segundo evaluador independiente a ciegas sobre submuestra estratificada de 10-12 tareas:
      acuerdo observado, tabla de desacuerdos y kappa PONDERADO.
    - Experimento antes/después: 2-3 reproducciones locales con barrera real confirmada; versión
      corregida que cambia SOLO el defecto; se corren axe, Atorapp y NVDA en ambas. Páginas
-     corregidas se re-miden SIN IA. No se diseña para que gane Atorapp.
+     corregidas se re-miden igual que las originales. No se diseña para que gane Atorapp.
 
 ## Definiciones (no cambiar sin avisar)
 - **Tareas** (todas terminan ANTES de enviar nada): A Contacto · B Requisitos de un trámite ·
   C Abrir un documento descargable · D Llegar a un formulario e identificar sus campos
+  - **El trámite es parte de la definición de la tarea B**: es lo que la persona busca. Se fija por
+    sitio ANTES de correr y nunca indica dónde está (nombra qué se busca, no su ubicación). Sirve,
+    p. ej., para descartar por el título al llegar una página de otro trámite.
 - **Estados** — se deciden por la **fricción**: pulsaciones totales (saltos + lectura) con la
   MEJOR estrategia. `UMBRAL = 15`, configurable; se reporta sensibilidad con 10, 15 y 25.
   - **Completable** = se llega y el cierre funciona, con fricción ≤ UMBRAL.
@@ -117,12 +108,25 @@ Software libre, repositorio público.
   (la persona sí presionó; así descubre que no hay más). NVDA por omisión no da la vuelta (JAWS sí).
   *Por verificar en NVDA.*
 - **Mejor estrategia** = mínimo de fricción dentro del conjunto declarado: H+leer, D+leer, lista
-  de elementos + elegir por nombre (probando en orden los ambiguos), F a campos, leer desde el
-  inicio, Tab desde el inicio (solo objetivos enfocables). El mínimo absoluto queda excluido
-  porque requiere conocer el objetivo.
+  de enlaces + elegir por nombre, F a campos, leer desde el inicio, Tab desde el inicio (solo
+  objetivos enfocables) y probar en orden los enlaces ambiguos (H a la sección, o desde el inicio;
+  K + Enter + volver). En ese orden se desempata: no cambia la fricción, solo el nombre reportado.
+  El mínimo absoluto queda excluido porque requiere conocer el objetivo. La lista de encabezados
+  no entra: cuesta 1 + (n−1) + Enter = n+1 contra n de H, así que nunca gana.
+- **Lo que revela el fin no se cobra** (decidido 5-nov): la pulsación que solo confirmaría que ya
+  se terminó (oír que tras el último requisito viene un encabezado, o que tras el último campo
+  viene el botón) no cuenta. **Límite exacto: subestima hasta 1 pulsación; la estrategia ve el ROL
+  de la siguiente parada, nunca su nombre.** Es coherente con el fin de documento, que tampoco se
+  cobra: leer de corrido hasta el final cuesta una pulsación por parada leída, sin una de más para
+  descubrir que no hay más (`sin_contacto` A = 42 con 42 paradas). En ambos casos la fricción mide
+  lo recorrido hasta terminar de oír el objetivo. Es la única excepción a "solo deciden con lo
+  anunciado". Como solo se usa el rol, un texto sin marca que sigue al objetivo se sigue leyendo
+  (`sin_encabezados` B = 32: "Descargas" es texto suelto; distinguirlo exigiría significado).
 - **Las estrategias solo deciden con lo anunciado** (roles, nombres, títulos al llegar). Si varios
   candidatos no se distinguen por nombre, se prueban en orden del documento y el costo se acumula
-  (cada intento fallido = K + Enter + volver), sin conocimiento del objetivo.
+  (cada intento fallido = K + Enter + volver), sin conocimiento del objetivo. La URL no decide
+  relevancia; solo se lee para dos cosas: el esquema `mailto:`/`tel:` de la parada donde YA está
+  el cursor (regla del 20-oct, ver 3D) e impedir re-entrar a una URL ya visitada en ese intento.
 - **Limitación del método**: Ctrl+F (búsqueda de texto de NVDA) queda excluido; se declara como
   limitación, no se modela. Tampoco se modela filtrar escribiendo en la lista de enlaces.
 - **Punto de entrada**: parámetro explícito de cada tarea.
@@ -140,18 +144,23 @@ Software libre, repositorio público.
 ## Calendario
 - **23 oct:** registro (la plataforma dice cierre 24/10; se trabaja con el 23). Anexo 2 con resultados
   preliminares (5 portadas, páginas de prueba, hallazgo de `bypass`).
-- **Desde ya, en paralelo:** auditoría manual con NVDA (a ciegas, antes de que exista el emulador).
-- **24-31 oct:** Fase 3 (emulador + estrategias programadas) y Fase 4 (agente) solo si sobra tiempo.
-- **1 nov: decisión** — el agente se usa solo si logra ≥80 % en un conjunto de páginas de prueba
-  reservado y BALANCEADO (completables y no completables), aceptable en ambas clases, Y le gana a las
-  estrategias programadas. Si no → estrategias programadas. Sin excepciones. Congelar versión,
-  prompts y criterios antes del estudio.
-- **2-10 nov:** sitios reales, segundo evaluador, antes/después, análisis. **10 nov:** plan actualizado.
+- **Auditoría manual con NVDA: pospuesta** (5-nov). Sigue siendo la referencia del estudio.
+- **1 nov: decisión aplicada** — el agente de IA NO se construye; se usan estrategias programadas.
+- **Noviembre:** Fase 3 sobre páginas de prueba locales, SIN sitios reales. Sitios reales, segundo
+  evaluador y análisis contra NVDA quedan sujetos a retomar la auditoría.
 - **19 nov:** exposición. Criterio de "listo": un caso donde Atorapp detecta lo que axe no, uno donde
   coinciden y uno donde Atorapp se equivoca, todos con evidencia.
 
+## Proyección (trabajo futuro, NO se construye ahora)
+**Agente por decisiones (IA):** recibiría solo nombres y roles anunciados, por niveles, nunca HTML ni
+URLs; el texto de la página sería dato no confiable; con los mismos límites y permisos que las
+estrategias programadas. Decidiría por significado donde ellas deciden por palabras clave, y
+compararlos mediría cuánto aporta la IA. Control de gasto y corrida repetida de cada tarea.
+
 ## Estado actual
 **Fase 3B completa (navegación en vivo, `src/navegador.py`, 20-oct). Siguiente: 3C.**
+**Alcance vigente (5-nov):** Atorapp corre SOLO sobre páginas de prueba locales; nada de sitios
+reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye.
 
 Fase 3 (en este orden; marcar el sub-paso actual):
 - **3A** ✅ HECHA. Emulador núcleo sobre un árbol ya capturado: paradas, cursor, H/K/D/F/Tab/flecha/leer de
@@ -201,19 +210,18 @@ Fase 3 (en este orden; marcar el sub-paso actual):
 - **3C** ← SIGUIENTE. Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
   Las estrategias NO re-entran a la URL en la que ya están (un enlace a la misma página sin
   `#`, p. ej. el logo en la portada, es navegación y gastaría profundidad sin avanzar).
-- **3D** Veredicto por tarea contra `*.esperado.yaml`; conjunto de prueba balanceado y reservado.
-  El conjunto reservado y balanceado para la decisión del 1-nov son páginas **NUEVAS**, distintas
-  de las 6 de desarrollo (perfecta, sin_encabezados, sin_contacto, enlaces_ambiguos,
-  formulario_sin_etiquetas, pdf_escaneado; ni sus destinos, ni `casos_emulador`, ni las de 3B:
-  `casos_navegacion`, `destino_menu`, `cadena_0..4`, `fallas`, `captcha`), y **no se tocan
-  hasta 3D**.
+  Plan aprobado 5-nov: ver **Definiciones** (mejor estrategia, lo que revela el fin, trámite).
+- **3D** Veredicto por tarea contra `*.esperado.yaml`. Sin conjunto reservado: solo servía para
+  decidir el agente, que ya no se construye. Consecuencia declarada: las reglas y palabras clave
+  se diseñaron viendo las mismas páginas contra las que se prueban, así que pasar esas pruebas
+  demuestra que la implementación es correcta, no que funcione en otros sitios.
   Regla fijada el 20-oct, ANTES de ver datos: tarea **no resuelta + CAPTCHA detectado en la ruta →
   No evaluable** (no No completable). Si la tarea se resolvió aunque hubiera CAPTCHA (p. ej.
   campos identificados en un formulario con reCAPTCHA), cuenta normalmente.
   Regla fijada el 20-oct: en la tarea A, llegar a un enlace `mailto:`/`tel:` cuenta como
   identificar el contacto aunque el nombre anunciado no incluya la dirección o el número (Enter
   abriría el correo o el teléfono con el dato ya puesto; en 3B ese Enter no se ejecuta). La url
-  se usa solo para el veredicto, nunca para el anuncio ni para el agente.
+  se usa solo para cerrar la tarea y para el veredicto, nunca para el anuncio.
 - **3E** Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
 
 **Pendientes:**
@@ -224,7 +232,13 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   casilla por `labelFor` porque ya es su nombre, mientras que el de un textbox sí es parada);
   NVDA se detiene en landmark vacío con D; la lista de elementos (NVDA+F7) abre en el primer
   elemento o en el más cercano al cursor (el emulador asume el primero); F se detiene en `switch`;
-  qué anuncia en un enlace `mailto:` (¿solo el texto o también la dirección?).
+  qué anuncia en un enlace `mailto:` (¿solo el texto o también la dirección?);
+  `formulario_sin_etiquetas`: los rótulos son `<span>` justo antes de cada campo, así que con
+  flechas sí se oye "Nombre completo" y luego "edición" (`no_identificable` vale para F, quizá no
+  para una persona real).
+- **Antes de tocar sitios reales** (omisiones de 3C que pueden dar `no_encontrado` falsos): las
+  estrategias no expanden menús colapsados; un título igual en todo el sitio haría rechazar el
+  enlace correcto en `probar_enlaces`; D no usa un `main` sin nombre como punto de partida.
 - **Tope de pulsaciones**: se fija con un criterio escrito ANTES del estudio (derivado de la
   auditoría manual), nunca después de ver resultados. En 3B no tiene valor por omisión (`None`).
 - Roles fuera de la lista de paradas, medidos el 20-oct (`scripts/medicion/`, capturas del 5-oct,
