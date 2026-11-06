@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servicios</title>
+  <!-- Fase 3D: botón colapsado con palabra clave, dentro de una sección a la que llega H. -->
+</head>
+<body>
+  <h1>Servicios</h1>
+  <button type="button" aria-expanded="false" aria-controls="sub-tramites">Trámites</button>
+  <div id="sub-tramites" hidden><a href="ce_requisitos.html">Licencia de construcción</a></div>
+  <script>
+    // Patrón disclosure: el botón alterna aria-expanded y el atributo hidden de lo que controla.
+    document.querySelectorAll("button[aria-controls]").forEach(function (boton) {
+      boton.addEventListener("click", function () {
+        var abierto = boton.getAttribute("aria-expanded") === "true";
+        boton.setAttribute("aria-expanded", String(!abierto));
+        document.getElementById(boton.getAttribute("aria-controls")).hidden = abierto;
+      });
+    });
+  </script>
+</body>
+</html>

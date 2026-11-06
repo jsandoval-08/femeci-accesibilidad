@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal</title>
+  <!-- Fase 3D: el submenú trae un menuitem con href: se activa como enlace. -->
+</head>
+<body>
+  <h1>Portal</h1>
+  <button type="button" aria-expanded="false" aria-controls="sub-contacto">Contacto</button>
+  <div id="sub-contacto" hidden>
+    <div role="menu" aria-label="Opciones"><a role="menuitem" href="ce_p1.html">Directorio</a></div>
+  </div>
+  <script>
+    // Patrón disclosure: el botón alterna aria-expanded y el atributo hidden de lo que controla.
+    document.querySelectorAll("button[aria-controls]").forEach(function (boton) {
+      boton.addEventListener("click", function () {
+        var abierto = boton.getAttribute("aria-expanded") === "true";
+        boton.setAttribute("aria-expanded", String(!abierto));
+        document.getElementById(boton.getAttribute("aria-controls")).hidden = abierto;
+      });
+    });
+  </script>
+</body>
+</html>

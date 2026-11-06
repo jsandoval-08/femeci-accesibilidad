@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portal</title>
+  <!-- Fase 3D: el objetivo está tras un botón Menú colapsado. Idioma no es relevante: no se abre. -->
+</head>
+<body>
+  <h1>Portal</h1>
+  <button type="button" aria-expanded="false" aria-controls="sub-idioma">Idioma</button>
+  <div id="sub-idioma" hidden><a href="ce_p2.html">English</a></div>
+  <button type="button" aria-expanded="false" aria-controls="sub-menu">Menú</button>
+  <div id="sub-menu" hidden><a href="ce_p1.html">Contacto</a></div>
+  <script>
+    // Patrón disclosure: el botón alterna aria-expanded y el atributo hidden de lo que controla.
+    document.querySelectorAll("button[aria-controls]").forEach(function (boton) {
+      boton.addEventListener("click", function () {
+        var abierto = boton.getAttribute("aria-expanded") === "true";
+        boton.setAttribute("aria-expanded", String(!abierto));
+        document.getElementById(boton.getAttribute("aria-controls")).hidden = abierto;
+      });
+    });
+  </script>
+</body>
+</html>
