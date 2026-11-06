@@ -431,6 +431,24 @@ def test_pdf(vivo, pagina, capa_texto, tmp_path):
     assert len(list(tmp_path.glob("*.pdf"))) == 1  # evidencia guardada
 
 
+def test_descarga_usa_la_misma_sesion(servidor, chromium):
+    """El PDF exige una cookie (conftest: /con_cookie/): los bytes se piden con las cookies del
+    contexto de navegación. Sin la cookie el servidor responde 403 y es una página, no un PDF."""
+    from src.emulador import Documento, Pagina
+    from src.navegador import NavegadorEnVivo
+
+    url = servidor + "con_cookie/docs/plan_municipal.pdf"
+    nav = NavegadorEnVivo(chromium, timeout_ms=5_000, espera_ms=0, pausa_s=0)
+    try:
+        sin_cookie = nav.abrir(url)
+        assert isinstance(sin_cookie, Pagina) and sin_cookie.estado_http == 403
+        nav.contexto.add_cookies([{"name": "sesion", "value": "ok", "url": servidor}])
+        doc = nav.abrir(url)
+        assert isinstance(doc, Documento) and doc.es_pdf and doc.capa_texto is True
+    finally:
+        nav.cerrar()
+
+
 # ---------- En vivo: fallas simuladas ----------
 
 def test_timeout_en_enter(vivo):

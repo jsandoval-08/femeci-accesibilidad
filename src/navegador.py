@@ -26,7 +26,7 @@ import mimetypes
 import re
 import time
 from pathlib import Path
-from urllib.parse import urldefrag
+from urllib.parse import urldefrag, urlparse
 
 from playwright.sync_api import Error as ErrorPlaywright
 from playwright.sync_api import TimeoutError as TimeoutPlaywright
@@ -162,17 +162,12 @@ class NavegadorEnVivo:
         except ErrorPlaywright as e:
             # Un PDF (o cualquier archivo que el navegador descarga) no abre visor: Chromium
             # sin interfaz lo descarga y goto falla con "Download is starting" (comprobado
-            # 20-oct). Los bytes llegan por la misma sesión (mismas cookies).
-            if descargas or "Download is starting" in str(e):
-                try:
-                    descarga = descargas[0] if descargas else pestana.wait_for_event(
-                        "download", timeout=self.timeout_ms)
-                    return self._documento(descarga)
-                except ErrorPlaywright as e2:
-                    return Falla("falla_tecnica", _primera_linea(e2))
-                finally:
-                    pestana.close()
+            # 20-oct). Los bytes se piden aparte, por la misma sesión (mismas cookies): esperar
+            # el evento "download" fallaba de forma intermitente (medido 5-nov: 9 de 11 corridas
+            # de la suite, con un No evaluable falso), porque a veces el evento nunca llegaba.
             pestana.close()
+            if descargas or "Download is starting" in str(e):
+                return self._descargar(url, referer)
             return Falla("falla_tecnica", _primera_linea(e))
         if self.espera_ms:
             pestana.wait_for_timeout(self.espera_ms)
@@ -183,13 +178,23 @@ class NavegadorEnVivo:
                       titulo=pestana.title(), arbol=arbol,
                       captcha=detectar_captcha(pestana, arbol))
 
-    def _documento(self, descarga) -> Documento:
-        datos = Path(descarga.path()).read_bytes()  # espera a que termine la descarga
-        nombre = descarga.suggested_filename
+    def _descargar(self, url: str, referer: str | None) -> Documento | Falla:
+        """Bytes del documento por la misma sesión del contexto (comparte cookies)."""
+        try:
+            respuesta = self.contexto.request.get(
+                url, timeout=self.timeout_ms, headers={"Referer": referer} if referer else None)
+            datos = respuesta.body()
+        except TimeoutPlaywright as e:
+            return Falla("timeout", _primera_linea(e))
+        except ErrorPlaywright as e:
+            return Falla("falla_tecnica", _primera_linea(e))
+        if not respuesta.ok:
+            return Falla("falla_tecnica", f"la descarga respondió HTTP {respuesta.status}")
+        nombre = Path(urlparse(respuesta.url).path).name or "documento"
         if self.carpeta:  # evidencia: el archivo tal como llegó
             self.carpeta.mkdir(parents=True, exist_ok=True)
             (self.carpeta / f"{self.capturas:02d}_{nombre}").write_bytes(datos)
-        return leer_documento(descarga.url, nombre, datos)
+        return leer_documento(respuesta.url, nombre, datos)
 
     def _capturar(self, pestana) -> dict:
         arbol = arbol_ax(pestana)
@@ -231,7 +236,7 @@ def leer_documento(url: str, nombre: str, datos: bytes) -> Documento:
     """Hechos medidos de un archivo descargado (tarea C). Es PDF si los bytes empiezan con
     %PDF- (no se confía en la extensión). Capa de texto = pypdf extrae al menos un carácter no
     blanco; sin capa = escaneado (CLAUDE.md). El veredicto completable / cierre roto es de 3D.
-    tipo_contenido se deduce del nombre del archivo (la descarga no trae la cabecera)."""
+    tipo_contenido se deduce del nombre del archivo (limitación declarada)."""
     tipo = mimetypes.guess_type(nombre)[0] or "desconocido"
     if not datos.startswith(b"%PDF-"):
         return Documento(url, tipo, es_pdf=False, capa_texto=None, paginas=None,

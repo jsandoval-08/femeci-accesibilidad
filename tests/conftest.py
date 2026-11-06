@@ -7,6 +7,7 @@ permite simular fallas. SOLO páginas locales: nada de sitios reales.
 Rutas especiales del servidor (además de los archivos de tests/paginas):
   /lento/<archivo>     espera LENTO_S segundos y sirve <archivo> (simula timeout)
   /redirige/<archivo>  302 a /<archivo>
+  /con_cookie/<archivo> 403 si la petición no trae la cookie sesion=ok; si la trae, <archivo>
 """
 
 import functools
@@ -36,6 +37,11 @@ class _Manejador(http.server.SimpleHTTPRequestHandler):
             self.send_header("Location", self.path.removeprefix("/redirige"))
             self.end_headers()
             return
+        elif self.path.startswith("/con_cookie/"):
+            if "sesion=ok" not in (self.headers.get("Cookie") or ""):
+                self.send_error(403)
+                return
+            self.path = self.path.removeprefix("/con_cookie")
         super().do_GET()
 
 
