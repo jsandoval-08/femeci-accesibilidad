@@ -165,7 +165,7 @@ estrategias programadas. Decidiría por significado donde ellas deciden por pala
 compararlos mediría cuánto aporta la IA. Control de gasto y corrida repetida de cada tarea.
 
 ## Estado actual
-**Fase 3C completa (estrategias programadas, `src/estrategias.py`, 5-nov). Siguiente: 3D.**
+**Fase 3D completa (veredicto, entrada por sitio, reporte y análisis, 6-nov). Siguiente: 3E.**
 **Alcance vigente (5-nov):** Atorapp corre SOLO sobre páginas de prueba locales; nada de sitios
 reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye.
 
@@ -222,9 +222,9 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   Las estrategias NO re-entran a la URL en la que ya están (un enlace a la misma página sin
   `#`, p. ej. el logo en la portada, es navegación y gastaría profundidad sin avanzar).
   Reglas: ver **Definiciones** (mejor estrategia, lo que revela el fin, trámite). Además:
-  - **Palabras clave**: `config/palabras_clave.yaml`, **versión 1, congelada** el 5-nov. Se comparan
-    sobre nombres normalizados, como palabra o frase completa. Cualquier cambio sube la versión y
-    va a `BITACORA.md` con su razón.
+  - **Palabras clave**: `config/palabras_clave.yaml`, **versión 2, congelada** el 6-nov (v2 agrega
+    `expandir`, ver bitácora). Se comparan sobre nombres normalizados, como palabra o frase
+    completa. Cualquier cambio sube la versión y va a `BITACORA.md` con su razón.
   - **"Creo que llegué"** (no es completable; eso es de 3D). A: el texto anunciado trae un correo, 10
     dígitos agrupados (12 con lada 52) o 7 o más junto a una palabra de teléfono; o el cursor ya está
     en un enlace `mailto:`/`tel:`. B: un marcador, y al menos 1 texto después; el bloque termina
@@ -238,7 +238,7 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     No evaluable, la tarea es "no resuelta dentro del presupuesto", nunca "no llegó".
   - Variantes que no se modelan porque no ganan: leer las tarjetas de `enlaces_ambiguos` (36 o 37
     contra 35); la lista de encabezados (n + 1 contra n).
-- **3D** ← SIGUIENTE. Veredicto por tarea contra `*.esperado.yaml`. Sin conjunto reservado: solo servía para
+- **3D** ✅ HECHA. Veredicto por tarea contra `*.esperado.yaml`. Sin conjunto reservado: solo servía para
   decidir el agente, que ya no se construye. Consecuencia declarada: las reglas y palabras clave
   se diseñaron viendo las mismas páginas contra las que se prueban, así que pasar esas pruebas
   demuestra que la implementación es correcta, no que funcione en otros sitios.
@@ -249,7 +249,34 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   identificar el contacto aunque el nombre anunciado no incluya la dirección o el número (Enter
   abriría el correo o el teléfono con el dato ya puesto; en 3B ese Enter no se ejecuta). La url
   se usa solo para cerrar la tarea y para el veredicto, nunca para el anuncio.
-- **3E** Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
+  Pruebas: `tests/test_veredicto.py`, `test_sitio.py`, `test_analisis.py`; las 24 tareas dan su
+  `estado` y `tipo_falla` del yaml. Objetivo correcto de las páginas de prueba:
+  `tests/paginas/<pagina>.auditoria.csv`, a mano, sin datos de NVDA.
+  - **Veredicto** (`src/veredicto.py`), reglas en orden; gana la primera que aplique: (1) C: documento
+    correcto, PDF sin capa → `cierre_roto`; (2) C: PDF correcto ilegible → No evaluable; (3) alguna
+    llegó al objetivo correcto → por fricción; (4) D: algún campo sin nombre (basta uno) →
+    `no_identificable`; (5) sin resolver, con No evaluable o CAPTCHA en la ruta → No evaluable (la
+    insignia invisible de reCAPTCHA v3 sola no bloquea); (6) lo demás → `no_encontrado`.
+  - **Comparación con el objetivo**: `|` separa varios valores. A: con 7 dígitos o más se comparan
+    los dígitos (nombre o `tel:`); si no, el texto (nombre o `mailto:`). B: todos los requisitos,
+    con extras permitidos. C: la URL del documento es el objetivo o termina en él, por segmentos.
+    D: cada campo en algún nombre. `NO_EXISTE`: la referencia dice que el sitio no lo tiene.
+  - **Menús**: un control colapsado se abre solo si su nombre coincide con las palabras de la tarea o
+    con `expandir`. Enter cuesta 1. **Limitación:** la lista de enlaces no ve botones, así que
+    no descubre lo que está en un submenú cerrado (no se mezclan estrategias) y la fricción de esos
+    objetivos puede salir más alta que la real.
+  - **Entrada** (`src/sitio.py`): CSV por sitio con `tarea, entrada, tramite, objetivo_correcto,
+    veredicto_nvda, vidente_lo_encuentra` y `pagina_axe` opcional (vacía = la entrada). Objetivo
+    vacío es error. `correr_sitio` rechaza URL no locales mientras `solo_local=True`.
+  - **Reporte** (`src/reporte.py`): JSON + Markdown por sitio, con la sección "Llegó primero a otra
+    cosa". **Análisis** (`src/analisis.py`), definido ANTES de ver datos: matriz y acuerdo (3 clases y
+    binario) contra NVDA; AUC de los 4 puntajes contra NVDA (principal: excluye `con_dificultad`;
+    secundario: lo cuenta como logrado; contra Atorapp, solo exploratorio); falsas llegadas por tarea.
+    Sin p-valores ni intervalos: las tareas de un sitio no son independientes. **Aún no hay datos
+    reales:** lo inventado vive solo en `tests/test_analisis.py` y nunca se reporta.
+  - **Limitación:** un enlace roto (404) al documento correcto da `no_encontrado`, aunque quizá
+    debería ser `cierre_roto`.
+- **3E** ← SIGUIENTE. Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.
@@ -263,9 +290,8 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   `formulario_sin_etiquetas`: los rótulos son `<span>` justo antes de cada campo, así que con
   flechas sí se oye "Nombre completo" y luego "edición" (`no_identificable` vale para F, quizá no
   para una persona real).
-- **Antes de tocar sitios reales** (omisiones de 3C que pueden dar `no_encontrado` falsos): las
-  estrategias no expanden menús colapsados; un título igual en todo el sitio haría rechazar el
-  enlace correcto en `probar_enlaces`; D no usa un `main` sin nombre como punto de partida; un
+- **Antes de tocar sitios reales** (omisiones de 3C que pueden dar `no_encontrado` falsos): un
+  título igual en todo el sitio haría rechazar el enlace correcto en `probar_enlaces`; D no usa un `main` sin nombre como punto de partida; un
   marcador con los requisitos en la misma parada ("Requisitos: INE, CURP") no cuenta como bloque.
 - **Tope de pulsaciones**: se fija con un criterio escrito ANTES del estudio (derivado de la
   auditoría manual), nunca después de ver resultados. En 3B no tiene valor por omisión (`None`).

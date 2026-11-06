@@ -179,6 +179,36 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
 - **Siguiente:**
   - Fase 3D: veredicto por tarea contra los `.esperado.yaml`.
 
+## 06-nov-2026 — Fase 3D: veredicto, entrada por sitio, reporte y análisis
+
+- **Qué hice:**
+  - Plan primero, aprobado con 5 decisiones. Después: valores esperados a mano en su propio commit (4bcff13) y código en pasos chicos.
+  - `src/veredicto.py`: estado y `tipo_falla` a partir de lo que encontró cada estrategia y del objetivo correcto.
+  - Expansión de menús colapsados dentro de las estrategias, con 3 páginas nuevas (`ce_menu*`).
+  - `src/sitio.py`: lector del CSV de auditoría y corrida por sitio, con un seguro que rechaza URL no locales.
+  - `src/reporte.py`: JSON y Markdown por sitio, con la sección "Llegó primero a otra cosa".
+  - `src/analisis.py`: matriz, acuerdo observado, AUC con scikit-learn y conteo de falsas llegadas.
+- **Resultado:**
+  - Las **24 tareas** dan su `estado` y `tipo_falla` del yaml, sin tocar ningún yaml.
+  - Suite completa: 317 pasan, 0 skip, en 2 corridas seguidas (113 son de 3D).
+  - Los 3 casos de menús dan los valores calculados a mano: 11, 11 y 10.
+  - En `ce_menu`, el estado cambia con el umbral: completable con 15 y 25, con dificultad con 10. En las 24 tareas ningún estado depende del umbral, porque lo logrado cuesta a lo sumo 9 o al menos 32.
+  - Rompí 11 reglas a propósito y las pruebas detectaron las 11. El seguro de páginas locales no se rompió a propósito, porque esa prueba intentaría conectarse a un sitio externo; se prueba que rechaza.
+  - **No hay resultados del estudio:** no se corrió ningún sitio real ni hay auditoría NVDA. El módulo de análisis solo se probó con datos inventados que viven en `tests/test_analisis.py`, y no se reportan.
+- **Problemas y decisiones:**
+  - **Cambio en la definición de mejor estrategia:** ahora es la de menor fricción entre las que llegan al objetivo correcto. El objetivo solo filtra al final, nunca guía la navegación.
+  - **Falsas llegadas:** no cambian el estado, pero se muestran en el reporte y se cuentan aparte en el análisis, porque en un sitio real eso también le puede pasar a una persona.
+  - **Palabras clave, cambio a versión 2:** se agrega la lista `expandir` (`menu`, `menu principal`, `abrir menu`, `navegacion`); las demás no cambian. Razón: un botón "Menú" no coincide con ninguna palabra de tarea y su submenú nunca se abriría, lo que daba `no_encontrado` falso.
+  - **Objetivo correcto:** los yaml no lo declaran y no se podía deducir de la `ruta`, porque la de `sin_encabezados` B termina en "Descargas". Quedó en un `<pagina>.auditoria.csv` a mano por página, con `veredicto_nvda` vacío porque no hay auditoría.
+  - **Página que puntúa axe:** columna opcional `pagina_axe`; vacía usa la entrada. CLAUDE.md pide fijarla de antemano por tarea.
+  - **AUC fijado antes de ver datos:** contra NVDA; principal sin `con_dificultad`; secundario contándolo como logrado. Sin p-valores ni intervalos, porque las tareas de un sitio no son independientes.
+  - **Corrección de redacción, no de prueba:** el reporte decía "Estimación" y la prueba pedía "estimación"; se cambió el texto del reporte.
+  - **Limitaciones nuevas:** la lista de enlaces no descubre lo que está en un submenú cerrado; un enlace roto al documento correcto da `no_encontrado`.
+  - Sigue pendiente, antes de sitios reales: títulos iguales en todo el sitio, `main` sin nombre y marcador con los requisitos en la misma parada.
+- **Siguiente:**
+  - Fase 3E: interfaz local (Streamlit).
+  - Decidir qué se mostrará el 19-nov sin auditoría NVDA.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
