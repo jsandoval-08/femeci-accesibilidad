@@ -149,6 +149,36 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Fase 3C: estrategias programadas, palabras clave por tarea, mejor estrategia y fricción.
   - Seguir la auditoría manual con NVDA a ciegas.
 
+## 05-nov-2026 — Fase 3C: estrategias programadas
+
+- **Qué hice:**
+  - Plan primero, aprobado con 4 decisiones. Después: valores esperados a mano en su propio commit (603f422) y código en pasos chicos.
+  - `src/estrategias.py`: H y D a la sección, lista de enlaces por nombre, F a campos, leer desde el inicio, Tab desde el inicio y probar enlaces ambiguos. También criterios de "creo que llegué", mejor estrategia y resultado por tarea con trayectoria.
+  - `config/palabras_clave.yaml`: **versión 1, congelada**. Cualquier cambio posterior va en esta bitácora con su razón.
+  - Páginas `tests/paginas/ce_*`, con href opacos y una trampa con palabras clave solo en la URL.
+  - Decisiones aplicadas en CLAUDE.md: el agente de IA no se construye (queda como Proyección), sin conjunto reservado, auditoría con NVDA pospuesta y solo páginas de prueba locales.
+- **Resultado:**
+  - En las **24 tareas** de los `.esperado.yaml`, la mejor estrategia coincide con su `estrategia` y su `friccion_esperada`.
+  - Suite completa: 204 pasan, 0 skip, en 2 corridas seguidas (76 son de 3C).
+  - Rompí 6 reglas a propósito (título, no re-entrada, re-entrada por "visitadas", mailto, fin sin cobrar, búsqueda) y las pruebas detectaron las 6.
+  - Esto demuestra que la implementación es correcta, **no** que funcione en otros sitios: no se corrió en sitios reales ni hay referencia NVDA.
+- **Problemas y decisiones:**
+  - **Bug de 3B encontrado al arrancar:** la suite fallaba en 9 de 11 corridas, siempre en un Enter sobre PDF (`Timeout exceeded while waiting for event "download"`), lo que daba un No evaluable falso.
+    - El 20-oct se reportó "127 pasan" sin detectar que era intermitente.
+    - Ahora los bytes se piden con `contexto.request`. Prueba nueva: un PDF que exige cookie confirma que usa la misma sesión.
+    - Aceptación: 5 corridas seguidas limpias (128 pasan). No determiné por qué se perdía el evento.
+  - **Corrección del yaml:** `sin_encabezados` B pasó de **31 a 32**. El 31 suponía comprensión semántica de "Descargas": es texto suelto sin marca, y una estrategia que decide por rol no puede saber que ya no es un requisito. La ruta ahora termina en "Descargas". El estado no cambia (con dificultad en 10, 15 y 25).
+  - **Lo que revela el fin no se cobra:** subestima hasta 1 pulsación; la estrategia ve el ROL de la siguiente parada, nunca su nombre. Es coherente con el fin de documento, que tampoco se cobra. Cobrarlo habría cambiado 11 valores del yaml sin cambiar ningún estado.
+  - **El trámite es parte de la tarea B:** se fija por sitio antes de correr y nunca indica dónde está. Sin él, "Otro trámite" no se puede rechazar por el título (trae la palabra "trámite") y B de `enlaces_ambiguos` costaría 51 en lugar de 35.
+  - **Error mío en CLAUDE.md, corregido:** escribí "URL ya visitada en ese intento". Con esa regla, los 8 intentos a `enlaces_ambiguos_otro.html` se habrían saltado usando la URL. Lo correcto es no re-entrar a una URL abierta en la pila.
+  - **Ajuste al plan:** `mejor_estrategia` quedó en el paso 6, no en un commit propio, para poder probar cada estrategia al agregarla. Por eso algunos commits intermedios (6 a 8) tienen pruebas de 3C aún sin pasar; se corrieron solo las de esa pieza.
+  - **Sin conjunto reservado:** las reglas y palabras se diseñaron viendo las mismas páginas contra las que se prueban.
+  - Nuevos puntos en CLAUDE.md:
+    - por verificar en NVDA: rótulos `<span>` de `formulario_sin_etiquetas`, que sí se oyen con flechas;
+    - antes de tocar sitios reales: menús colapsados, títulos iguales en todo el sitio, `main` sin nombre y marcador con los requisitos en la misma parada.
+- **Siguiente:**
+  - Fase 3D: veredicto por tarea contra los `.esperado.yaml`.
+
 ---
 
 <!-- Plantilla para nuevas entradas:

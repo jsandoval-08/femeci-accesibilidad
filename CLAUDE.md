@@ -160,7 +160,7 @@ estrategias programadas. Decidiría por significado donde ellas deciden por pala
 compararlos mediría cuánto aporta la IA. Control de gasto y corrida repetida de cada tarea.
 
 ## Estado actual
-**Fase 3B completa (navegación en vivo, `src/navegador.py`, 20-oct). Siguiente: 3C.**
+**Fase 3C completa (estrategias programadas, `src/estrategias.py`, 5-nov). Siguiente: 3D.**
 **Alcance vigente (5-nov):** Atorapp corre SOLO sobre páginas de prueba locales; nada de sitios
 reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye.
 
@@ -196,8 +196,9 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     misma página. `mailto:`/`tel:` → no se ejecuta ni cuenta (abriría otra aplicación).
     Medido en las 5 portadas del 5-oct (`scripts/medicion/enlaces_href.py`): de 164 enlaces,
     150 con URL navegable, 6 `#id`, 7 `#` solo, 0 `javascript:`, 1 `mailto:`.
-  - Descarga: no se abre visor; bytes por la misma sesión y se registra si el PDF tiene capa de
-    texto. No apila nivel. El veredicto lo pone 3D.
+  - Descarga: no se abre visor; bytes por la misma sesión (`contexto.request`, 5-nov: esperar el
+    evento `download` fallaba de forma intermitente; cuesta una petición más al sitio) y se
+    registra si el PDF tiene capa de texto. No apila nivel. El veredicto lo pone 3D.
   - Profundidad = tamaño de la pila (entrada = nivel 0, máx. 3). Toda pulsación ejecutada cuenta
     (también el Enter que excede la profundidad o da timeout); con tope N, la N+1 no se ejecuta.
   - CAPTCHA (heurística declarada: g-recaptcha, hcaptcha, turnstile, data-sitekey, "No soy un
@@ -209,11 +210,30 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     archivo; no se anuncia el estado marcado de `switch`/`menuitemcheckbox` ni "contraído" en
     `combobox`; Enter en `switch`, `treeitem` sin `expanded` y `menuitemcheckbox/radio` no se
     ejecuta; `option` suelta no existe en el árbol de Chromium (comprobado).
-- **3C** ← SIGUIENTE. Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
+- **3C** ✅ HECHA. Estrategias programadas + palabras clave por tarea + mejor estrategia + fricción.
+  Pruebas: `tests/test_estrategias.py` (76); en las 24 tareas de los `.esperado.yaml`, la mejor
+  estrategia coincide con su `estrategia` y su `friccion_esperada` (tras corregir `sin_encabezados`
+  B a 32, ver bitácora del 5-nov). Valores escritos a mano antes del código.
   Las estrategias NO re-entran a la URL en la que ya están (un enlace a la misma página sin
   `#`, p. ej. el logo en la portada, es navegación y gastaría profundidad sin avanzar).
-  Plan aprobado 5-nov: ver **Definiciones** (mejor estrategia, lo que revela el fin, trámite).
-- **3D** Veredicto por tarea contra `*.esperado.yaml`. Sin conjunto reservado: solo servía para
+  Reglas: ver **Definiciones** (mejor estrategia, lo que revela el fin, trámite). Además:
+  - **Palabras clave**: `config/palabras_clave.yaml`, **versión 1, congelada** el 5-nov. Se comparan
+    sobre nombres normalizados, como palabra o frase completa. Cualquier cambio sube la versión y
+    va a `BITACORA.md` con su razón.
+  - **"Creo que llegué"** (no es completable; eso es de 3D). A: el texto anunciado trae un correo, 10
+    dígitos agrupados (12 con lada 52) o 7 o más junto a una palabra de teléfono; o el cursor ya está
+    en un enlace `mailto:`/`tel:`. B: un marcador, y al menos 1 texto después; el bloque termina
+    en la siguiente parada que no sea texto. C: un enlace con palabra clave devuelve un `Documento`.
+    D: F llega a un campo que no sea de búsqueda y enumera hasta un botón o hasta que no hay más.
+  - **Enlaces**: los de nombre genérico se prueban en orden; rechazo por título al llegar (en B,
+    contra el trámite buscado). Los enlaces sin nombre no se prueban: ese es el defecto del sitio.
+    Tras cruzar se conserva la misma estrategia (la lista lee desde el inicio en A y B, F en D,
+    y `probar_enlaces` sigue con H + leer).
+  - **Si nadie llega**: se reporta lo más consumido entre estrategias y el motivo; si alguna quedó
+    No evaluable, la tarea es "no resuelta dentro del presupuesto", nunca "no llegó".
+  - Variantes que no se modelan porque no ganan: leer las tarjetas de `enlaces_ambiguos` (36 o 37
+    contra 35); la lista de encabezados (n + 1 contra n).
+- **3D** ← SIGUIENTE. Veredicto por tarea contra `*.esperado.yaml`. Sin conjunto reservado: solo servía para
   decidir el agente, que ya no se construye. Consecuencia declarada: las reglas y palabras clave
   se diseñaron viendo las mismas páginas contra las que se prueban, así que pasar esas pruebas
   demuestra que la implementación es correcta, no que funcione en otros sitios.
@@ -240,7 +260,8 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   para una persona real).
 - **Antes de tocar sitios reales** (omisiones de 3C que pueden dar `no_encontrado` falsos): las
   estrategias no expanden menús colapsados; un título igual en todo el sitio haría rechazar el
-  enlace correcto en `probar_enlaces`; D no usa un `main` sin nombre como punto de partida.
+  enlace correcto en `probar_enlaces`; D no usa un `main` sin nombre como punto de partida; un
+  marcador con los requisitos en la misma parada ("Requisitos: INE, CURP") no cuenta como bloque.
 - **Tope de pulsaciones**: se fija con un criterio escrito ANTES del estudio (derivado de la
   auditoría manual), nunca después de ver resultados. En 3B no tiene valor por omisión (`None`).
 - Roles fuera de la lista de paradas, medidos el 20-oct (`scripts/medicion/`, capturas del 5-oct,
