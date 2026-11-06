@@ -107,7 +107,12 @@ Software libre, repositorio público.
   cursor no se mueve ni da la vuelta al inicio, se anuncia "no hay más …" y la pulsación **cuenta 1**
   (la persona sí presionó; así descubre que no hay más). NVDA por omisión no da la vuelta (JAWS sí).
   *Por verificar en NVDA.*
-- **Mejor estrategia** = mínimo de fricción dentro del conjunto declarado: H+leer, D+leer, lista
+- **Mejor estrategia** (cambio del 6-nov) = la de **menor fricción entre las que llegan al objetivo
+  correcto**. El objetivo solo filtra al final, nunca guía la navegación: las estrategias no lo
+  conocen y se detienen en lo que creen que es. Las que llegaron a otra cosa no cambian el estado,
+  pero se reportan como **falsas llegadas** (en el reporte, "Llegó primero a otra cosa"; en el
+  análisis, conteo aparte), porque en un sitio real eso también le puede pasar a una persona.
+- **Conjunto declarado de estrategias**: H+leer, D+leer, lista
   de enlaces + elegir por nombre, F a campos, leer desde el inicio, Tab desde el inicio (solo
   objetivos enfocables) y probar en orden los enlaces ambiguos (H a la sección, o desde el inicio;
   K + Enter + volver). En ese orden se desempata: no cambia la fricción, solo el nombre reportado.

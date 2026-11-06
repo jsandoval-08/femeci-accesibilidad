@@ -142,7 +142,7 @@ class _Cierre:
     def ver(self, p) -> dict | None:
         """Registra la parada donde quedó el cursor. Solo A cierra con una sola parada."""
         if self.b.letra == "A" and cierra_contacto(p):
-            return {"contacto": p.nombre}
+            return {"contacto": p.nombre, "url": p.url}  # la url es solo para el veredicto
         if self.b.letra == "B":
             if p.rol in ("heading", TEXTO) and coincide(p.nombre, self.b.clave.marcador):
                 self.marcador, self.requisitos = True, []
