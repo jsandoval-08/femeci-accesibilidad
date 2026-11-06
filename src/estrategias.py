@@ -310,6 +310,20 @@ def d_a_seccion(emu, b):
     return _por_saltos(emu, b, "D", d_a_seccion)
 
 
+def d_a_main(emu, b):
+    """D hasta `main`, con o sin nombre, y desde ahí hasta el final del documento (no solo hasta el
+    final de main: el contacto suele estar en el pie). Saltarse el menú es el uso más común de D.
+    En la tarea D sigue con F."""
+    while True:
+        paso = _pulsar(emu, "D")
+        if paso.landmark is None:  # no hay más
+            return None
+        if paso.landmark[0] == "main" and paso.se_movio:
+            if b.letra == "D":
+                return _recorrer(emu, b, "F")
+            return _recorrer(emu, b, "leer", d_a_main)
+
+
 def _elegir(emu, posicion):
     emu.elegir_de_lista("enlaces", posicion)
     if emu.no_evaluable:
@@ -416,6 +430,7 @@ def probar_desde_inicio(emu, b):
 ESTRATEGIAS = {
     "H_a_seccion": h_a_seccion,
     "D_a_seccion": d_a_seccion,
+    "D_a_main": d_a_main,
     "enlace_por_nombre": enlace_por_nombre,
     "F_a_campos": f_a_campos,
     "no_dirigida": no_dirigida,
