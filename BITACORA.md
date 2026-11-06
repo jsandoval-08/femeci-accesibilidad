@@ -221,7 +221,7 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
     - `TOPE_PULSACIONES = 508`: 4 niveles que permite la profundidad × 127 paradas de la portada más larga. Alto a propósito: uno bajo volvería No evaluable un "no existe" real y escondería barreras.
     - `TOPE_NAVEGACIONES = 30` páginas cargadas por estrategia y por tarea (Enter que navega o descarga; volver no cuenta). Acota peticiones al sitio y tiempo de corrida; `enlaces_ambiguos` B usa 9, así que 30 deja margen amplio.
     - Agotar cualquiera sin resolver da No evaluable con su motivo.
-  - Las 24 tareas siguen dando su estrategia, fricción, estado y `tipo_falla` en cada paso, sin tocar ningún yaml.
+  - Las 24 tareas siguen dando su estrategia, fricción, estado y `tipo_falla`, sin tocar ningún yaml (comprobado en los pasos 4 y 5 y en la suite final).
   - Suite completa: 361 pasan, 0 skip, en 2 corridas seguidas (44 son de 3D.1).
   - Rompí 11 reglas a propósito y las pruebas detectaron las 11. Las negativas tienen la red reemplazada por una falla: si un seguro falla, la prueba falla sin conectarse.
 - **Problemas y decisiones:**
