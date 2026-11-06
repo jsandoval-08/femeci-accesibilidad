@@ -1,7 +1,10 @@
 # Palabras clave de las estrategias programadas de Atorapp (Fase 3C).
 #
-# VERSIÓN 1, CONGELADA el 5-nov-2026, ANTES de tocar sitios reales. Cualquier cambio posterior
+# VERSIÓN 2, CONGELADA el 6-nov-2026, ANTES de tocar sitios reales. Cualquier cambio posterior
 # sube la versión y se registra en BITACORA.md con su razón.
+#   v1 (5-nov): listas por tarea, genericos y busqueda.
+#   v2 (6-nov): se agrega "expandir"; las demás listas no cambian. Razón: un botón "Menú" no
+#               coincide con ninguna palabra de tarea y su submenú nunca se abriría.
 #
 # Por qué: las estrategias deciden la relevancia con esta lista declarada, no por significado. Si
 # se pudiera retocar después de ver resultados, se ajustaría la regla a la respuesta.
@@ -12,9 +15,9 @@
 # seccion:  nombre de un encabezado o landmark al que vale la pena saltar.
 # enlace:   nombre de un enlace que vale la pena activar. Si falta, se usa la lista seccion.
 # marcador: (solo B) texto o encabezado que anuncia que siguen los requisitos.
-version: 1
+version: 2
 estado: congelada
-fecha: 2026-11-05
+fecha: 2026-11-06
 
 # Nombres de enlace que no dicen a dónde llevan (se compara el nombre COMPLETO). Solo se prueban
 # en orden, en probar_enlaces. Los enlaces sin nombre no se prueban: ese es el defecto del sitio.
@@ -23,6 +26,10 @@ genericos: [leer mas, clic aqui, click aqui, haz clic aqui, ver mas, mas informa
 
 # Un campo con este nombre (o de rol searchbox) es la búsqueda del sitio, no "el formulario".
 busqueda: [buscar, busqueda, search]
+
+# Un botón colapsado se abre si su nombre coincide con esta lista o con las palabras de la tarea.
+# Cualquier otro ("Idioma") se queda cerrado: cada Enter cuesta y cambia la página.
+expandir: [menu, menu principal, abrir menu, navegacion]
 
 tareas:
   A:  # Contacto. "Transparencia" y "Gobierno" no están: son categorías de menú, no señales.

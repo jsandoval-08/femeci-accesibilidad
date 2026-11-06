@@ -69,8 +69,9 @@ def test_coincide(texto, frases, esperado):
     assert estrategias.coincide(texto, frases) is esperado
 
 
-def test_palabras_version_1_congelada():
-    assert PALABRAS.version == 1 and PALABRAS.estado == "congelada"
+def test_palabras_version_congelada():
+    assert PALABRAS.version == 2 and PALABRAS.estado == "congelada"  # v2: agrega "expandir"
+    assert "menu" in PALABRAS.expandir
     assert set(PALABRAS.tareas) == {"A", "B", "C", "D"}
     # Lo que no se declara cae a la sección: A y D no tienen lista propia de enlaces.
     assert PALABRAS.tareas["A"].enlace == PALABRAS.tareas["A"].seccion

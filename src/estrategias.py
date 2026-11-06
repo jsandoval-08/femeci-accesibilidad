@@ -12,8 +12,8 @@ from urllib.parse import urldefrag
 
 import yaml
 
-from src.emulador import (FILTROS, ROLES_CAMPO, TEXTO, AccionNoPermitida, NoEvaluable, Paso,
-                          SesionTerminada, normalizar)
+from src.emulador import (FILTROS, ROLES_CAMPO, ROLES_ENLACE, ROLES_EXPANDIBLES, TEXTO,
+                          AccionNoPermitida, NoEvaluable, Paso, SesionTerminada, normalizar)
 
 RUTA_PALABRAS = Path(__file__).parent.parent / "config" / "palabras_clave.yaml"
 
@@ -47,6 +47,7 @@ class PalabrasClave:
     estado: str
     genericos: frozenset[str]
     busqueda: tuple[str, ...]
+    expandir: tuple[str, ...]
     tareas: dict[str, PalabrasTarea]
 
 
@@ -62,7 +63,7 @@ def cargar_palabras(ruta: Path = RUTA_PALABRAS) -> PalabrasClave:
         tareas[letra] = PalabrasTarea(seccion, lista(t["enlace"]) if "enlace" in t else seccion,
                                       lista(t.get("marcador", ())))
     return PalabrasClave(datos["version"], datos["estado"], frozenset(lista(datos["genericos"])),
-                         lista(datos["busqueda"]), tareas)
+                         lista(datos["busqueda"]), lista(datos["expandir"]), tareas)
 
 
 # ---------- Tarea y criterios de "creo que llegué" ----------
@@ -229,9 +230,20 @@ def _procesar(emu, b, cierre, continuar) -> dict | None:
     p = emu.paradas[emu.cursor]
     if hallazgo := cierre.ver(p):
         return hallazgo
-    if continuar and p.rol == "link" and coincide(p.nombre, b.clave.enlace):
+    if _debe_expandir(p, b):
+        _pulsar(emu, "Enter")  # clic en la misma página; las paradas nuevas quedan después
+        return None
+    if continuar and p.rol in ROLES_ENLACE and coincide(p.nombre, b.clave.enlace):
         return _activar(emu, b, continuar)
     return None
+
+
+def _debe_expandir(p, b) -> bool:
+    """Un control colapsado se abre solo si su nombre es relevante: "Idioma" se queda cerrado,
+    porque cada Enter cuesta y cambia la página. Limitación declarada: la lista de enlaces no ve
+    los botones, así que no descubre lo que está en un submenú cerrado (no se mezclan estrategias)."""
+    return (p.rol in ROLES_EXPANDIBLES and p.expandido is False
+            and coincide(p.nombre, b.clave.seccion + b.clave.enlace + b.palabras.expandir))
 
 
 def _recorrer(emu, b, tecla, continuar=None, es_fin=None) -> dict | None:
