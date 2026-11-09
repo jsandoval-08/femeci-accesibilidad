@@ -54,10 +54,25 @@ def test_sin_columna_pagina_axe_tambien_sirve(tmp_path):
     (["A,i.html,,,,,"], "línea 2"),  # objetivo vacío: hay que escribir NO_EXISTE
     (["A,i.html,,x,tal vez,,"], "línea 2"),  # veredicto fuera del vocabulario
     (["A,i.html,,x,,quizá,"], "línea 2"),  # vidente fuera del vocabulario
+    # Fase 4 (8-nov): en A, B y D el objetivo es lo que se OYE (teléfono/correo, requisitos,
+    # campos); una URL nunca coincidiría y daría no_completable fijo, como un objetivo vacío.
+    (["A,i.html,,https://www.ejemplo.gob.mx/,,,"], "línea 2"),
+    (["B,i.html,Acta,INE|https://x.gob.mx/req,,,"], "línea 2"),
+    (["D,i.html,,http://x.gob.mx/form,,,"], "línea 2"),
 ])
 def test_errores_con_numero_de_linea(tmp_path, filas, error):
     with pytest.raises(sitio.ErrorAuditoria, match=error):
         sitio.leer_auditoria(_csv(tmp_path, *filas))
+
+
+def test_objetivo_url_solo_vale_en_c_y_correo_no_es_url(tmp_path):
+    """C compara la URL del documento: ahí una URL completa es válida. Un correo no es URL."""
+    filas = sitio.leer_auditoria(_csv(
+        tmp_path,
+        "A,i.html,,contacto@ejemplo.gob.mx|667 555 0142,,,",
+        "C,i.html,,https://x.gob.mx/docs/plan.pdf,,,",
+    ))
+    assert [f.tarea for f in filas] == ["A", "C"]
 
 
 def test_columna_faltante(tmp_path):

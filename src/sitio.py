@@ -14,6 +14,7 @@ con palabra clave a otro dominio (bloquearlo daría no_encontrado falso con PDF 
 """
 
 import csv
+import re
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -34,6 +35,7 @@ ESTADOS = {"completable", "con_dificultad", "no_completable", "no_evaluable"}
 VIDENTE = {"si": True, "sí": True, "no": False}
 PUNTAJES = ("reglas", "elementos", "reglas_conservador", "elementos_conservador")
 HOSTS_LOCALES = {"127.0.0.1", "localhost"}
+_ES_URL = re.compile(r"[a-z][a-z0-9+.-]*://", re.IGNORECASE)  # "https://...", no "a@b.mx"
 # Topes por estrategia y por tarea, fijados por escrito el 6-nov ANTES de ver datos (CLAUDE.md).
 # Agotar cualquiera sin resolver = No evaluable. No se cambian al ver resultados.
 # Pulsaciones: 4 niveles que permite la profundidad × 127 paradas, la portada más larga medida
@@ -111,6 +113,11 @@ def _fila(datos: dict, linea: int, vistas: set) -> FilaAuditoria:
         raise error("la tarea B se define con el trámite que la persona busca")
     if not valor["objetivo_correcto"]:
         raise error("objetivo vacío; si el sitio no lo tiene, escribe NO_EXISTE")
+    if tarea != "C" and any(_ES_URL.match(p.strip()) for p in valor["objetivo_correcto"].split("|")):
+        # Como un objetivo vacío: el veredicto de A, B y D compara lo que se OYE, así que una URL
+        # nunca coincide y la tarea daría no_completable sin importar lo que haga Atorapp.
+        raise error("en A, B y D el objetivo es lo que se oye (teléfono o correo, requisitos, "
+                    "campos), no una URL; solo en C se escribe la URL del documento")
     nvda = valor["veredicto_nvda"]
     if nvda and nvda not in ESTADOS:
         raise error(f"veredicto_nvda desconocido: '{nvda}'")

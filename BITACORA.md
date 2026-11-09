@@ -237,6 +237,37 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Para correr un sitio real: hacer su auditoría con NVDA y exportar su CSV.
   - Decidir qué se mostrará el 19-nov.
 
+## 08-nov-2026 — Fase 4, paso 1: del Excel de auditoría NVDA a los CSV (sin correr sitios)
+
+- **Qué hice:**
+  - Javier hizo una mini auditoría NVDA a ciegas: sinaloa A, ahome A y ciudadano B. Las demás filas no tienen veredicto y no se usan.
+  - Revisé los riesgos contra el código ANTES de correr nada.
+  - `scripts/excel_a_csv.py`:
+    - escribe un CSV por pestaña con las 7 columnas que lee `src/sitio.py`, en utf-8-sig y solo con las filas que tienen veredicto;
+    - guarda las notas del auditor aparte, en `notas_nvda.csv`;
+    - valida todo con el lector de Atorapp antes de escribir.
+  - Copié el Excel original a `estudio/auditoria/` como evidencia (sha256 `411d608b…`). La versión corregida lo reemplazará y git guardará las dos.
+  - `openpyxl==3.1.5` agregado a `requirements.txt`.
+- **Resultado:**
+  - Suite completa: 369 pasan (8 nuevas).
+  - Rompí a propósito la validación nueva y las pruebas detectaron las 4 roturas.
+  - **No se corrió ningún sitio real.**
+- **Problemas y decisiones:**
+  - **`objetivo_correcto` con forma de URL en ahome A y ciudadano B.** El veredicto de A compara teléfono o correo y el de B compara los requisitos leídos, así que una URL nunca coincide. Esas tareas habrían dado no_completable sin importar lo que hiciera Atorapp.
+    - El lector ahora rechaza una URL en A, B y D, igual que rechaza un objetivo vacío. En C sí vale, porque ahí el objetivo es la URL del documento.
+    - Es validación de entrada, no un cambio de veredicto, y se agregó antes de correr nada.
+    - Javier corrige el Excel antes de correr, con lo que vio en el paso vidente de su auditoría. Así la corrección sigue siendo a ciegas respecto a Atorapp.
+  - **Riesgos revisados para ciudadano B:**
+    - No puede dar completable solo por quedarse en la portada: B compara los requisitos leídos, no la URL.
+    - Si los requisitos aparecen sin cambiar de URL, el clic recaptura la misma página y se sigue leyendo desde el cursor.
+    - Enter solo se ejecuta en enlaces, `menuitem` y controles con `expanded`. Si las tarjetas son texto o botones sin `expanded`, Atorapp no puede abrirlas: es un límite del emulador y se reportará, no se arregla.
+  - **Hallazgo antes de correr:** las estrategias de B no usan el nombre del trámite para elegir un enlace, solo para rechazar por el título al llegar (regla declarada desde 3C).
+    - **Decisión: se corre como está.** Cambiarla después de leer la ruta NVDA ("Enter en Acta de nacimiento") sería ajustar Atorapp a la referencia.
+    - Queda como limitación y como trabajo futuro.
+  - **sinaloa A con `NO_EXISTE`:** da no_completable / no_encontrado. Un contacto en otro host (regla: un subdominio es otro sitio) cuenta como falsa llegada. Riesgo declarado: si alguna estrategia queda No evaluable (timeout o tope), la regla 5 vuelve toda la tarea no_evaluable.
+- **Siguiente:**
+  - Con el Excel corregido: convertir, correr los 3 sitios con `--sitio-real` (una sola vez cada uno) y hacer el análisis conjunto.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
