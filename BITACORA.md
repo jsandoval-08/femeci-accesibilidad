@@ -268,6 +268,57 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
 - **Siguiente:**
   - Con el Excel corregido: convertir, correr los 3 sitios con `--sitio-real` (una sola vez cada uno) y hacer el análisis conjunto.
 
+## 08-nov-2026 — Fase 4, pasos 2 y 3: primeras corridas en sitios reales
+
+- **Qué hice:**
+  - Javier corrigió dos objetivos en el Excel:
+    - ahome A: `correo|teléfono`;
+    - ciudadano B: 4 fragmentos de requisitos.
+  - Copié el Excel corregido (sha256 `ff689a11…`) y lo convertí. git guarda las dos versiones.
+  - Corregí un bug del veredicto de A (detalle abajo), con prueba primero y antes de correr ahome.
+  - Corrí cada sitio **una sola vez** con `--sitio-real` y pausa de 1 s:
+    - sinaloa a las 20:12;
+    - ciudadano a las 20:13;
+    - ahome a las 20:17.
+  - `scripts/analisis_conjunto.py`:
+    - matriz, acuerdo y sensibilidad con 10, 15 y 25;
+    - el AUC no se reporta con menos de 10 tareas comparables (umbral fijado antes de ver los datos).
+  - Reportes en `estudio/resultados/`. Las capturas quedan fuera de git.
+- **Resultado:**
+
+  | Sitio | Tarea | NVDA | Atorapp | Fricción | axe (reglas / elementos / reglas cons. / elementos cons.) |
+  |---|---|---|---|---|---|
+  | sinaloa | A | no_completable | no_completable, no_encontrado | 123 consumidas | 87.5 / 94.5 / 83.3 / 83.0 % |
+  | ciudadano | B | con_dificultad | no_completable, no_encontrado | 73 consumidas | 73.7 / 72.3 / 73.7 / 71.0 % |
+  | ahome | A | con_dificultad | no_evaluable (timeout) | 0 | no medido (timeout) |
+
+  - 2 tareas comparables: acuerdo de 1 de 2, igual en 3 clases y en binario, y con los umbrales 10, 15 y 25. Hubo 0 falsas llegadas.
+  - **sinaloa A coincide por la razón correcta:**
+    - la portada capturada tiene 123 paradas, pero ninguna con palabra clave de contacto ni enlace `mailto:`/`tel:`;
+    - ninguna estrategia salió de la portada y la más larga la leyó completa;
+    - el auditor anotó lo mismo: no hay teléfono ni correo en ese host.
+  - **ciudadano B no coincide por un límite del emulador, no por una barrera del sitio:**
+    - en el árbol, "Acta de nacimiento" es `StaticText` (parada 27), no un enlace ni un botón;
+    - NVDA lo activa con Enter; el emulador no ejecuta Enter sobre texto (regla de 3B);
+    - además, B no usa el nombre del trámite para elegir (decidido antes de correr: no se cambia);
+    - es un **error de interacción** de Atorapp, en la clasificación de CLAUDE.md;
+    - axe puntúa 73.7 % y no puede ver este problema; tampoco Atorapp lo resolvió.
+  - **ahome A:** la entrada no cargó en 60 s, ni para axe ni para las estrategias. Se registra como no_evaluable y no se reintentó. No se averiguó si el sitio estaba caído o rechazaba al navegador automatizado: averiguarlo exigiría más peticiones.
+  - Suite completa: 377 pasan, 0 fallan (8 de ellas nuevas: 7 del veredicto de A y 1 del análisis conjunto).
+- **Problemas y decisiones:**
+  - **Bug del veredicto de A:** con `|`, se juntaban los dígitos de todo el objetivo.
+    - Con `correo|teléfono`, el correo nunca contaba; con un número en el correo, tampoco el teléfono.
+    - Contradecía CLAUDE.md ("`|` separa varios valores") y las instrucciones de la hoja de auditoría. Ninguna prueba lo cubría, porque las páginas de prueba tienen un solo teléfono.
+    - Ahora son alternativas: basta una. Javier lo aprobó antes de correr ahome, y sinaloa y ciudadano no dependen de esta regla.
+    - En la práctica no influyó: ahome quedó no_evaluable.
+  - Regla de B confirmada sin cambios: exige **todos** los fragmentos (cada uno dentro de algún requisito leído), con requisitos de más permitidos.
+  - El reporte JSON guarda solo la trayectoria resumida de la estrategia más larga. Para explicar ciudadano usé la captura de la portada. Pendiente: guardar la trayectoria completa con anuncios, para tener contraejemplos reproducibles.
+  - Error mío en el análisis, corregido antes del commit: el motivo del AUC mezclaba tareas comparables con sitios.
+- **Siguiente:**
+  - Decidir si ahome se corre una vez más otro día, registrándolo como segunda corrida y no como reemplazo.
+  - Completar la auditoría de las filas pendientes (ahome B, sinaloa B, ciudadano A, culiacán).
+  - Guardar la trayectoria completa en el reporte.
+
 ---
 
 <!-- Plantilla para nuevas entradas:

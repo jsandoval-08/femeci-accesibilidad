@@ -165,7 +165,11 @@ estrategias programadas. Decidiría por significado donde ellas deciden por pala
 compararlos mediría cuánto aporta la IA. Control de gasto y corrida repetida de cada tarea.
 
 ## Estado actual
-**Fase 3D.1 completa (preparación para sitios reales, sin correrlos, 6-nov). Siguiente: 3E.**
+**Fase 4 iniciada (8-nov): mini auditoría NVDA a ciegas (sinaloa A, ahome A, ciudadano B) y primera
+corrida real de cada una.** Datos y resultados en `estudio/` (Excel → CSV con
+`scripts/excel_a_csv.py`; análisis con `scripts/analisis_conjunto.py`; ver bitácora del 8-nov).
+Lo de abajo sobre "solo páginas locales" queda superado para los sitios con auditoría hecha.
+**Fase 3D.1 completa (preparación para sitios reales, 6-nov). 3E pendiente.**
 **Alcance vigente (5-nov):** Atorapp corre SOLO sobre páginas de prueba locales; nada de sitios
 reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye. El modo
 "sitio real" ya existe, pero no se ha usado: exige la auditoría antes (ver 3D.1).
