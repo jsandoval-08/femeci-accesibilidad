@@ -258,8 +258,9 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     llegó al objetivo correcto → por fricción; (4) D: algún campo sin nombre (basta uno) →
     `no_identificable`; (5) sin resolver, con No evaluable o CAPTCHA en la ruta → No evaluable (la
     insignia invisible de reCAPTCHA v3 sola no bloquea); (6) lo demás → `no_encontrado`.
-  - **Comparación con el objetivo**: `|` separa varios valores. A: con 7 dígitos o más se comparan
-    los dígitos (nombre o `tel:`); si no, el texto (nombre o `mailto:`). B: todos los requisitos,
+  - **Comparación con el objetivo**: `|` separa varios valores. A: son alternativas, basta UNA
+    (bug corregido el 8-nov antes de correr ahome: el correo nunca contaba); por cada una, con 7
+    dígitos o más se comparan los dígitos (nombre o `tel:`); si no, el texto (nombre o `mailto:`). B: todos los requisitos,
     con extras permitidos. C: la URL del documento es el objetivo o termina en él, por segmentos.
     D: cada campo en algún nombre. `NO_EXISTE`: la referencia dice que el sitio no lo tiene.
   - **Menús**: un control colapsado se abre solo si su nombre coincide con las palabras de la tarea o

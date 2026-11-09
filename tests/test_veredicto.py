@@ -55,6 +55,17 @@ def _falsas(v):
     ("A", {"contacto": "Escríbenos", "url": "mailto:Oficina@Example.org"}, "oficina@example.org", True),
     ("A", {"contacto": "oficina@example.org", "url": None}, "oficina@example.org", True),
     ("A", {"contacto": "otra@example.org", "url": None}, "oficina@example.org", False),
+    # 8-nov (bug): en A, "|" separa alternativas; basta UNA. Antes se juntaban los dígitos de todo
+    # el objetivo y el correo nunca contaba (y con dígitos en el correo, tampoco el teléfono).
+    ("A", {"contacto": "oficina@example.org", "url": None}, "oficina@example.org|(668) 555-0142", True),
+    ("A", {"contacto": "Escríbenos", "url": "mailto:oficina@example.org"},
+     "oficina@example.org|(668) 555-0142", True),
+    ("A", {"contacto": "Tel. (668) 555-0142", "url": None}, "oficina@example.org|(668) 555-0142", True),
+    ("A", {"contacto": "Tel. 668 555 0142", "url": None}, "oficina2026@example.org|668 555 0142", True),
+    ("A", {"contacto": "oficina2026@example.org", "url": None}, "oficina2026@example.org|668 555 0142",
+     True),
+    ("A", {"contacto": "otra@example.org", "url": None}, "oficina@example.org|(668) 555-0142", False),
+    ("A", {"contacto": "Tel. 668 555 0999", "url": None}, "oficina@example.org|(668) 555-0142", False),
     # B: todos los requisitos; los extras se permiten ("Descargas", límite declarado)
     ("B", {"requisitos": ["Identificación", "Croquis"]}, "Identificación|Croquis", True),
     ("B", {"requisitos": ["Identificación", "Croquis", "Descargas"]}, "Identificación|Croquis", True),

@@ -53,6 +53,13 @@ def _partes(objetivo: str) -> list[str]:
 
 
 def _contacto_correcto(hallazgo: dict, objetivo: str) -> bool:
+    """En A, "|" separa alternativas (correo o teléfono): basta con encontrar UNA, porque cualquiera
+    sirve para contactar. Bug corregido el 8-nov, antes de correr ahome: se juntaban los dígitos de
+    todo el objetivo, así que el correo nunca contaba."""
+    return any(_un_contacto(hallazgo, parte) for parte in objetivo.split("|") if parte.strip())
+
+
+def _un_contacto(hallazgo: dict, objetivo: str) -> bool:
     nombre, url = hallazgo["contacto"], hallazgo.get("url") or ""
     digitos = _digitos(objetivo)
     if len(digitos) >= MIN_DIGITOS:  # cualquier formato; "+52" o la palabra "Tel." no estorban
