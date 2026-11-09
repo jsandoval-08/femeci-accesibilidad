@@ -14,3 +14,6 @@ capturas/
 
 # Editor
 .vscode/
+
+# Capturas de las corridas del estudio (se regeneran; el reporte guarda la trayectoria)
+estudio/resultados/*/capturas/

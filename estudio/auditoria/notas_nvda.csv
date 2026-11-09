@@ -1,0 +1,4 @@
+﻿sitio,tarea,ruta_nvda,pulsaciones_aprox,que_me_atoro,fecha_auditoria
+ahome,A,"Primer intento ~30 pulsaciones, ruta directa ~35 (H, D, K y Enter hasta Contacto). Conteo manual aproximado; auditor principiante.",35,"Se encuentra el contacto, pero cuesta mas de 15 pulsaciones.",2026-11-08
+sinaloa,A,"H, D y K en la portada (5 a 10 min). Conteo manual aproximado; auditor principiante.",,En la portada solo hay redes sociales y enlaces a otros portales (no abiertos). Sin telefono ni correo del portal. Se mide por host exacto.,2026-11-08
+ciudadano,B,"Flechas cuadro por cuadro hasta Acta de nacimiento, Enter, flechas hasta Requisitos. Conteo manual aproximado; auditor principiante.",20,Los tramites se leen como texto uno por uno con flechas; se activan con Enter. Llegar a los requisitos cuesta ~20 pulsaciones. Los requisitos se muestran sin cambiar la URL (posible ventana emergente o app de una sola pagina).,2026-11-08
