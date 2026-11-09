@@ -1,0 +1,183 @@
+{
+  "tareas": [
+    {
+      "sitio": "ahome",
+      "fecha": "2026-11-08T20:22:10-07:00",
+      "tarea": "A",
+      "entrada": "https://www.ahome.gob.mx/",
+      "tramite": null,
+      "objetivo_correcto": "contacto@ahome.gob.mx|(668) 816-4000",
+      "pagina_axe": "https://www.ahome.gob.mx/",
+      "estado": "no_evaluable",
+      "tipo_falla": null,
+      "estrategia": "H_a_seccion",
+      "friccion": null,
+      "consumidas": 0,
+      "motivo": "no resuelta dentro del presupuesto: timeout",
+      "sensibilidad": {
+        "10": "no_evaluable",
+        "15": "no_evaluable",
+        "25": "no_evaluable"
+      },
+      "trayectoria": "entrada×1",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": null,
+      "error_axe": "TimeoutError: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.ahome.gob.mx/\", waiting until \"load\"\n",
+      "veredicto_nvda": "con_dificultad",
+      "vidente_lo_encuentra": true
+    },
+    {
+      "sitio": "ciudadano",
+      "fecha": "2026-11-08T20:14:20-07:00",
+      "tarea": "B",
+      "entrada": "https://ciudadano.sinaloa.gob.mx/",
+      "tramite": "Acta de nacimiento",
+      "objetivo_correcto": "Certificado de nacimiento|constancia de inexistencia de no registro|Acta de matrimonio|Identificación oficial",
+      "pagina_axe": "https://ciudadano.sinaloa.gob.mx/",
+      "estado": "no_completable",
+      "tipo_falla": "no_encontrado",
+      "estrategia": "no_dirigida",
+      "friccion": null,
+      "consumidas": 73,
+      "motivo": "ninguna estrategia encontró el objetivo",
+      "sensibilidad": {
+        "10": "no_completable",
+        "15": "no_completable",
+        "25": "no_completable"
+      },
+      "trayectoria": "leer×2, Enter×1, leer×8, Enter×1, leer×61",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.7368421052631579,
+        "elementos": 0.7225433526011561,
+        "reglas_conservador": 0.7368421052631579,
+        "elementos_conservador": 0.7102272727272727
+      },
+      "error_axe": null,
+      "veredicto_nvda": "con_dificultad",
+      "vidente_lo_encuentra": true
+    },
+    {
+      "sitio": "sinaloa",
+      "fecha": "2026-11-08T20:13:30-07:00",
+      "tarea": "A",
+      "entrada": "https://sinaloa.gob.mx/",
+      "tramite": null,
+      "objetivo_correcto": "NO_EXISTE",
+      "pagina_axe": "https://sinaloa.gob.mx/",
+      "estado": "no_completable",
+      "tipo_falla": "no_encontrado",
+      "estrategia": "no_dirigida",
+      "friccion": null,
+      "consumidas": 123,
+      "motivo": "ninguna estrategia encontró el objetivo",
+      "sensibilidad": {
+        "10": "no_completable",
+        "15": "no_completable",
+        "25": "no_completable"
+      },
+      "trayectoria": "leer×123",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.875,
+        "elementos": 0.945054945054945,
+        "reglas_conservador": 0.8333333333333334,
+        "elementos_conservador": 0.8295819935691319
+      },
+      "error_axe": null,
+      "veredicto_nvda": "no_completable",
+      "vidente_lo_encuentra": false
+    }
+  ],
+  "notas_nvda": [
+    {
+      "sitio": "ahome",
+      "tarea": "A",
+      "ruta_nvda": "Primer intento ~30 pulsaciones, ruta directa ~35 (H, D, K y Enter hasta Contacto). Conteo manual aproximado; auditor principiante.",
+      "pulsaciones_aprox": "35",
+      "que_me_atoro": "Se encuentra el contacto, pero cuesta mas de 15 pulsaciones.",
+      "fecha_auditoria": "2026-11-08"
+    },
+    {
+      "sitio": "sinaloa",
+      "tarea": "A",
+      "ruta_nvda": "H, D y K en la portada (5 a 10 min). Conteo manual aproximado; auditor principiante.",
+      "pulsaciones_aprox": "",
+      "que_me_atoro": "En la portada solo hay redes sociales y enlaces a otros portales (no abiertos). Sin telefono ni correo del portal. Se mide por host exacto.",
+      "fecha_auditoria": "2026-11-08"
+    },
+    {
+      "sitio": "ciudadano",
+      "tarea": "B",
+      "ruta_nvda": "Flechas cuadro por cuadro hasta Acta de nacimiento, Enter, flechas hasta Requisitos. Conteo manual aproximado; auditor principiante.",
+      "pulsaciones_aprox": "20",
+      "que_me_atoro": "Los tramites se leen como texto uno por uno con flechas; se activan con Enter. Llegar a los requisitos cuesta ~20 pulsaciones. Los requisitos se muestran sin cambiar la URL (posible ventana emergente o app de una sola pagina).",
+      "fecha_auditoria": "2026-11-08"
+    }
+  ],
+  "matriz": {
+    "clases": [
+      "completable",
+      "con_dificultad",
+      "no_completable"
+    ],
+    "matriz": {
+      "completable": {
+        "completable": 0,
+        "con_dificultad": 0,
+        "no_completable": 0
+      },
+      "con_dificultad": {
+        "completable": 0,
+        "con_dificultad": 0,
+        "no_completable": 1
+      },
+      "no_completable": {
+        "completable": 0,
+        "con_dificultad": 0,
+        "no_completable": 1
+      }
+    },
+    "n": 2,
+    "excluidas": {
+      "sin_nvda": 0,
+      "no_evaluable_nvda": 0,
+      "no_evaluable_atorapp": 1
+    }
+  },
+  "acuerdo": {
+    "n": 2,
+    "tres_clases": 0.5,
+    "binario": 0.5
+  },
+  "acuerdo_por_umbral": {
+    "10": {
+      "n": 2,
+      "iguales": 1
+    },
+    "15": {
+      "n": 2,
+      "iguales": 1
+    },
+    "25": {
+      "n": 2,
+      "iguales": 1
+    }
+  },
+  "falsas_llegadas": {
+    "tareas_con_falsa": 0,
+    "n_tareas": 3,
+    "por_sitio": {
+      "ahome": 0,
+      "ciudadano": 0,
+      "sinaloa": 0
+    }
+  },
+  "auc": {
+    "calculado": false,
+    "motivo": "hay 2 tareas comparables (de 3 tareas en 3 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe"
+  }
+}

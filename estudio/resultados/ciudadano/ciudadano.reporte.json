@@ -1,0 +1,40 @@
+{
+  "sitio": "ciudadano",
+  "url_base": "https://ciudadano.sinaloa.gob.mx/",
+  "fecha": "2026-11-08T20:14:20-07:00",
+  "palabras_version": 2,
+  "umbral": 15,
+  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
+  "tareas": [
+    {
+      "tarea": "B",
+      "entrada": "https://ciudadano.sinaloa.gob.mx/",
+      "tramite": "Acta de nacimiento",
+      "objetivo_correcto": "Certificado de nacimiento|constancia de inexistencia de no registro|Acta de matrimonio|Identificación oficial",
+      "pagina_axe": "https://ciudadano.sinaloa.gob.mx/",
+      "estado": "no_completable",
+      "tipo_falla": "no_encontrado",
+      "estrategia": "no_dirigida",
+      "friccion": null,
+      "consumidas": 73,
+      "motivo": "ninguna estrategia encontró el objetivo",
+      "sensibilidad": {
+        "10": "no_completable",
+        "15": "no_completable",
+        "25": "no_completable"
+      },
+      "trayectoria": "leer×2, Enter×1, leer×8, Enter×1, leer×61",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.7368421052631579,
+        "elementos": 0.7225433526011561,
+        "reglas_conservador": 0.7368421052631579,
+        "elementos_conservador": 0.7102272727272727
+      },
+      "error_axe": null,
+      "veredicto_nvda": "con_dificultad",
+      "vidente_lo_encuentra": true
+    }
+  ]
+}

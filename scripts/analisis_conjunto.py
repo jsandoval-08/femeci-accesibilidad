@@ -68,9 +68,10 @@ def analizar(carpeta_resultados, ruta_notas) -> tuple[dict, str]:
     falsas = falsas_llegadas(registros)
     n_auc = matriz["n"]
     auc = {"calculado": False,
-           "motivo": (f"{n_auc} tareas comparables de {len({r.sitio for r in registros})} sitios; "
-                      f"con menos de {MIN_TAREAS_AUC} el AUC no es interpretable (con 1 tarea de una "
-                      "clase y 2 de la otra solo puede valer 0, 0.5 o 1)")}
+           "motivo": (f"hay {n_auc} tareas comparables (de {len(registros)} tareas en "
+                      f"{len({r.sitio for r in registros})} sitios); con menos de {MIN_TAREAS_AUC} el AUC "
+                      "no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada "
+                      "clase, 0 o 1) y no dice nada de axe")}
     datos = {"tareas": tareas, "notas_nvda": list(notas.values()), "matriz": matriz,
              "acuerdo": acuerdo, "acuerdo_por_umbral": por_umbral, "falsas_llegadas": falsas,
              "auc": auc}
