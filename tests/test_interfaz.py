@@ -206,6 +206,20 @@ def test_reproductor_con_teclado_y_anuncio(pagina):
     assert pagina.is_disabled("#b-siguiente")
 
 
+def test_identidad_visual(pagina):
+    """Fase 3F.4: la fuente carga por file:// sin red, el foco es el anillo naranja del logo y el
+    estado No evaluable es un rombo (forma propia, no el círculo de completable)."""
+    _ir(pagina, "#trayectoria/prueba/perfecta/A")
+    pagina.evaluate("document.fonts.ready")
+    assert pagina.evaluate("document.fonts.check('700 20px \"Atkinson Hyperlegible\"')")
+    pagina.keyboard.press("Tab")
+    s = pagina.evaluate("""() => { const s = getComputedStyle(document.activeElement);
+        return [s.outlineStyle, s.outlineWidth, s.outlineColor, s.outlineOffset]; }""")
+    assert s == ["solid", "4px", "rgb(232, 89, 12)", "3px"]
+    assert pagina.inner_text(".marca-nombre") == "Atorapp"
+    assert pagina.peticiones_externas == []
+
+
 def test_foco_visible(pagina):
     """Cada control enfocable tiene un contorno visible al recibir el foco con teclado."""
     _ir(pagina, "#trayectoria/prueba/perfecta/A")

@@ -74,7 +74,8 @@
     completable: '<circle cx="12" cy="12" r="10" fill="currentColor"/><path d="m7.5 12.3 3 3 6-6.3" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
     con_dificultad: '<path d="M12 2.5 22.5 20.5h-21Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 9v5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.4" fill="#fff"/>',
     no_completable: '<rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor"/><path d="m8 8 8 8m0-8-8 8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>',
-    no_evaluable: '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M7.5 12h9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>',
+    // Rombo con guion (Fase 3F.4): forma propia, distinta del círculo de completable.
+    no_evaluable: '<path d="M12 1.2 22.8 12 12 22.8 1.2 12Z" fill="currentColor"/><path d="M7.6 12h8.8" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>',
     pendiente: '<circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 3"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
     si: '<circle cx="12" cy="12" r="10" fill="currentColor"/><path d="m7.5 12.3 3 3 6-6.3" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
     no: '<circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 9.5h9m-9 5h9" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><path d="m14.5 6.5-5 11" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>',
