@@ -1,0 +1,696 @@
+{
+  "sitio": "enlaces_ambiguos",
+  "url_base": "http://127.0.0.1:55691/",
+  "fecha": "2026-11-13T22:42:14-07:00",
+  "palabras_version": 2,
+  "umbral": 15,
+  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
+  "tareas": [
+    {
+      "tarea": "A",
+      "entrada": "enlaces_ambiguos.html",
+      "tramite": null,
+      "objetivo_correcto": "667 555 0142",
+      "pagina_axe": "enlaces_ambiguos.html",
+      "estado": "completable",
+      "tipo_falla": null,
+      "estrategia": "H_a_seccion",
+      "friccion": 6,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "completable",
+        "15": "completable",
+        "25": "completable"
+      },
+      "trayectoria": "H×5, leer×1",
+      "pasos": [
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 1, Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Noticias",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Trámites",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Descargas",
+          "pulsaciones": 4,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Contacto",
+          "pulsaciones": 5,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Teléfono: 667 555 0142",
+          "pulsaciones": 6,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "Teléfono: 667 555 0142",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.9473684210526315,
+        "elementos": 0.9788732394366197,
+        "reglas_conservador": 0.9473684210526315,
+        "elementos_conservador": 0.9788732394366197
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    },
+    {
+      "tarea": "B",
+      "entrada": "enlaces_ambiguos.html",
+      "tramite": "Licencia de construcción",
+      "objetivo_correcto": "Identificación oficial vigente|Comprobante de domicilio|Comprobante de pago del predial|Croquis del terreno",
+      "pagina_axe": "enlaces_ambiguos.html",
+      "estado": "con_dificultad",
+      "tipo_falla": null,
+      "estrategia": "probar_enlaces",
+      "friccion": 35,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "con_dificultad",
+        "15": "con_dificultad",
+        "25": "con_dificultad"
+      },
+      "trayectoria": "H×3, K×1, Enter×1, volver×1, K×1, Enter×1, volver×1, K×1, Enter×1, volver×1, K×1, Enter×1, volver×1, K×1, Enter×1, volver×1, K×1, Enter×1, volver×1, K×1, Enter×1, volver×1, K×1, Enter×1, volver×1, K×1, Enter×1, H×1, leer×5",
+      "pasos": [
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 1, Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Noticias",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Trámites",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, Leer más",
+          "pulsaciones": 4,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 5,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 6,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, clic aquí",
+          "pulsaciones": 7,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 8,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 9,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, Leer más",
+          "pulsaciones": 10,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 11,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 12,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, clic aquí",
+          "pulsaciones": 13,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 14,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 15,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, Leer más",
+          "pulsaciones": 16,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 17,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 18,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, Leer más",
+          "pulsaciones": 19,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 20,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 21,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, Leer más",
+          "pulsaciones": 22,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 23,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 24,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, clic aquí",
+          "pulsaciones": 25,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Otro trámite - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 26,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_otro.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "volver",
+          "anuncio": "Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 27,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "K",
+          "anuncio": "enlace, Leer más",
+          "pulsaciones": 28,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "Licencia de construcción menor - Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 29,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_tramite.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 1, Licencia de construcción menor",
+          "pulsaciones": 30,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_tramite.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "encabezado nivel 2, Requisitos",
+          "pulsaciones": 31,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_tramite.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Identificación oficial vigente",
+          "pulsaciones": 32,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_tramite.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Comprobante de domicilio",
+          "pulsaciones": 33,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_tramite.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Comprobante de pago del predial",
+          "pulsaciones": 34,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_tramite.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Croquis del terreno",
+          "pulsaciones": 35,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos_tramite.html",
+          "profundidad": 1,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "Identificación oficial vigente, Comprobante de domicilio, Comprobante de pago del predial, Croquis del terreno",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.9473684210526315,
+        "elementos": 0.9788732394366197,
+        "reglas_conservador": 0.9473684210526315,
+        "elementos_conservador": 0.9788732394366197
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    },
+    {
+      "tarea": "C",
+      "entrada": "enlaces_ambiguos.html",
+      "tramite": null,
+      "objetivo_correcto": "docs/plan_municipal.pdf",
+      "pagina_axe": "enlaces_ambiguos.html",
+      "estado": "completable",
+      "tipo_falla": null,
+      "estrategia": "H_a_seccion",
+      "friccion": 6,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "completable",
+        "15": "completable",
+        "25": "completable"
+      },
+      "trayectoria": "H×4, leer×1, Enter×1",
+      "pasos": [
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 1, Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Noticias",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Trámites",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Descargas",
+          "pulsaciones": 4,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "enlace, Plan Municipal de Desarrollo (PDF)",
+          "pulsaciones": 5,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "documento descargado: plan_municipal.pdf",
+          "pulsaciones": 6,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": false,
+          "landmark": null,
+          "documento": {
+            "url": "http://127.0.0.1:55691/docs/plan_municipal.pdf",
+            "es_pdf": true,
+            "capa_texto": true
+          },
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "http://127.0.0.1:55691/docs/plan_municipal.pdf",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.9473684210526315,
+        "elementos": 0.9788732394366197,
+        "reglas_conservador": 0.9473684210526315,
+        "elementos_conservador": 0.9788732394366197
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    },
+    {
+      "tarea": "D",
+      "entrada": "enlaces_ambiguos.html",
+      "tramite": null,
+      "objetivo_correcto": "Nombre completo|Correo electrónico|Mensaje",
+      "pagina_axe": "enlaces_ambiguos.html",
+      "estado": "completable",
+      "tipo_falla": null,
+      "estrategia": "F_a_campos",
+      "friccion": 3,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "completable",
+        "15": "completable",
+        "25": "completable"
+      },
+      "trayectoria": "F×3",
+      "pasos": [
+        {
+          "tecla": "F",
+          "anuncio": "edición, Nombre completo",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "F",
+          "anuncio": "edición, Correo electrónico",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "F",
+          "anuncio": "edición, Mensaje",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/enlaces_ambiguos.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "Nombre completo, Correo electrónico, Mensaje",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.9473684210526315,
+        "elementos": 0.9788732394366197,
+        "reglas_conservador": 0.9473684210526315,
+        "elementos_conservador": 0.9788732394366197
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    }
+  ]
+}

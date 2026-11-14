@@ -1,0 +1,410 @@
+{
+  "sitio": "formulario_sin_etiquetas",
+  "url_base": "http://127.0.0.1:55691/",
+  "fecha": "2026-11-13T22:42:24-07:00",
+  "palabras_version": 2,
+  "umbral": 15,
+  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
+  "tareas": [
+    {
+      "tarea": "A",
+      "entrada": "formulario_sin_etiquetas.html",
+      "tramite": null,
+      "objetivo_correcto": "667 555 0142",
+      "pagina_axe": "formulario_sin_etiquetas.html",
+      "estado": "completable",
+      "tipo_falla": null,
+      "estrategia": "H_a_seccion",
+      "friccion": 7,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "completable",
+        "15": "completable",
+        "25": "completable"
+      },
+      "trayectoria": "H×6, leer×1",
+      "pasos": [
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 1, Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Noticias",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Trámites",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 3, Licencia de construcción menor",
+          "pulsaciones": 4,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Descargas",
+          "pulsaciones": 5,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Contacto",
+          "pulsaciones": 6,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Teléfono: 667 555 0142",
+          "pulsaciones": 7,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "Teléfono: 667 555 0142",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.95,
+        "elementos": 0.96875,
+        "reglas_conservador": 0.95,
+        "elementos_conservador": 0.96875
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    },
+    {
+      "tarea": "B",
+      "entrada": "formulario_sin_etiquetas.html",
+      "tramite": "Licencia de construcción",
+      "objetivo_correcto": "Identificación oficial vigente|Comprobante de domicilio|Comprobante de pago del predial|Croquis del terreno",
+      "pagina_axe": "formulario_sin_etiquetas.html",
+      "estado": "completable",
+      "tipo_falla": null,
+      "estrategia": "H_a_seccion",
+      "friccion": 9,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "completable",
+        "15": "completable",
+        "25": "completable"
+      },
+      "trayectoria": "H×3, leer×6",
+      "pasos": [
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 1, Ayuntamiento de Villa Ejemplo",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Noticias",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "H",
+          "anuncio": "encabezado nivel 2, Trámites",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "encabezado nivel 3, Licencia de construcción menor",
+          "pulsaciones": 4,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Requisitos para tramitar la licencia:",
+          "pulsaciones": 5,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Identificación oficial vigente",
+          "pulsaciones": 6,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Comprobante de domicilio",
+          "pulsaciones": 7,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Comprobante de pago del predial",
+          "pulsaciones": 8,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "Croquis del terreno",
+          "pulsaciones": 9,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "Identificación oficial vigente, Comprobante de domicilio, Comprobante de pago del predial, Croquis del terreno",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.95,
+        "elementos": 0.96875,
+        "reglas_conservador": 0.95,
+        "elementos_conservador": 0.96875
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    },
+    {
+      "tarea": "C",
+      "entrada": "formulario_sin_etiquetas.html",
+      "tramite": null,
+      "objetivo_correcto": "docs/plan_municipal.pdf",
+      "pagina_axe": "formulario_sin_etiquetas.html",
+      "estado": "completable",
+      "tipo_falla": null,
+      "estrategia": "enlace_por_nombre",
+      "friccion": 5,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "completable",
+        "15": "completable",
+        "25": "completable"
+      },
+      "trayectoria": "lista_enlaces×1, flecha_lista×3, Enter×1",
+      "pasos": [
+        {
+          "tecla": "lista_enlaces",
+          "anuncio": "enlace, Inicio",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "flecha_lista",
+          "anuncio": "enlace, Gobierno",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "flecha_lista",
+          "anuncio": "enlace, Transparencia",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "flecha_lista",
+          "anuncio": "enlace, Plan Municipal de Desarrollo (PDF)",
+          "pulsaciones": 4,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "Enter",
+          "anuncio": "documento descargado: plan_municipal.pdf",
+          "pulsaciones": 5,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": false,
+          "landmark": null,
+          "documento": {
+            "url": "http://127.0.0.1:55691/docs/plan_municipal.pdf",
+            "es_pdf": true,
+            "capa_texto": true
+          },
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "http://127.0.0.1:55691/docs/plan_municipal.pdf",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.95,
+        "elementos": 0.96875,
+        "reglas_conservador": 0.95,
+        "elementos_conservador": 0.96875
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    },
+    {
+      "tarea": "D",
+      "entrada": "formulario_sin_etiquetas.html",
+      "tramite": null,
+      "objetivo_correcto": "Nombre completo|Correo electrónico|Mensaje",
+      "pagina_axe": "formulario_sin_etiquetas.html",
+      "estado": "no_completable",
+      "tipo_falla": "no_identificable",
+      "estrategia": "F_a_campos",
+      "friccion": 3,
+      "consumidas": null,
+      "motivo": "se llega a los campos, pero alguno se anuncia sin nombre",
+      "sensibilidad": {
+        "10": "no_completable",
+        "15": "no_completable",
+        "25": "no_completable"
+      },
+      "trayectoria": "F×3",
+      "pasos": [
+        {
+          "tecla": "F",
+          "anuncio": "edición",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "F",
+          "anuncio": "edición",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "F",
+          "anuncio": "edición",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:55691/formulario_sin_etiquetas.html",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        }
+      ],
+      "encontro": ", , ",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.95,
+        "elementos": 0.96875,
+        "reglas_conservador": 0.95,
+        "elementos_conservador": 0.96875
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": null
+    }
+  ]
+}
