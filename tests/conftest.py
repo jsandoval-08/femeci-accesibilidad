@@ -7,6 +7,7 @@ permite simular fallas. SOLO páginas locales: nada de sitios reales.
 Rutas especiales del servidor (además de los archivos de tests/paginas):
   /lento/<archivo>     espera LENTO_S segundos y sirve <archivo> (simula timeout)
   /redirige/<archivo>  302 a /<archivo>
+  /redirige_a/<host>/<archivo>  302 a http://<host>:<mismo puerto>/<archivo> (Fase 3F: bloqueo)
   /con_cookie/<archivo> 403 si la petición no trae la cookie sesion=ok; si la trae, <archivo>
 """
 
@@ -35,6 +36,12 @@ class _Manejador(http.server.SimpleHTTPRequestHandler):
         elif self.path.startswith("/redirige/"):
             self.send_response(302)
             self.send_header("Location", self.path.removeprefix("/redirige"))
+            self.end_headers()
+            return
+        elif self.path.startswith("/redirige_a/"):  # Fase 3F: 302 a otro host del mismo puerto
+            host, _, resto = self.path.removeprefix("/redirige_a/").partition("/")
+            self.send_response(302)
+            self.send_header("Location", f"http://{host}:{self.server.server_address[1]}/{resto}")
             self.end_headers()
             return
         elif self.path.startswith("/con_cookie/"):
