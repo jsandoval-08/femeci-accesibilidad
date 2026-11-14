@@ -291,7 +291,8 @@
 
     var referencia = t.grupo === "real"
       ? '<dt>NVDA</dt><dd>' + chip(t.veredicto_nvda) + "</dd>"
-      : "<dt>Respuesta esperada</dt><dd>" + chip(t.esperado.estado) + " · " + esc(t.esperado.friccion) + " pulsaciones</dd>";
+      : "<dt>NVDA</dt><dd>" + chip(null) + "</dd><dt>Respuesta esperada</dt><dd>" + chip(t.esperado.estado) + " · " +
+        esc(t.esperado.friccion) + " pulsaciones</dd>";
     html += '<section class="caja" aria-labelledby="h-veredicto"><h2 id="h-veredicto">Lo que concluye</h2>' +
       '<dl class="datos"><dt>Atorapp estima</dt><dd>' + chip(t.estado) + "</dd>" +
       (t.tipo_falla ? "<dt>Tipo de falla</dt><dd>" + esc(FALLAS[t.tipo_falla] || t.tipo_falla) + "</dd>" : "") + referencia +
