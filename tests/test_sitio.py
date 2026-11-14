@@ -160,6 +160,29 @@ def test_reporte_json(corrida):
         assert all(0 <= v <= 1 for v in t["puntajes"].values())
 
 
+def test_reporte_trae_los_pasos(corrida):
+    """Fase 3E: la trayectoria completa, pulsación por pulsación, coincide con el resumen y con la
+    fricción o lo consumido. Solo es salida: no cambia ningún veredicto."""
+    _, (ruta_json, _) = corrida
+    tareas = {t["tarea"]: t for t in json.loads(ruta_json.read_text(encoding="utf-8"))["tareas"]}
+    for t in tareas.values():
+        pasos = t["pasos"]
+        assert pasos, t["tarea"]
+        assert reporte.resumir_trayectoria([_paso(p["tecla"]) for p in pasos]) == t["trayectoria"]
+        assert pasos[-1]["pulsaciones"] == (t["friccion"] if t["friccion"] is not None
+                                            else t["consumidas"])
+        acumuladas = [p["pulsaciones"] for p in pasos]
+        assert acumuladas == sorted(acumuladas)  # nunca bajan
+    a = tareas["A"]["pasos"]
+    assert [p["tecla"] for p in a] == ["H"] * 6 + ["leer"]
+    assert a[-1]["anuncio"] and "0142" in tareas["A"]["encontro"]
+    assert all(p["profundidad"] == 0 and p["url"].endswith("pdf_escaneado.html") for p in a)
+    c = tareas["C"]["pasos"][-1]  # el Enter que descargó el PDF escaneado
+    assert c["tecla"] == "Enter" and c["documento"]["es_pdf"] is True
+    assert c["documento"]["capa_texto"] is False
+    assert tareas["D"]["encontro"]
+
+
 def test_reporte_markdown(corrida):
     _, (_, ruta_md) = corrida
     md = ruta_md.read_text(encoding="utf-8")
@@ -180,6 +203,10 @@ def test_reporte_muestra_falsas_llegadas(tmp_path, servidor):
     assert (t["estado"], t["friccion"]) == ("completable", 7)
     assert [f["estrategia"] for f in t["falsas_llegadas"]] == ["H_a_seccion", "no_dirigida"]
     assert t["falsas_llegadas"][0]["pulsaciones"] == 3
+    # Fase 3E: cada falsa llegada trae su recorrido, que termina en lo que encontró.
+    for falsa in t["falsas_llegadas"]:
+        assert falsa["pasos"][-1]["pulsaciones"] == falsa["pulsaciones"]
+    assert [p["tecla"] for p in t["falsas_llegadas"][0]["pasos"]] == ["H", "H", "leer"]
     md = ruta_md.read_text(encoding="utf-8")
     seccion = md.split("## Llegó primero a otra cosa")[1]
     assert "H_a_seccion" in seccion and "667 555 0999" in seccion and "Ninguna" not in seccion

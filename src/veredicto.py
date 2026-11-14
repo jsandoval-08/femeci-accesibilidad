@@ -10,7 +10,7 @@ Es una estimación de Atorapp, no un juicio sobre el sitio. La referencia es la 
 """
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from urllib.parse import unquote, urldefrag
 
 from src.estrategias import Intento, ResultadoTarea, normalizar_busqueda
@@ -29,6 +29,8 @@ class FalsaLlegada:
     estrategia: str
     pulsaciones: int
     encontro: str
+    # Fase 3E: solo para mostrar el recorrido en el reporte. No entra en ninguna decisión ni comparación.
+    trayectoria: tuple = field(default=(), compare=False, repr=False)
 
 
 @dataclass(frozen=True)
@@ -121,7 +123,7 @@ def clasificar(resultado: ResultadoTarea, objetivo: str, umbral: int = UMBRAL) -
     llegaron = [i for i in intentos if i.llego]
     correctos = [i for i in llegaron if hallazgo_correcto(letra, i.hallazgo, objetivo)]
     sin_nombre = [i for i in llegaron if _sin_nombre(i.hallazgo)]
-    falsas = tuple(FalsaLlegada(i.estrategia, i.pulsaciones, _describir(i.hallazgo))
+    falsas = tuple(FalsaLlegada(i.estrategia, i.pulsaciones, _describir(i.hallazgo), i.trayectoria)
                    for i in llegaron if i not in correctos and i not in sin_nombre)
 
     def fijo(estado, tipo_falla, intento, motivo, friccion=None):

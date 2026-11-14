@@ -9,7 +9,7 @@ from itertools import groupby
 from pathlib import Path
 
 from src.sitio import PUNTAJES, ReporteSitio
-from src.veredicto import UMBRAL
+from src.veredicto import UMBRAL, _describir
 
 NOTA = ("Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la "
         "auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core "
@@ -22,17 +22,34 @@ def resumir_trayectoria(pasos) -> str:
     return ", ".join(grupos) or "sin pulsaciones"
 
 
+def _paso(p) -> dict:
+    """Una pulsación tal como quedó en la trayectoria (Fase 3E: para reproducirla en la interfaz).
+    Solo copia datos; no decide nada."""
+    doc = p.documento
+    return {"tecla": p.tecla, "anuncio": p.anuncio, "pulsaciones": p.pulsaciones, "url": p.url,
+            "profundidad": p.profundidad, "se_movio": p.se_movio,
+            "landmark": list(p.landmark) if p.landmark else None,
+            "documento": ({"url": doc.url, "es_pdf": doc.es_pdf, "capa_texto": doc.capa_texto}
+                          if doc else None),
+            "no_evaluable": p.no_evaluable}
+
+
 def _tarea(r) -> dict:
     v, f = r.veredicto, r.fila
+    intento = v.intento
     return {
         "tarea": f.tarea, "entrada": f.entrada, "tramite": f.tramite,
         "objetivo_correcto": f.objetivo_correcto, "pagina_axe": f.pagina_axe,
         "estado": v.estado, "tipo_falla": v.tipo_falla, "estrategia": v.estrategia,
         "friccion": v.friccion, "consumidas": v.consumidas, "motivo": v.motivo,
         "sensibilidad": {str(u): e for u, e in v.sensibilidad.items()},
-        "trayectoria": resumir_trayectoria(v.intento.trayectoria),
+        "trayectoria": resumir_trayectoria(intento.trayectoria),
+        # Fase 3E: el recorrido completo del intento que sustenta el veredicto y lo que halló.
+        "pasos": [_paso(p) for p in intento.trayectoria],
+        "encontro": _describir(intento.hallazgo) if intento.hallazgo else None,
         "falsas_llegadas": [{"estrategia": x.estrategia, "pulsaciones": x.pulsaciones,
-                             "encontro": x.encontro} for x in v.falsas_llegadas],
+                             "encontro": x.encontro, "pasos": [_paso(p) for p in x.trayectoria]}
+                            for x in v.falsas_llegadas],
         "captcha": list(r.captcha), "puntajes": r.puntajes, "error_axe": r.error_axe,
         "veredicto_nvda": f.veredicto_nvda, "vidente_lo_encuentra": f.vidente_lo_encuentra,
     }
