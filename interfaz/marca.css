@@ -1,0 +1,112 @@
+/* Atorapp — identidad visual (Fase 3F.4). La comparten la interfaz del estudio (interfaz/, por file://)
+   y la app del modo exploración (app/ui/, servida en 127.0.0.1 en /estudio/marca.css).
+
+   - Tinta #14213D sobre fondo #FAF7F2. Acento #E8590C SOLO en formas y títulos grandes: sobre el fondo
+     da 3.3:1, que alcanza para texto grande (≥ 24 px, o ≥ 18.7 px en negrita) y para formas, nunca para
+     texto chico.
+   - Estados con forma + texto + color, nunca solo color: círculo con palomita = completable; triángulo
+     con ! = con dificultad; cuadrado con X = no completable; rombo con guion = no evaluable. Los cuatro
+     tonos pasan 6:1 sobre blanco.
+   - Foco: anillo naranja de 4 px separado 3 px. Es el recuadro del logo: la misma idea en todo.
+   - Fuente: Atkinson Hyperlegible (Braille Institute, licencia SIL OFL 1.1, ver fuentes/OFL.txt),
+     incluida como archivo local. Sin red: si no carga, quedan las fuentes del sistema. */
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fuentes/AtkinsonHyperlegible-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fuentes/AtkinsonHyperlegible-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --marca-tinta: #14213D;
+  --marca-fondo: #FAF7F2;
+  --marca-acento: #E8590C;
+  --marca-superficie: #FFFFFF;
+  --marca-borde: #C9C4BA;        /* decorativo: separa tarjetas */
+  --marca-borde-campo: #8A8577;  /* bordes de campos: 3.7:1 sobre blanco */
+  --marca-pista: #E7E2D8;        /* fondo de las barras */
+  --marca-completable: #1F6F43;
+  --marca-dificultad: #9A3F07;
+  --marca-no-completable: #B42318;
+  --marca-no-evaluable: #4B5363;
+  --marca-letra: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Foco ---------- */
+
+:focus-visible {
+  outline: 4px solid var(--marca-acento);
+  outline-offset: 3px;
+}
+
+/* ---------- Logo: tres puntos de un recorrido que terminan en el recuadro de foco ---------- */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-family: var(--marca-letra);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.logo-simbolo { width: 64px; height: 36px; flex: none; }
+.logo-app { color: var(--marca-acento); }
+
+/* ---------- Teclas dibujadas como tecla física ---------- */
+
+.tecla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 56px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  border: 3px solid var(--marca-tinta);
+  border-bottom-width: 7px;
+  border-radius: 12px;
+  background: var(--marca-superficie);
+  color: var(--marca-tinta);
+  font-family: var(--marca-letra);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.tecla--chica { min-width: 40px; height: 40px; padding: 0 8px; font-size: 18px; border-radius: 9px; border-bottom-width: 5px; }
+.tecla--grande { min-width: 120px; height: 120px; padding: 0 20px; font-size: 56px; border-radius: 20px; border-bottom-width: 10px; }
+
+/* ---------- Insignias de estado: forma + texto + color ---------- */
+
+.insignia {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 8px 18px 8px 8px;
+  border: 3px solid currentColor;
+  border-radius: 999px;
+  background: var(--marca-superficie);
+  font-family: var(--marca-letra);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.insignia svg { width: 32px; height: 32px; flex: none; }
+.insignia--completable { color: var(--marca-completable); }
+.insignia--con_dificultad { color: var(--marca-dificultad); }
+.insignia--no_completable { color: var(--marca-no-completable); }
+.insignia--no_evaluable { color: var(--marca-no-evaluable); }
+.insignia--pendiente { color: var(--marca-tinta); border-style: dashed; }
