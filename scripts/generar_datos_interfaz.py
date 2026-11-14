@@ -62,10 +62,10 @@ def coincide(a: dict, b: dict) -> bool:
 
 
 def _resumen(t: dict) -> str:
-    falla = f", {t['tipo_falla']}" if t["tipo_falla"] else ""
+    falla = f", {t['tipo_falla'].replace('_', ' ')}" if t["tipo_falla"] else ""
     cuenta = (f"fricción {t['friccion']}" if t["friccion"] is not None
               else f"{t['consumidas']} pulsaciones consumidas")
-    return f"{t['estado']}{falla}, {cuenta}" + (f" ({t['motivo']})" if t["motivo"] else "")
+    return f"{t['estado'].replace('_', ' ')}{falla}, {cuenta}" + (f" ({t['motivo']})" if t["motivo"] else "")
 
 
 def elegir_oficial(primera: dict | None, fecha_primera: str | None,

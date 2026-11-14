@@ -1,6 +1,6 @@
 // Generado por scripts/generar_datos_interfaz.py. No editar a mano.
 window.ATORAPP = {
- "generado": "2026-11-14T08:01:27-07:00",
+ "generado": "2026-11-14T08:06:47-07:00",
  "umbral": 15,
  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
  "reales": [
@@ -46,7 +46,7 @@ window.ATORAPP = {
    "vidente_lo_encuentra": true,
    "corrida": "segunda corrida, 2026-11-14",
    "fecha": "2026-11-14T07:57:45-07:00",
-   "nota_corrida": "La corrida del 2026-11-08 fue no_evaluable, 0 pulsaciones consumidas (no resuelta dentro del presupuesto: timeout). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento).",
+   "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (no resuelta dentro del presupuesto: timeout). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento).",
    "ciego": false,
    "marcas": [
     {
