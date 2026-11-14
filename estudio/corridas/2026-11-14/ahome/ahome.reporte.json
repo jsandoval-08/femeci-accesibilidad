@@ -1,0 +1,49 @@
+{
+  "sitio": "ahome",
+  "url_base": "https://www.ahome.gob.mx/",
+  "fecha": "2026-11-14T07:57:45-07:00",
+  "palabras_version": 2,
+  "umbral": 15,
+  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
+  "tareas": [
+    {
+      "tarea": "A",
+      "entrada": "https://www.ahome.gob.mx/",
+      "tramite": null,
+      "objetivo_correcto": "contacto@ahome.gob.mx|(668) 816-4000",
+      "pagina_axe": "https://www.ahome.gob.mx/",
+      "estado": "no_evaluable",
+      "tipo_falla": null,
+      "estrategia": "H_a_seccion",
+      "friccion": null,
+      "consumidas": 0,
+      "motivo": "no resuelta dentro del presupuesto: timeout",
+      "sensibilidad": {
+        "10": "no_evaluable",
+        "15": "no_evaluable",
+        "25": "no_evaluable"
+      },
+      "trayectoria": "entrada×1",
+      "pasos": [
+        {
+          "tecla": "entrada",
+          "anuncio": "no evaluable: timeout",
+          "pulsaciones": 0,
+          "url": "https://www.ahome.gob.mx/",
+          "profundidad": 0,
+          "se_movio": false,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": "timeout"
+        }
+      ],
+      "encontro": null,
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": null,
+      "error_axe": "TimeoutError: Page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.ahome.gob.mx/\", waiting until \"load\"\n",
+      "veredicto_nvda": "con_dificultad",
+      "vidente_lo_encuentra": true
+    }
+  ]
+}
