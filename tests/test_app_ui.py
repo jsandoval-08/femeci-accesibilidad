@@ -41,7 +41,7 @@ def app_falsa(tmp_path_factory):
     estado = {"liberar": threading.Event(), "abiertos": []}
 
     def motor(*args, **kwargs):
-        return MotorFalso(liberar=estado["liberar"])(*args, **kwargs)
+        return MotorFalso(liberar=estado["liberar"], no_carga=estado.get("no_carga", False))(*args, **kwargs)
 
     app = crear_app(Config(BLOQUEADOS, tmp_path_factory.mktemp("exploracion")), motor=motor,
                     abrir=estado["abiertos"].append)
@@ -178,6 +178,24 @@ def test_axe_evaluando_resultado_y_recorrido(app_falsa, pagina):
     _ir(pagina, app_falsa["url"], "#historial")
     pagina.wait_for_selector("table")
     assert _axe(pagina) == [], "historial con datos"
+    assert pagina.errores == []
+
+
+def test_axe_entrada_que_no_cargo(app_falsa, pagina):
+    app_falsa["no_carga"] = True
+    try:
+        _evaluar(pagina, app_falsa["url"])
+        pagina.wait_for_selector("#h-estima")
+    finally:
+        app_falsa["no_carga"] = False
+    estima = pagina.inner_text("#estima")
+    assert "No evaluable" in estima and "No cargó en el navegador de Atorapp en 60 s" in estima
+    assert "ninguna estrategia encontró" not in estima.lower() and "Completable" not in estima
+    axe = pagina.inner_text("#h-axe >> xpath=..")
+    assert "No se pudo medir: la página no cargó." in axe and "Timeout" not in axe and "Playwright" not in axe
+    assert pagina.locator("#h-estr").count() == 0  # sin tabla de estrategias
+    assert _axe(pagina) == []
+    _encabezados_en_orden(pagina)
     assert pagina.errores == []
 
 

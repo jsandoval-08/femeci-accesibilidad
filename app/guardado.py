@@ -60,20 +60,23 @@ def nueva_carpeta(base: Path, url: str, letra: str) -> Path:
 def a_diccionario(ex: Exploracion) -> dict:
     r = ex.resultado
     opciones = hallazgos(r)
+    no_cargo = ex.no_cargo
     return {
         "modo": "exploracion", "aviso": AVISO, "url": ex.url, "tarea": ex.tarea.letra,
         "tramite": ex.tarea.tramite, "fecha": ex.fecha, "palabras_version": ex.palabras_version,
         "umbral": UMBRAL, "umbrales": list(UMBRALES_SENSIBILIDAD), "pausa_s": ex.pausa_s,
         "topes": {"pulsaciones": TOPE_PULSACIONES, "navegaciones": TOPE_NAVEGACIONES},
         "duracion_s": ex.duracion_s,
-        "intentos": [{"estrategia": i.estrategia, "llego": i.llego, "pulsaciones": i.pulsaciones,
+        "no_cargo": no_cargo,  # None = la carga de prueba abrió; si no, el error real va aquí
+        # Sin carga no corrió ninguna estrategia: el intento "entrada" es interno, no se lista.
+        "intentos": [] if no_cargo else [{"estrategia": i.estrategia, "llego": i.llego, "pulsaciones": i.pulsaciones,
                       "duracion_s": ex.duraciones_s[n] if n < len(ex.duraciones_s) else None,
                       "motivo": i.motivo, "encontro": _describir(i.hallazgo) if i.hallazgo else None,
                       "trayectoria": resumir_trayectoria(i.trayectoria),
                       "pasos": [_paso(p) for p in i.trayectoria]} for n, i in enumerate(r.intentos)],
         "opciones": [{k: o[k] for k in ("estrategia", "pulsaciones", "encontro")} for o in opciones],
         "requiere_confirmacion": bool(opciones),
-        "estimaciones": estimaciones(r),
+        "estimaciones": estimaciones(r, no_cargo["motivo"] if no_cargo else None),
         "confirmacion": None,  # o {"eleccion": "0" | "1" | ... | "ninguna", "fecha": ...}
         "captcha": list(r.captcha), "puntajes": ex.puntajes, "error_axe": ex.error_axe,
         "bloqueadas": list(ex.bloqueadas),
@@ -154,7 +157,11 @@ def markdown(datos: dict) -> str:
          f"- Límites: pausa de {datos['pausa_s']:g} s entre páginas, tope de {datos['topes']['pulsaciones']} "
          f"pulsaciones y {datos['topes']['navegaciones']} páginas por estrategia; nunca envía formularios.",
          "", "## Lo que estima Atorapp", ""]
-    if v is None:
+    if datos.get("no_cargo"):
+        l += [f"**No evaluable.** {datos['no_cargo']['motivo']}.", "",
+              "No se corrió ninguna estrategia ni axe-core. Esto no dice nada sobre la accesibilidad del "
+              "sitio: solo que Atorapp no pudo abrir la página de entrada.", ""]
+    elif v is None:
         primera = datos["opciones"][0]
         condicional = datos["estimaciones"]["0"]
         l += [f"Llegué a esto: «{primera['encontro']}», en {primera['pulsaciones']} pulsaciones "
@@ -178,8 +185,12 @@ def markdown(datos: dict) -> str:
         l.append("")
     if datos["captcha"]:
         l += [f"CAPTCHA detectado en la ruta: {', '.join(datos['captcha'])}.", ""]
-    l += ["## Estrategias", "", "| Estrategia | ¿Cree que llegó? | Pulsaciones | Duración | Encontró o motivo |",
-          "|---|---|---|---|---|"]
+    l += ["## Estrategias", ""]
+    if datos.get("no_cargo"):
+        l.append("No se corrió ninguna estrategia: la página de entrada no cargó.")
+    else:
+        l += ["| Estrategia | ¿Cree que llegó? | Pulsaciones | Duración | Encontró o motivo |",
+              "|---|---|---|---|---|"]
     for i in datos["intentos"]:
         detalle = (i["encontro"] if i["llego"] else i["motivo"]) or "—"
         l.append(f"| {i['estrategia']} | {'sí' if i['llego'] else 'no'} | {i['pulsaciones']} | "
@@ -188,7 +199,9 @@ def markdown(datos: dict) -> str:
     l += ["", "## Recorrido paso a paso", ""]
     l += [f"{n}. {p['tecla']} — {p['anuncio']}" for n, p in enumerate(pasos, 1)] or ["Sin pulsaciones."]
     l += ["", "## Puntajes de axe-core", ""]
-    if datos["puntajes"] is None:
+    if datos.get("no_cargo"):
+        l.append("No se pudo medir: la página no cargó.")
+    elif datos["puntajes"] is None:
         l.append(f"No medido ({datos['error_axe']}).")
     else:
         l += [f"- {k.replace('_', ' ').capitalize()}: {_pct(datos['puntajes'][k])}" for k in PUNTAJES]

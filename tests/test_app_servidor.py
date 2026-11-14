@@ -79,6 +79,25 @@ def test_evaluacion_vieja_sin_duracion_se_exporta(entorno):
     assert "- Duración total: no medida" in md and "| no medida |" in md
 
 
+def test_entrada_que_no_cargo_se_guarda_y_exporta(tmp_path):
+    motor = MotorFalso(no_carga=True)
+    app = crear_app(Config(HOSTS, tmp_path), motor=motor, abrir=[].append)
+    cliente = TestClient(app, base_url="http://127.0.0.1")
+    cliente.headers["X-Atorapp-Token"] = app.state.token
+    id_ = _evaluar(cliente)
+    eventos = _eventos(cliente, id_)
+    assert [t for t, _ in eventos] == ["inicio", "fin"]
+    datos = json.loads((tmp_path / id_ / "exploracion.json").read_text(encoding="utf-8"))
+    assert datos["no_cargo"]["detalle"].startswith("TimeoutError")  # el error de Playwright solo aquí
+    assert datos["intentos"] == [] and datos["puntajes"] is None and datos["duracion_s"] == 60.4
+    v = guardado.vigente(datos)
+    assert (v["estado"], v["motivo"]) == ("no_evaluable", "No cargó en el navegador de Atorapp en 60 s")
+    md = cliente.post(f"/api/evaluaciones/{id_}/exportar").json()["markdown"]
+    assert "No cargó en el navegador de Atorapp en 60 s" in md
+    assert "No se pudo medir: la página no cargó." in md and "TimeoutError" not in md
+    assert "ninguna estrategia encontró" not in md and "No se corrió ninguna estrategia" in md
+
+
 def test_confirmar_y_exportar(entorno):
     cliente, _, abiertos, base = entorno
     id_ = _evaluar(cliente)

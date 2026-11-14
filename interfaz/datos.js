@@ -1,6 +1,6 @@
 // Generado por scripts/generar_datos_interfaz.py. No editar a mano.
 window.ATORAPP = {
- "generado": "2026-11-14T08:06:47-07:00",
+ "generado": "2026-11-14T14:38:49-07:00",
  "umbral": 15,
  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
  "reales": [
@@ -46,13 +46,17 @@ window.ATORAPP = {
    "vidente_lo_encuentra": true,
    "corrida": "segunda corrida, 2026-11-14",
    "fecha": "2026-11-14T07:57:45-07:00",
-   "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (no resuelta dentro del presupuesto: timeout). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento).",
+   "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (la página de entrada no cargó). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento).",
+   "no_cargo": {
+    "tipo": "timeout"
+   },
+   "motivo_texto": "No cargó en el navegador de Atorapp: la página de entrada agotó el tiempo de espera (timeout). Ninguna estrategia pudo empezar, así que no se evaluó nada. Esto no es «no completable».",
    "ciego": false,
    "marcas": [
     {
      "paso": 0,
      "tipo": "detenido",
-     "texto": "Aquí se detuvo sin poder evaluar: no resuelta dentro del presupuesto: timeout"
+     "texto": "Aquí se detuvo: la página de entrada no cargó (timeout)"
     }
    ]
   },
@@ -91,6 +95,7 @@ window.ATORAPP = {
    "nota_corrida": "Pendiente: auditoría NVDA a ciegas en curso en este sitio.",
    "pasos": null,
    "encontro": null,
+   "no_cargo": null,
    "ciego": true,
    "marcas": []
   },
@@ -1483,6 +1488,7 @@ window.ATORAPP = {
     }
    ],
    "encontro": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -1607,6 +1613,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -1758,6 +1765,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -1869,6 +1877,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -1954,6 +1963,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -2391,6 +2401,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -2800,6 +2811,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -2916,6 +2928,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -3001,6 +3014,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -3515,6 +3529,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -3671,6 +3686,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -3782,6 +3798,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -3867,6 +3884,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -3985,6 +4003,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -4422,6 +4441,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -4549,6 +4569,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -4634,6 +4655,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -4763,6 +4785,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -4914,6 +4937,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -5025,6 +5049,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -5110,6 +5135,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -5239,6 +5265,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -5390,6 +5417,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -5501,6 +5529,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {
@@ -5586,6 +5615,7 @@ window.ATORAPP = {
    },
    "veredicto_nvda": null,
    "vidente_lo_encuentra": null,
+   "no_cargo": null,
    "ciego": false,
    "marcas": [
     {

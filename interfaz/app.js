@@ -286,7 +286,7 @@
       "<dt>Entrada</dt><dd>" + esc(t.entrada === "/" ? "/ (portada)" : t.entrada) + "</dd>" +
       (t.tramite ? "<dt>Trámite buscado</dt><dd>" + esc(t.tramite) + "</dd>" : "") +
       "<dt>Objetivo correcto</dt><dd>" + esc(objetivo) + "</dd>" +
-      "<dt>Mejor estrategia</dt><dd>" + esc(ESTRATEGIAS[t.estrategia] || t.estrategia || "pendiente") + "</dd>" +
+      "<dt>Mejor estrategia</dt><dd>" + esc(t.no_cargo ? "Ninguna: la página de entrada no cargó" : (ESTRATEGIAS[t.estrategia] || t.estrategia || "pendiente")) + "</dd>" +
       "<dt>Corrida</dt><dd>" + esc(etiquetaCorrida(t) || "pendiente") + "</dd>" +
       "</dl></section>";
 
@@ -299,7 +299,7 @@
       (t.tipo_falla ? "<dt>Tipo de falla</dt><dd>" + esc(FALLAS[t.tipo_falla] || t.tipo_falla) + "</dd>" : "") + referencia +
       "<dt>Esfuerzo</dt><dd>" + esc(cuenta(t)) + " (umbral: " + D.umbral + ")</dd></dl>" +
       '<div style="margin-top:.8rem">' + acuerdoHtml(t) + "</div>" +
-      '<p class="motivo"><strong>Motivo:</strong> ' + esc(t.motivo || "llegó al objetivo correcto") + "</p>" +
+      '<p class="motivo"><strong>Motivo:</strong> ' + esc(t.motivo_texto || t.motivo || "llegó al objetivo correcto") + "</p>" +
       (t.grupo === "prueba" && t.esperado.razon ? '<p class="nota-corrida"><strong>Por qué se esperaba:</strong> ' + esc(t.esperado.razon) + "</p>" : "") +
       (t.nota_corrida ? '<p class="nota-corrida">' + esc(t.nota_corrida) + "</p>" : "") +
       "</section></div>";

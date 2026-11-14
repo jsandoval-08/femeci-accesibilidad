@@ -23,8 +23,9 @@ from urllib.parse import urlparse
 from playwright.sync_api import sync_playwright
 
 from app.seguridad import HostBloqueado, NavegadorConBloqueo, host_bloqueado, validar_entrada
-from src.emulador import Emulador
-from src.estrategias import (ESTRATEGIAS, ETIQUETAS, SOLO_TAREA_D, ResultadoTarea, Tarea,
+from src.captura import TIEMPO_LIMITE_MS as TIEMPO_CARGA_MS  # el mismo tope de 60 s que la captura de axe
+from src.emulador import Emulador, Falla, NoEvaluable, Paso
+from src.estrategias import (ESTRATEGIAS, ETIQUETAS, SOLO_TAREA_D, Intento, ResultadoTarea, Tarea,
                              cargar_palabras, mejor_estrategia)
 from src.navegador import ESPERA_EXTRA_MS, PAUSA_S, TIEMPO_LIMITE_MS, NavegadorEnVivo
 from src.reporte import _paso
@@ -66,13 +67,36 @@ class Exploracion:
     bloqueadas: tuple[str, ...]  # peticiones abortadas por la barrera 2
     duracion_s: float | None = None  # de principio a fin, axe incluido; None = no medida
     duraciones_s: tuple[float, ...] = ()  # una por estrategia, en el orden de resultado.intentos
+    # Si la carga de prueba falló: {"tipo": "timeout" | "falla_tecnica", "motivo": texto para la
+    # persona, "detalle": el error del navegador (solo para exploracion.json)}. None = cargó.
+    no_cargo: dict | None = None
+
+
+def motivo_no_cargo(tipo: str, timeout_ms: int) -> str:
+    """El texto que ve la persona cuando la página de entrada no abrió."""
+    if tipo == "timeout":
+        return f"No cargó en el navegador de Atorapp en {round(timeout_ms / 1000)} s"
+    return "No cargó en el navegador de Atorapp (falla técnica al abrir la página)"
+
+
+def _sin_cargar(tarea: Tarea, url: str, no_cargo: dict) -> ResultadoTarea:
+    """El resultado cuando la entrada no abre: ninguna estrategia corrió. Es un No evaluable con 0
+    pulsaciones, como el que arma el emulador cuando falla su entrada (clasificar() lo trata igual)."""
+    tipo = no_cargo["tipo"]
+    paso = Paso("entrada", f"no evaluable: {tipo}", None, False, 0, url=url, no_evaluable=tipo)
+    ne = NoEvaluable(tipo, no_cargo["detalle"], 0)
+    intento = Intento("entrada", False, 0, (paso,), no_cargo["motivo"], ne, None, ())
+    return ResultadoTarea(tarea, "entrada", None, None, 0, no_cargo["motivo"], ne, (), (intento,))
 
 
 def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_evento=None,
              detener: threading.Event | None = None, pausa_s: float = PAUSA_S,
              timeout_ms: int = TIEMPO_LIMITE_MS, espera_ms: int = ESPERA_EXTRA_MS,
-             tope: int = TOPE_PULSACIONES, tope_nav: int = TOPE_NAVEGACIONES) -> Exploracion:
-    """Corre todas las estrategias de la tarea sobre `url` y luego axe sobre la misma página.
+             tope: int = TOPE_PULSACIONES, tope_nav: int = TOPE_NAVEGACIONES,
+             timeout_carga_ms: int = TIEMPO_CARGA_MS) -> Exploracion:
+    """Antes de las estrategias hace UNA carga de prueba de la URL de entrada (timeout_carga_ms, 60 s).
+    Si no abre, termina en No evaluable sin correr estrategias ni axe. Si abre, todo sigue igual.
+    Corre todas las estrategias de la tarea sobre `url` y luego axe sobre la misma página.
     al_evento(tipo, datos): "estrategia", "paso", "fase". Lanza Detenida, HostBloqueado o ValueError."""
     t0 = time.monotonic()
     url = validar_entrada(url, hosts)  # barrera 1: antes de tocar la red
@@ -95,9 +119,23 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
             raise HostBloqueado(vista, h)
 
     abiertos = []
+    no_cargo = None
     with sync_playwright() as p:
         navegador = NavegadorConBloqueo(p.chromium.launch(), hosts)  # barrera 2
         try:
+            # Carga de prueba: pasa por la barrera 2 (route del contexto) y la barrera 3 (redirección).
+            prueba = NavegadorEnVivo(navegador, timeout_ms=timeout_carga_ms, espera_ms=0, pausa_s=pausa_s)
+            abiertos.append(prueba)
+            detenida()
+            abierta = prueba.abrir(url)
+            if isinstance(abierta, Falla):
+                tipo = "timeout" if abierta.motivo == "timeout" else "falla_tecnica"
+                no_cargo = {"tipo": tipo, "motivo": motivo_no_cargo(tipo, timeout_carga_ms),
+                            "detalle": abierta.detalle}
+            else:
+                revisar(getattr(abierta, "url", None))
+            detenida()
+
             def fabrica(entrada):
                 clave = claves[len(llamadas)]
                 llamadas.append(clave)
@@ -123,7 +161,10 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
                     emitir("paso", {"estrategia": nombre, **_paso(paso)})
                 return emu
 
-            resultado = mejor_estrategia(fabrica, tarea, palabras)
+            if no_cargo:
+                resultado = _sin_cargar(tarea, url, no_cargo)
+            else:
+                resultado = mejor_estrategia(fabrica, tarea, palabras)
             fin_estrategias = time.monotonic()
         finally:
             for nav in abiertos:
@@ -133,6 +174,10 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
                     pass
             navegador.close()
     detenida()
+    if no_cargo:  # sin estrategias ni axe: el error del navegador queda solo en no_cargo["detalle"]
+        return Exploracion(url, tarea, datetime.now().astimezone().isoformat(timespec="seconds"),
+                           palabras.version, pausa_s, resultado, None, "la página no cargó",
+                           tuple(navegador.bloqueadas), round(time.monotonic() - t0, 1), (), no_cargo)
     emitir("fase", {"fase": "axe"})
     puntajes, error_axe = _puntuar(url, carpeta / "capturas")  # abre su propio Playwright
     if final := _url_final_bloqueada(carpeta / "capturas", hosts):  # barrera 4
@@ -186,13 +231,15 @@ def hallazgos(resultado: ResultadoTarea) -> list[dict]:
     return opciones
 
 
-def estimar(resultado: ResultadoTarea, objetivo: str) -> dict:
-    """El veredicto de clasificar() como datos para guardar y mostrar."""
+def estimar(resultado: ResultadoTarea, objetivo: str, motivo_carga: str | None = None) -> dict:
+    """El veredicto de clasificar() como datos para guardar y mostrar. Con motivo_carga (la entrada
+    no abrió) el estado sigue siendo el de clasificar(); solo se dice el motivo real, sin estrategia."""
     v = clasificar(resultado, objetivo)
     intento = v.intento
     return {
-        "estado": v.estado, "tipo_falla": v.tipo_falla, "estrategia": v.estrategia,
-        "friccion": v.friccion, "consumidas": v.consumidas, "motivo": v.motivo,
+        "estado": v.estado, "tipo_falla": v.tipo_falla,
+        "estrategia": None if motivo_carga else v.estrategia,
+        "friccion": v.friccion, "consumidas": v.consumidas, "motivo": motivo_carga or v.motivo,
         "sensibilidad": {str(u): e for u, e in v.sensibilidad.items()},
         "encontro": _describir(intento.hallazgo) if intento and intento.hallazgo else None,
         "pasos": [_paso(p) for p in intento.trayectoria] if intento else [],
@@ -201,11 +248,11 @@ def estimar(resultado: ResultadoTarea, objetivo: str) -> dict:
     }
 
 
-def estimaciones(resultado: ResultadoTarea) -> dict:
+def estimaciones(resultado: ResultadoTarea, motivo_carga: str | None = None) -> dict:
     """Todas las respuestas posibles, calculadas de una vez: "ninguna" (nadie llegó, o nada de lo
     encontrado era lo buscado) y una por opción ("0", "1", ...). Así confirmar solo elige; también
     desde el historial."""
-    todas = {"ninguna": estimar(resultado, NO_EXISTE)}
+    todas = {"ninguna": estimar(resultado, NO_EXISTE, motivo_carga)}
     for n, opcion in enumerate(hallazgos(resultado)):
-        todas[str(n)] = estimar(resultado, opcion["objetivo"])
+        todas[str(n)] = estimar(resultado, opcion["objetivo"], motivo_carga)
     return todas

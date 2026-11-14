@@ -169,6 +169,9 @@ def marcas(t: dict, umbral: int) -> list[dict]:
     elif t["tipo_falla"] == "no_identificable":
         salida.append({"paso": ultimo, "tipo": "detenido",
                        "texto": "Llegó a los campos, pero alguno no tiene nombre"})
+    elif t.get("no_cargo"):
+        salida.append({"paso": 0, "tipo": "detenido",
+                       "texto": f"Aquí se detuvo: la página de entrada no cargó ({t['no_cargo']['tipo']})"})
     elif t["estado"] == "no_evaluable":
         salida.append({"paso": detenido if detenido is not None else ultimo, "tipo": "detenido",
                        "texto": f"Aquí se detuvo sin poder evaluar: {t['motivo']}"})
@@ -178,8 +181,32 @@ def marcas(t: dict, umbral: int) -> list[dict]:
     return salida
 
 
+def no_cargo(t: dict) -> dict | None:
+    """Presentación: ¿la tarea quedó No evaluable porque la página de entrada no abrió? Se sabe porque su
+    única parada es la "entrada" con el motivo técnico (src/emulador.py la anota así cuando falla la
+    carga inicial). No cambia ningún veredicto: solo decide cómo se cuenta."""
+    pasos = t.get("pasos") or []
+    if t["estado"] == "no_evaluable" and len(pasos) == 1 and pasos[0]["tecla"] == "entrada":
+        return {"tipo": pasos[0].get("no_evaluable") or "falla_tecnica"}
+    return None
+
+
+def _texto_no_cargo(tipo: str) -> str:
+    causa = ("la página de entrada agotó el tiempo de espera (timeout)" if tipo == "timeout"
+             else "falla técnica al abrir la página de entrada")
+    return (f"No cargó en el navegador de Atorapp: {causa}. Ninguna estrategia pudo empezar, así que "
+            "no se evaluó nada. Esto no es «no completable».")
+
+
 def _para_interfaz(t: dict, base: str, umbral: int, ciego: bool) -> dict:
     t = copy.deepcopy(t)
+    # En un sitio con auditoría a ciegas no se toca nada: su recorrido no entra a la interfaz.
+    t["no_cargo"] = None if ciego else no_cargo(t)
+    if t["no_cargo"]:
+        t["motivo_texto"] = _texto_no_cargo(t["no_cargo"]["tipo"])  # `motivo` (dato de src/) queda intacto
+        if t.get("nota_corrida"):
+            t["nota_corrida"] = t["nota_corrida"].replace(
+                f"({t['motivo']})", "(la página de entrada no cargó)")
     t.pop("error_axe", None) if t.get("puntajes") else None
     if ciego:
         t.update(pasos=None, trayectoria=None, falsas_llegadas=None, encontro=None,

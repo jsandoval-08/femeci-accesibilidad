@@ -432,7 +432,14 @@
   function tarjetaEstima(d, cambiando) {
     var v = vigente(d);
     var cuerpo, clase = "tarjeta tarjeta--estima";
-    if (!v || cambiando) {
+    if (d.no_cargo) {
+      // La entrada no abrió: no hubo estrategias, así que no se habla de "lo que encontraron".
+      clase += " tarjeta--" + v.estado;
+      cuerpo = insignia(v.estado) +
+        '<p class="grande">' + esc(d.no_cargo.motivo) + ".</p>" +
+        '<p class="nota">No se corrió ninguna estrategia ni axe-core. Esto no dice nada sobre la accesibilidad del sitio: solo que Atorapp no pudo abrir la página de entrada.</p>' +
+        '<p class="nota"><strong>Estimación experimental, no verificada con NVDA.</strong></p>';
+    } else if (!v || cambiando) {
       var primera = d.opciones[0], cond = d.estimaciones["0"];
       cuerpo = '<p class="insignia insignia--pendiente">' + forma("pendiente") + "Por confirmar</p>" +
         '<p class="llegue">Llegué a esto: «' + esc(primera.encontro) + "»</p>" +
@@ -469,7 +476,9 @@
 
   function tarjetaAxe(d) {
     var filas;
-    if (!d.puntajes) {
+    if (d.no_cargo) {
+      filas = '<p class="grande">No se pudo medir: la página no cargó.</p>';  // el error del navegador queda en exploracion.json
+    } else if (!d.puntajes) {
       filas = '<p class="grande">No medido: ' + esc(d.error_axe || "sin detalle") + ".</p>";
     } else {
       filas = PUNTAJES.map(function (p) {
@@ -488,6 +497,7 @@
   }
 
   function tablaEstrategias(d) {
+    if (d.no_cargo) return "";  // no corrió ninguna estrategia
     var filas = d.intentos.map(function (i) {
       var detalle = i.llego ? "«" + i.encontro + "»" : i.motivo;
       return "<tr><th scope=\"row\">" + esc(nombreEstrategia(i.estrategia)) + '</th><td><span class="si-no">' +

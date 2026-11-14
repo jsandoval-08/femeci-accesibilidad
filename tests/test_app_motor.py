@@ -116,6 +116,78 @@ def test_detener_corta_en_la_siguiente_pulsacion(servidor, tmp_path):
     assert not (tmp_path / "capturas").exists()  # axe no llegó a correr
 
 
+# ---------- Carga de prueba de la entrada ----------
+
+@pytest.fixture
+def servidor_mudo():
+    """Doble de timeout: acepta la conexión y nunca responde (la página no termina de cargar)."""
+    import socket
+    srv = socket.socket()
+    srv.bind(("127.0.0.1", 0))
+    srv.listen(5)
+    conexiones = []
+
+    def aceptar():
+        while True:
+            try:
+                conexiones.append(srv.accept()[0])
+            except OSError:
+                return
+
+    threading.Thread(target=aceptar, daemon=True).start()
+    yield f"http://127.0.0.1:{srv.getsockname()[1]}/"
+    srv.close()
+    for c in conexiones:
+        c.close()
+
+
+def _prohibido(*args, **kwargs):
+    raise AssertionError("no debía correr")
+
+
+def test_si_la_entrada_no_carga_no_corren_estrategias_ni_axe(servidor_mudo, tmp_path, monkeypatch):
+    monkeypatch.setattr(motor, "mejor_estrategia", _prohibido)
+    monkeypatch.setattr(motor, "_puntuar", _prohibido)
+    eventos = []
+    ex = explorar(servidor_mudo, "A", None, tmp_path, hosts=(), al_evento=lambda t, d: eventos.append(t),
+                  pausa_s=0, timeout_carga_ms=1_000)
+    assert ex.no_cargo["tipo"] == "timeout" and "Timeout" in ex.no_cargo["detalle"]
+    assert ex.no_cargo["motivo"] == "No cargó en el navegador de Atorapp en 1 s"
+    assert ex.puntajes is None and ex.error_axe == "la página no cargó" and ex.duraciones_s == ()
+    assert eventos == []  # ni "estrategia", ni "paso", ni "fase" (axe)
+    assert not (tmp_path / "capturas").exists()
+    todas = estimaciones(ex.resultado, ex.no_cargo["motivo"])
+    assert set(todas) == {"ninguna"}
+    v = todas["ninguna"]
+    assert (v["estado"], v["tipo_falla"], v["estrategia"], v["motivo"]) == (
+        "no_evaluable", None, None, ex.no_cargo["motivo"])
+    assert "ninguna estrategia" not in v["motivo"]
+
+
+def test_motivo_exacto_con_el_tope_de_60_s(tmp_path, monkeypatch):
+    """Doble de NavegadorEnVivo.abrir: devuelve el timeout sin esperar 60 s."""
+    from src.emulador import Falla
+    from src.navegador import NavegadorEnVivo
+    monkeypatch.setattr(NavegadorEnVivo, "abrir", lambda self, url: Falla("timeout", "Page.goto: Timeout 60000ms exceeded."))
+    monkeypatch.setattr(motor, "mejor_estrategia", _prohibido)
+    monkeypatch.setattr(motor, "_puntuar", _prohibido)
+    ex = explorar("http://127.0.0.1:9/x.html", "A", None, tmp_path, hosts=(), pausa_s=0)
+    assert ex.no_cargo["motivo"] == "No cargó en el navegador de Atorapp en 60 s"
+    from app.guardado import a_diccionario
+    d = a_diccionario(ex)
+    assert d["intentos"] == [] and d["requiere_confirmacion"] is False
+    assert d["no_cargo"]["detalle"].startswith("Page.goto")
+
+
+def test_falla_tecnica_al_cargar_no_dice_60_s(tmp_path, monkeypatch):
+    from src.emulador import Falla
+    from src.navegador import NavegadorEnVivo
+    monkeypatch.setattr(NavegadorEnVivo, "abrir", lambda self, url: Falla("falla_tecnica", "net::ERR_CONNECTION_REFUSED"))
+    monkeypatch.setattr(motor, "mejor_estrategia", _prohibido)
+    ex = explorar("http://127.0.0.1:9/x.html", "A", None, tmp_path, hosts=(), pausa_s=0)
+    assert ex.no_cargo["tipo"] == "falla_tecnica" and "60" not in ex.no_cargo["motivo"]
+
+
 def test_entrada_bloqueada_no_abre_playwright(tmp_path, monkeypatch):
     def prohibido():
         raise AssertionError("no debía tocar la red")

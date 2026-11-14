@@ -88,3 +88,26 @@ def test_marcas():
     t = g._para_interfaz(_t("no_evaluable", None, None, 1, "no resuelta dentro del presupuesto: timeout"),
                          "https://x.mx/", 15, False)
     assert "timeout" in t["marcas"][0]["texto"]
+
+
+def _no_cargo(tipo="timeout"):
+    t = _t("no_evaluable", None, None, 0, "no resuelta dentro del presupuesto: " + tipo, "entrada×1")
+    t["pasos"] = [{"tecla": "entrada", "anuncio": "no evaluable: " + tipo, "pulsaciones": 0,
+                   "url": "https://x.mx/", "no_evaluable": tipo}]
+    return t
+
+
+def test_entrada_que_no_cargo_se_cuenta_como_tal_sin_tocar_el_veredicto():
+    p = g._para_interfaz(_no_cargo(), "https://x.mx/", 15, ciego=False)
+    assert p["no_cargo"] == {"tipo": "timeout"}
+    assert "No cargó en el navegador de Atorapp" in p["motivo_texto"] and "ninguna estrategia encontró" not in p["motivo_texto"]
+    assert p["marcas"][0]["texto"] == "Aquí se detuvo: la página de entrada no cargó (timeout)"
+    # El dato de src/ no cambia: estado y motivo siguen siendo los del veredicto.
+    assert (p["estado"], p["motivo"]) == ("no_evaluable", "no resuelta dentro del presupuesto: timeout")
+    assert "falla técnica" in g._texto_no_cargo("falla_tecnica")
+
+
+def test_no_evaluable_por_tope_no_es_no_cargo_ni_en_ciego():
+    tope = _t("no_evaluable", None, None, 508, "no resuelta dentro del presupuesto: tope_pulsaciones")
+    assert g._para_interfaz(tope, "https://x.mx/", 15, ciego=False)["no_cargo"] is None
+    assert g._para_interfaz(_no_cargo(), "https://x.mx/", 15, ciego=True)["no_cargo"] is None

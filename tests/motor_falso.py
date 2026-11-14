@@ -8,7 +8,7 @@ ce_otro_telefono). Con `liberar` se queda esperando a mitad del recorrido: así 
 
 import threading
 
-from app.motor import Detenida, Exploracion
+from app.motor import Detenida, Exploracion, _sin_cargar, motivo_no_cargo
 from app.seguridad import validar_entrada
 from src.emulador import Paso
 from src.estrategias import Intento, ResultadoTarea, Tarea
@@ -42,7 +42,8 @@ def resultado(letra="A", tramite=None):
 
 
 class MotorFalso:
-    def __init__(self, liberar: threading.Event | None = None, puntajes=True):
+    def __init__(self, liberar: threading.Event | None = None, puntajes=True, no_carga=False):
+        self.no_carga = no_carga  # la carga de prueba falla: sin estrategias ni axe
         self.liberar = liberar
         self.puntajes = puntajes
         self.llamadas = []
@@ -50,6 +51,12 @@ class MotorFalso:
     def __call__(self, url, letra, tramite, carpeta, hosts, al_evento=None, detener=None, **opciones):
         self.llamadas.append({"url": url, "letra": letra, "tramite": tramite, "opciones": opciones})
         validar_entrada(url, hosts)
+        if self.no_carga:
+            no_cargo = {"tipo": "timeout", "motivo": motivo_no_cargo("timeout", 60_000),
+                        "detalle": "TimeoutError: Page.goto: Timeout 60000ms exceeded."}
+            return Exploracion(url, Tarea(letra, url, tramite), "2026-11-14T12:00:00-07:00", 2, 0,
+                               _sin_cargar(Tarea(letra, url, tramite), url, no_cargo), None,
+                               "la página no cargó", (), 60.4, (), no_cargo)
         r = resultado(letra, tramite)
         for n, intento in enumerate(r.intentos, 1):
             al_evento("estrategia", {"indice": n, "total": len(r.intentos), "estrategia": intento.estrategia})
