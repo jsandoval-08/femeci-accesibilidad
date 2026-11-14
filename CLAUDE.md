@@ -169,7 +169,9 @@ compararlos mediría cuánto aporta la IA. Control de gasto y corrida repetida d
 corrida real de cada una.** Datos y resultados en `estudio/` (Excel → CSV con
 `scripts/excel_a_csv.py`; análisis con `scripts/analisis_conjunto.py`; ver bitácora del 8-nov).
 Lo de abajo sobre "solo páginas locales" queda superado para los sitios con auditoría hecha.
-**Fase 3D.1 completa (preparación para sitios reales, 6-nov). 3E pendiente.**
+**Fase 3D.1 completa (preparación para sitios reales, 6-nov). 3E hecha (14-nov): interfaz estática para la
+demo.** Resultados oficiales en `estudio/oficial/` (regla del 13-nov, ver 3E); `estudio/resultados/` es la
+corrida del 8-nov y no se toca.
 **Alcance vigente (5-nov):** Atorapp corre SOLO sobre páginas de prueba locales; nada de sitios
 reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye. El modo
 "sitio real" ya existe, pero no se ha usado: exige la auditoría antes (ver 3D.1).
@@ -310,7 +312,21 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     **Limitaciones:** comprueba que hay veredictos, no que la auditoría se hizo a ciegas ni antes
     (sigue siendo disciplina del auditor); una estrategia puede seguir un enlace con palabra clave a
     otro dominio (bloquearlo daría `no_encontrado` falso con PDF oficiales en otro host).
-- **3E** ← SIGUIENTE. Interfaz local (Streamlit): modo usuario (navegar solo con lo anunciado) y modo auditoría.
+- **3E** ✅ HECHA (14-nov). Interfaz **estática** para la demo (reemplaza la idea de Streamlit): `interfaz/index.html`
+  se abre con doble clic, sin servidor ni internet; muestra resultados ya generados, NO corre Atorapp.
+  - Datos: `src/reporte.py` guarda `pasos` (tecla, anuncio, pulsaciones acumuladas, página, nivel) y `encontro`;
+    cada falsa llegada guarda sus pasos (campo de datos en `FalsaLlegada`, fuera de toda comparación).
+    `scripts/correr_paginas_prueba.py` → `estudio/resultados_prueba/` (falla si una tarea difiere de su yaml).
+    `scripts/generar_datos_interfaz.py [--ciego <sitio>]` → `estudio/oficial/` (reportes + análisis) e
+    `interfaz/datos.js`. Se vuelve a correr cuando hay filas o corridas nuevas.
+  - **Regla de resultados oficiales (fijada el 13-nov ANTES de la segunda corrida, commit `f8aaf00`):** si la
+    corrida del 8-nov de una tarea fue `no_evaluable` por falla técnica (timeout, `falla_tecnica`), manda la
+    segunda corrida (veredicto, axe y pasos). En las demás manda el 8-nov y la segunda solo aporta pasos si
+    coincide (estado, falla, fricción, consumidas, resumen). Tarea nueva: su primera corrida. Segunda corrida
+    en `estudio/corridas/<fecha>/`. ahome tuvo su único reintento (14-nov): timeout otra vez.
+  - `--ciego <sitio>`: sitio con auditoría NVDA a ciegas en curso; su trayectoria no entra a la interfaz.
+  - Accesibilidad propia: `tests/test_interfaz.py`, axe-core 4.14.0 con 0 violaciones en 82 estados, teclado,
+    foco visible, encabezados, cero peticiones de red.
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.

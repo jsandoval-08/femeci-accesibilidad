@@ -351,6 +351,46 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
 - **Problemas y decisiones:** las de arriba.
 - **Siguiente:** correr sinaloa y ahome; generar `interfaz/datos.js`.
 
+## 14-nov-2026 — Fase 3E: interfaz estática para la demo (3E.1, 3E.2, 3E.3)
+
+- **Qué hice:**
+  - 3E.1 Datos:
+    - el reporte guarda la trayectoria completa (`pasos`) y lo que halló cada intento (`encontro`);
+    - las 24 tareas de prueba tienen reportes en `estudio/resultados_prueba/`;
+    - segunda corrida de sinaloa y ahome con la regla de la entrada anterior;
+    - `scripts/generar_datos_interfaz.py` arma `estudio/oficial/` e `interfaz/datos.js`.
+  - 3E.2 Vistas: Inicio, Trayectoria (reproductor paso a paso) y Comparación, en `interfaz/`. Sin
+    bibliotecas, sin red y sin `fetch()`.
+  - 3E.3: `tests/test_interfaz.py` corre axe-core 4.14.0 sobre la interfaz y revisa teclado, foco y
+    encabezados.
+- **Resultado:**
+  - **Segunda corrida (14-nov, 07:51–07:57; la carpeta se llama `2026-11-14` porque esa es la fecha real):**
+    - sinaloa A da lo mismo que el 8-nov: no_completable, 123 consumidas, mismos 4 puntajes de axe.
+      Sus 123 pasos se muestran en la interfaz.
+    - ahome A dio **timeout otra vez**, en las estrategias y en axe. Fue su único reintento: queda
+      `no_evaluable` y no se vuelve a correr. El resultado oficial ahora sale de la segunda corrida, pero
+      no cambia: el análisis queda igual (2 comparables, acuerdo 1 de 2).
+    - ciudadano no se corrió (auditoría NVDA a ciegas de ciudadano A pendiente). En `datos.js` va con
+      `--ciego ciudadano`: sin trayectorias.
+  - Las 24 tareas de prueba coinciden con sus `.esperado.yaml`. Ninguna tiene falsas llegadas.
+  - axe sobre la interfaz: **0 violaciones** en 82 estados (Inicio, Comparación, y cada una de las 27
+    trayectorias al abrir, a mitad y al final, más una durante la reproducción). El control (un botón sin
+    nombre) sí se detecta. Cero peticiones de red.
+  - Suite completa: **426 pasan**, 0 fallan (377 previas + 1 del reporte + 8 de la regla + 40 de la interfaz).
+  - `estudio/resultados/` sin cambios.
+- **Problemas y decisiones:**
+  - La regla se escribió y se subió a git antes de correr (commit `f8aaf00`).
+  - "Falla técnica" = motivo `timeout` o `falla_tecnica`. Los topes, la profundidad y el CAPTCHA no lo son:
+    son el presupuesto o una barrera.
+  - Las páginas de prueba muestran "NVDA: Pendiente" y aparte la respuesta esperada, rotulada como escrita a
+    mano (no NVDA).
+  - El acuerdo se muestra como fracción ("1 de 2"), no como porcentaje. Sin AUC: se muestra su motivo.
+  - Tema claro único: más legible en una laptop sobre una mesa con luz de sala.
+- **Siguiente:**
+  - Después de la auditoría a ciegas de ciudadano A: agregar la fila al CSV, correr ciudadano (comando en la
+    entrada del 13-nov) y regenerar `datos.js` sin `--ciego ciudadano`.
+  - Ensayar la demo abriendo `interfaz/index.html` con el Wi-Fi apagado.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
