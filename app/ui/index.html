@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="atorapp-token" content="{{TOKEN}}">
+  <title>Atorapp · modo exploración</title>
+  <meta name="description" content="Atorapp en modo exploración: estimación experimental, no verificada con NVDA, de si una persona con lector de pantalla puede completar una tarea en un sitio.">
+  <link rel="stylesheet" href="/estudio/marca.css">
+  <link rel="stylesheet" href="/ui/estilos.css">
+</head>
+<body>
+  <a class="saltar" href="#contenido" id="saltar">Saltar al contenido</a>
+  <div class="marco">
+    <header class="lateral">
+      <p class="logo">
+        <svg class="logo-simbolo" viewBox="0 0 220 120" aria-hidden="true" focusable="false">
+          <line x1="18" y1="60" x2="128" y2="60" stroke="#FAF7F2" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="18" cy="60" r="14" fill="#FAF7F2"/>
+          <circle cx="64" cy="60" r="14" fill="#FAF7F2"/>
+          <circle cx="110" cy="60" r="14" fill="#FAF7F2"/>
+          <rect x="138" y="22" width="76" height="76" rx="14" fill="none" stroke="#E8590C" stroke-width="12"/>
+        </svg>
+        <span>Ator<span class="logo-app">app</span></span>
+      </p>
+      <nav aria-label="Principal">
+        <ul class="menu">
+          <li><a href="#inicio" data-vista="inicio">Nueva evaluación</a></li>
+          <li><a href="#historial" data-vista="historial">Historial</a></li>
+          <li><button type="button" id="b-estudio">Estudio (validado con NVDA)</button></li>
+          <li><a href="#acerca" data-vista="acerca">Acerca de</a></li>
+        </ul>
+      </nav>
+      <p class="lateral-nota">Emulador simplificado inspirado en NVDA. No equivale a NVDA.</p>
+    </header>
+
+    <main id="contenido" tabindex="-1">
+      <p class="pildora">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false">
+          <path d="M9 1 L17 16 H1 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+          <line x1="9" y1="7" x2="9" y2="11" stroke="currentColor" stroke-width="2"/>
+          <circle cx="9" cy="13.5" r="1.2" fill="currentColor"/>
+        </svg>
+        Modo exploración · estimación experimental, no verificada con NVDA
+      </p>
+      <noscript><p>Esta app necesita JavaScript.</p></noscript>
+      <div id="vista"></div>
+    </main>
+  </div>
+  <div id="vivo" class="sr-only" aria-live="polite"></div>
+  <script src="/ui/app.js"></script>
+</body>
+</html>
