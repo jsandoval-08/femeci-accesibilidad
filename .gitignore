@@ -17,3 +17,7 @@ capturas/
 
 # Capturas de las corridas del estudio (se regeneran; el reporte guarda la trayectoria)
 estudio/resultados/*/capturas/
+
+# Modo exploración (Fase 3F): lo que corre la app local; fuera del estudio, no se versiona
+exploracion/*
+!exploracion/LEEME.md

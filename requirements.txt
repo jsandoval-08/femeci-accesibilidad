@@ -4,3 +4,8 @@ pypdf==6.19.0
 PyYAML==6.0.3
 scikit-learn==1.9.1
 openpyxl==3.1.5
+# Fase 3F: app local del modo exploración
+fastapi==0.163.0
+uvicorn==0.54.0
+httpx==0.28.1
+pywebview==6.2.1

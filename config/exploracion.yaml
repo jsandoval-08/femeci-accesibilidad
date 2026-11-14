@@ -1,0 +1,13 @@
+# Modo exploración (Fase 3F): la app local de escritorio. Estimación experimental, FUERA del estudio.
+#
+# hosts_bloqueados: la app se niega a evaluarlos y a pedirles cualquier cosa mientras recorre otro
+# sitio. Coincide el host exacto o cualquier subdominio ("culiacan.gob.mx" cubre "www.culiacan.gob.mx").
+# Regla: todo sitio que se vaya a auditar a ciegas con NVDA entra aquí ANTES de explorar nada, para
+# que su auditoría no se contamine con lo que estime Atorapp. Se quita a mano cuando la auditoría
+# esté hecha.
+hosts_bloqueados:
+  - ciudadano.sinaloa.gob.mx  # auditoría NVDA a ciegas pendiente (14-nov)
+  - culiacan.gob.mx           # auditoría NVDA a ciegas pendiente (14-nov)
+
+# Dónde guarda la app lo que corre. Nunca dentro de estudio/: nada de aquí entra al análisis.
+carpeta: exploracion
