@@ -319,6 +319,38 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Completar la auditoría de las filas pendientes (ahome B, sinaloa B, ciudadano A, culiacán).
   - Guardar la trayectoria completa en el reporte.
 
+## 13-nov-2026 — Fase 3E: regla para la segunda corrida (fijada ANTES de correrla)
+
+- **Qué hice:**
+  - Esta entrada se escribe y se sube a git **antes** de correr ningún sitio. Así la regla no se
+    puede ajustar después de ver los resultados.
+  - Motivo de la segunda corrida: los reportes del 8-nov solo guardaron la trayectoria resumida. El
+    reporte ya guarda la trayectoria completa (commit `92e735b`), y la interfaz de 3E la necesita.
+- **Regla (decidida por Javier el 13-nov, sin haber visto ninguna segunda corrida):**
+  1. Si la corrida del 8-nov de una tarea fue `no_evaluable` por falla técnica (timeout, error de
+     carga), su resultado oficial pasa a ser el de la segunda corrida: veredicto, puntajes de axe y
+     pasos. En la interfaz se marca "segunda corrida, AAAA-MM-DD". Hoy aplica solo a **ahome A**.
+  2. En las demás tareas manda la corrida del 8-nov. La segunda corrida solo aporta los pasos, y
+     solo si coinciden estado, tipo de falla, fricción o pulsaciones consumidas y trayectoria
+     resumida. Si no coinciden, los pasos quedan "pendiente" y se declara la diferencia.
+  3. Una tarea que no estaba en la corrida del 8-nov (p. ej. ciudadano A, cuando se audite) se toma
+     de su primera corrida.
+  4. Este es el **único reintento de ahome**. Si vuelve a fallar, ahome A queda `no_evaluable` con
+     su motivo y no se corre otra vez.
+  5. `estudio/resultados/` (corrida del 8-nov) no se toca. La segunda corrida va a
+     `estudio/corridas/AAAA-MM-DD/<sitio>/`. Los resultados oficiales y el análisis que resultan de
+     la regla van a `estudio/oficial/`.
+- **Alcance de esta noche:** solo sinaloa.gob.mx y www.ahome.gob.mx, una vez cada uno, con
+  `--sitio-real` y pausa de 1 s.
+  - **ciudadano no se corre:** mañana Javier hace a ciegas la auditoría NVDA de ciudadano A, y antes
+    no debe ver ninguna trayectoria de ese sitio. Comando para correrlo después de la auditoría (con
+    la fila A ya en el CSV):
+    `.venv\Scripts\python.exe -m src.correr_sitio estudio/auditoria/ciudadano.auditoria.csv https://ciudadano.sinaloa.gob.mx/ --carpeta estudio/corridas/AAAA-MM-DD/ciudadano --sitio-real ciudadano.sinaloa.gob.mx`
+    Luego, `.venv\Scripts\python.exe scripts/generar_datos_interfaz.py` sin `--ciego ciudadano`.
+- **Resultado:** (se completa en la entrada de cierre de 3E).
+- **Problemas y decisiones:** las de arriba.
+- **Siguiente:** correr sinaloa y ahome; generar `interfaz/datos.js`.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
