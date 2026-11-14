@@ -393,6 +393,46 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
 
 ---
 
+## 14-nov-2026 — Fase 3F: app local de escritorio (modo exploración) + identidad visual
+
+- **Qué hice:**
+  - **3F.1** Plan aprobado: FastAPI + uvicorn en 127.0.0.1, ventana con pywebview (respaldo: navegador),
+    la persona confirma lo encontrado, fuente Atkinson Hyperlegible local.
+  - **3F.2** `app/`: bloqueo de hosts (`config/exploracion.yaml`, 4 barreras: entrada, `route` del contexto,
+    redirección y captura de axe), motor `explorar()`, guardado en `exploracion/` (no se versiona),
+    servidor con SSE, token en cada POST y solo Host 127.0.0.1, `Atorapp.bat` y `python -m app`.
+  - **3F.3** UI con Inicio, Evaluando, Resultado, Recorrido, Historial y Acerca de, siguiendo `Diseno/app1..4`.
+  - **3F.4** `interfaz/marca.css` + fuente (OFL) compartidas; aplicada a la app y a la interfaz del estudio.
+  - **3F.5** Verificación (abajo).
+- **Resultado:**
+  - **Cero cambios en `src/`.** El paso a paso en vivo sale de cambiar `emu.trayectoria` por una lista que
+    avisa en cada `append`. Prueba de neutralidad: en perfecta A, sin_contacto A, enlaces_ambiguos B,
+    pdf_escaneado C y formulario_sin_etiquetas D, `clasificar()` con su objetivo da exactamente lo del yaml.
+  - Sin objetivo, el veredicto lo da `clasificar()` con el hallazgo que confirma la persona (o `NO_EXISTE`
+    si nadie llegó o si dice «ninguna»): son las reglas del estudio, no unas nuevas. En ce_otro_telefono la
+    primera opción es la falsa llegada (3); confirmando la otra da enlace_por_nombre, 7, igual que el estudio.
+  - Punta a punta en la app sobre páginas locales: perfecta A = completable, 7 (tras confirmar); sin_contacto
+    A = no completable, 42 consumidas. Iguales a sus yaml.
+  - axe-core 4.14.0: **0 violaciones** en cada pantalla y estado de la app y en la interfaz del estudio, con
+    el control del botón sin nombre en ambas. Foco naranja de 4 px comprobado. Cero peticiones externas.
+  - Suite completa: **476 pasan** (426 previas + 50 nuevas). `git diff eba0ec8 -- src/ estudio/
+    interfaz/datos.js` vacío. `Atorapp.bat` abrió la ventana en 6 s (con dependencias ya bajadas).
+  - Nada se corrió contra sitios reales.
+- **Problemas y decisiones:**
+  - Comprobado: `route` de Playwright no intercepta el destino de un 302 (la prueba de redirección a un host
+    bloqueado la atrapa la barrera 3, que aborta toda la evaluación sin guardar nada).
+  - El «mejor» del modo exploración es el de menor fricción entre los que CREEN llegar: sin objetivo, una
+    falsa llegada barata sale primero. Por eso se pide confirmar y se ofrecen las demás.
+  - «Estudio» abre `interfaz/index.html` por file:// en el navegador (pywebview no tiene botón atrás).
+  - El rombo de No evaluable lleva guion (el diseño traía «?»; mandó la especificación).
+  - Dependencias nuevas con versión fija: fastapi 0.163.0, uvicorn 0.54.0, httpx 0.28.1, pywebview 6.2.1.
+- **Siguiente:**
+  - Quitar un host de `config/exploracion.yaml` solo cuando su auditoría NVDA a ciegas esté hecha; agregar
+    ANTES cualquier sitio nuevo que se vaya a auditar.
+  - Ensayar la demo con la app y con la interfaz.
+
+---
+
 <!-- Plantilla para nuevas entradas:
 
 ## DD-mmm-2026 — Título

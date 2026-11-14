@@ -170,7 +170,7 @@ corrida real de cada una.** Datos y resultados en `estudio/` (Excel → CSV con
 `scripts/excel_a_csv.py`; análisis con `scripts/analisis_conjunto.py`; ver bitácora del 8-nov).
 Lo de abajo sobre "solo páginas locales" queda superado para los sitios con auditoría hecha.
 **Fase 3D.1 completa (preparación para sitios reales, 6-nov). 3E hecha (14-nov): interfaz estática para la
-demo.** Resultados oficiales en `estudio/oficial/` (regla del 13-nov, ver 3E); `estudio/resultados/` es la
+demo. 3F hecha (14-nov): app local del modo exploración, fuera del estudio (ver 3F).** Resultados oficiales en `estudio/oficial/` (regla del 13-nov, ver 3E); `estudio/resultados/` es la
 corrida del 8-nov y no se toca.
 **Alcance vigente (5-nov):** Atorapp corre SOLO sobre páginas de prueba locales; nada de sitios
 reales. La auditoría manual con NVDA se pospone. El agente de IA no se construye. El modo
@@ -327,6 +327,23 @@ Fase 3 (en este orden; marcar el sub-paso actual):
   - `--ciego <sitio>`: sitio con auditoría NVDA a ciegas en curso; su trayectoria no entra a la interfaz.
   - Accesibilidad propia: `tests/test_interfaz.py`, axe-core 4.14.0 con 0 violaciones en 82 estados, teclado,
     foco visible, encabezados, cero peticiones de red.
+- **3F** ✅ HECHA (14-nov). **App local de escritorio = modo exploración**, FUERA del estudio: `Atorapp.bat`
+  (crea `.venv` si falta) → `python -m app`: FastAPI en 127.0.0.1 + ventana pywebview (respaldo: navegador).
+  Estimación experimental, no verificada con NVDA, para cualquier sitio; lo que corre va a `exploracion/`
+  (no se versiona) y NUNCA entra a `estudio/`, al análisis ni a `datos.js`.
+  - **Cero cambios en `src/`**: la fábrica de `app/motor.py` cambia `emu.trayectoria` por una lista que avisa
+    en cada paso. Sin objetivo correcto, el veredicto es `clasificar()` con el hallazgo que la PERSONA
+    confirma (o `NO_EXISTE`); antes de confirmar solo se muestra «Llegué a esto: …», nunca «Completable».
+  - Mismos límites: pausa ≥ 1 s fuera de 127.0.0.1, topes 508/30, profundidad 3, sin formularios ni mailto/tel.
+  - **Hosts bloqueados** (`config/exploracion.yaml`): ciudadano.sinaloa.gob.mx y culiacan.gob.mx (auditoría
+    NVDA a ciegas pendiente). Regla: todo sitio que se vaya a auditar a ciegas entra a la lista ANTES de
+    explorar nada; se quita a mano cuando la auditoría esté hecha. Cuatro barreras: entrada, `route` del
+    contexto, redirección (aborta todo) y captura de axe.
+  - Identidad visual (`interfaz/marca.css` + Atkinson Hyperlegible local, OFL) en la app y en la interfaz.
+  - Pruebas: `tests/test_app_*.py` (50), axe 0 violaciones en cada pantalla; 476 en total.
+  - **Limitaciones:** sin objetivo, la opción más barata puede ser una falsa llegada (por eso se confirma);
+    la confirmación es humana, no NVDA; Detener actúa en la siguiente pulsación (≤ una carga, 30 s); la
+    captura de axe carga los recursos de terceros de la página de entrada.
 
 **Pendientes:**
 - iframes: getFullAXTree solo cubre el marco principal; resolver si alguna tarea pasa por iframes.
