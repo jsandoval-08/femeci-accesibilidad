@@ -55,7 +55,9 @@ def app_falsa(tmp_path_factory):
 
 @pytest.fixture
 def pagina(chromium):
-    contexto = chromium.new_context(viewport={"width": 1366, "height": 768})
+    # Sin movimiento: axe mide el contraste del estado final, no de un cuadro a medias de la animación
+    # (las animaciones de la app solo corren con prefers-reduced-motion: no-preference).
+    contexto = chromium.new_context(viewport={"width": 1366, "height": 768}, reduced_motion="reduce")
     pg = contexto.new_page()
     pg.externas, pg.errores = [], []
 
@@ -140,12 +142,20 @@ def test_axe_evaluando_resultado_y_recorrido(app_falsa, pagina):
     assert pagina.inner_text("#ev-tecla .sr-only") == "Insert más F7"
     assert _axe(pagina) == [], "evaluando"
     _encabezados_en_orden(pagina)
+    # Reloj: junto a "Estrategia k de n", se actualiza solo y NO está dentro del aria-live.
+    assert pagina.evaluate("document.getElementById('ev-tiempo').parentElement === document.getElementById('ev-estrategia').parentElement")
+    assert pagina.evaluate("!document.getElementById('ev-tiempo').closest('[aria-live], [role=status], [role=alert]')")
+    antes = pagina.inner_text("#ev-tiempo")
+    pagina.wait_for_function("t => document.getElementById('ev-tiempo').textContent !== t", arg=antes, timeout=4000)
+    assert pagina.inner_text("#ev-tiempo").startswith("Tiempo: 00:0")
     app_falsa["liberar"].set()
     pagina.wait_for_selector("#h-estima")
     assert pagina.evaluate("document.activeElement.tagName") == "H1"
     texto = pagina.inner_text("#estima")
     assert "Por confirmar" in texto and "Llegué a esto: «Teléfono: 667 555 0999»" in texto
     assert "Completable" not in texto  # nunca a secas sin confirmar
+    assert "Duración total: 01:15" in pagina.inner_text("main")  # 75.4 s del motor de prueba
+    assert pagina.locator("table tbody tr td:nth-child(4)").all_inner_texts() == ["00:04", "01:01", "00:01"]
     assert _axe(pagina) == [], "por confirmar"
     _encabezados_en_orden(pagina)
     pagina.click("#b-no")

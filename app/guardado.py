@@ -33,6 +33,14 @@ FALLAS = {"no_encontrado": "no se encontró", "no_identificable": "no se puede i
           "cierre_roto": "el cierre no funciona"}
 
 
+def formato_duracion(segundos) -> str:
+    """mm:ss (los minutos pueden pasar de 59). None = una evaluación guardada antes de medir el tiempo."""
+    if segundos is None:
+        return "no medida"
+    total = int(round(segundos))
+    return f"{total // 60:02d}:{total % 60:02d}"
+
+
 def es_id(texto: str) -> bool:
     """¿Es un nombre de carpeta de evaluación? Evita que una petición salga de exploracion/."""
     return bool(_ID.match(texto or ""))
@@ -57,10 +65,12 @@ def a_diccionario(ex: Exploracion) -> dict:
         "tramite": ex.tarea.tramite, "fecha": ex.fecha, "palabras_version": ex.palabras_version,
         "umbral": UMBRAL, "umbrales": list(UMBRALES_SENSIBILIDAD), "pausa_s": ex.pausa_s,
         "topes": {"pulsaciones": TOPE_PULSACIONES, "navegaciones": TOPE_NAVEGACIONES},
+        "duracion_s": ex.duracion_s,
         "intentos": [{"estrategia": i.estrategia, "llego": i.llego, "pulsaciones": i.pulsaciones,
+                      "duracion_s": ex.duraciones_s[n] if n < len(ex.duraciones_s) else None,
                       "motivo": i.motivo, "encontro": _describir(i.hallazgo) if i.hallazgo else None,
                       "trayectoria": resumir_trayectoria(i.trayectoria),
-                      "pasos": [_paso(p) for p in i.trayectoria]} for i in r.intentos],
+                      "pasos": [_paso(p) for p in i.trayectoria]} for n, i in enumerate(r.intentos)],
         "opciones": [{k: o[k] for k in ("estrategia", "pulsaciones", "encontro")} for o in opciones],
         "requiere_confirmacion": bool(opciones),
         "estimaciones": estimaciones(r),
@@ -140,6 +150,7 @@ def markdown(datos: dict) -> str:
          f"- Tarea: {datos['tarea']} · {TAREAS[datos['tarea']]}"
          + (f" · Trámite buscado: {datos['tramite']}" if datos["tramite"] else ""),
          f"- Fecha: {datos['fecha']} · Palabras clave: versión {datos['palabras_version']}",
+         f"- Duración total: {formato_duracion(datos.get('duracion_s'))} (mm:ss, axe incluido)",
          f"- Límites: pausa de {datos['pausa_s']:g} s entre páginas, tope de {datos['topes']['pulsaciones']} "
          f"pulsaciones y {datos['topes']['navegaciones']} páginas por estrategia; nunca envía formularios.",
          "", "## Lo que estima Atorapp", ""]
@@ -167,12 +178,12 @@ def markdown(datos: dict) -> str:
         l.append("")
     if datos["captcha"]:
         l += [f"CAPTCHA detectado en la ruta: {', '.join(datos['captcha'])}.", ""]
-    l += ["## Estrategias", "", "| Estrategia | ¿Cree que llegó? | Pulsaciones | Encontró o motivo |",
-          "|---|---|---|---|"]
+    l += ["## Estrategias", "", "| Estrategia | ¿Cree que llegó? | Pulsaciones | Duración | Encontró o motivo |",
+          "|---|---|---|---|---|"]
     for i in datos["intentos"]:
         detalle = (i["encontro"] if i["llego"] else i["motivo"]) or "—"
         l.append(f"| {i['estrategia']} | {'sí' if i['llego'] else 'no'} | {i['pulsaciones']} | "
-                 f"{detalle.replace('|', '/')} |")
+                 f"{formato_duracion(i.get('duracion_s'))} | {detalle.replace('|', '/')} |")
     pasos = v["pasos"] if v else datos["estimaciones"]["0"]["pasos"]
     l += ["", "## Recorrido paso a paso", ""]
     l += [f"{n}. {p['tecla']} — {p['anuncio']}" for n, p in enumerate(pasos, 1)] or ["Sin pulsaciones."]

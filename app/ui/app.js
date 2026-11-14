@@ -103,6 +103,14 @@
 
   function nombreEstrategia(clave) { return ESTRATEGIAS[clave] || clave; }
 
+  // mm:ss (los minutos pueden pasar de 59); null = evaluación guardada antes de medir el tiempo.
+  function mmss(segundos) {
+    if (segundos === null || segundos === undefined) return "no medida";
+    var t = Math.max(0, Math.round(segundos));
+    var m = Math.floor(t / 60), s = t % 60;
+    return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+  }
+
   function pulsaciones(n) { return n + (n === 1 ? " pulsación" : " pulsaciones"); }
 
   function anunciar(texto) {
@@ -169,7 +177,8 @@
   var ANUNCIO_CADA_PASO = false;
 
   function seguir(id) {
-    EN_CURSO = { id: id, pasos: [], estrategia: null, fase: null, final: null, ultimoAnuncio: 0 };
+    EN_CURSO = { id: id, pasos: [], estrategia: null, fase: null, final: null, ultimoAnuncio: 0,
+                 inicioMs: Date.now(), finMs: null };
     var fuente = new EventSource("/api/evaluaciones/" + encodeURIComponent(id) + "/eventos");
     EN_CURSO.fuente = fuente;
     function al(tipo, fn) {
@@ -202,6 +211,7 @@
       al(tipo, function (d) {
         fuente.close();  // si no, EventSource se reconecta y repite todo
         EN_CURSO.final = { tipo: tipo, datos: d };
+        EN_CURSO.finMs = Date.now();  // el reloj se congela al terminar
         if (tipo === "fin") {
           anunciar("Evaluación terminada.");
           var id = EN_CURSO.id;
@@ -213,6 +223,16 @@
         }
       });
     });
+  }
+
+  // Reloj de la pantalla Evaluando: se pinta cada segundo en #ev-tiempo, que está FUERA del aria-live
+  // (el lector no lo anuncia cada segundo; quien quiera saber el tiempo lo lee como texto).
+  var RELOJ = null;
+  function pintarTiempo() {
+    var el = document.getElementById("ev-tiempo");
+    if (!el || !EN_CURSO) { window.clearInterval(RELOJ); RELOJ = null; return; }
+    el.textContent = "Tiempo: " + mmss(((EN_CURSO.finMs || Date.now()) - EN_CURSO.inicioMs) / 1000);
+    if (EN_CURSO.finMs) { window.clearInterval(RELOJ); RELOJ = null; }
   }
 
   var pintadoPendiente = false;
@@ -298,7 +318,7 @@
       '<section class="actual" aria-labelledby="h-actual"><h2 id="h-actual" class="sr-only">Paso actual</h2>' +
       '<div id="ev-tecla"></div>' +
       '<div class="actual-datos"><p class="rotulo">Lo que anunciaría el lector</p>' +
-      '<p class="anuncio" id="ev-anuncio">—</p><div id="ev-barra"></div><p class="nota" id="ev-estrategia"></p></div></section>' +
+      '<p class="anuncio" id="ev-anuncio">—</p><div id="ev-barra"></div><p class="nota"><span id="ev-estrategia"></span> · <span id="ev-tiempo">Tiempo: 00:00</span></p></div></section>' +
       '<section aria-labelledby="h-rec"><div class="encabezado-seccion"><h2 id="h-rec">Recorrido de esta estrategia</h2>' +
       '<label class="opcion-anunciar"><input type="checkbox" id="anunciar-cada"' + (ANUNCIO_CADA_PASO ? " checked" : "") +
       "> Anunciar cada paso</label></div>" +
@@ -311,6 +331,9 @@
       pedir("POST", "/api/evaluaciones/" + encodeURIComponent(EN_CURSO.id) + "/detener").catch(function () {});
     });
     document.getElementById("anunciar-cada").addEventListener("change", function () { ANUNCIO_CADA_PASO = this.checked; });
+    window.clearInterval(RELOJ);
+    RELOJ = window.setInterval(pintarTiempo, 1000);
+    pintarTiempo();
     pintarEvaluando(true);
     return true;
   }
@@ -326,7 +349,22 @@
       ? teclaHtml(ultimo.tecla, "tecla--grande")
       : '<span class="tecla tecla--grande" aria-hidden="true">·</span><span class="sr-only">sin pulsaciones todavía</span>';
     document.getElementById("ev-anuncio").textContent = ultimo ? "“" + ultimo.anuncio + "”" : "—";
-    document.getElementById("ev-barra").innerHTML = barraUmbral(ultimo ? ultimo.pulsaciones : 0);
+    // La barra se recrea en cada pintada: se arranca desde el ancho anterior para que el relleno se deslice.
+    var cajaBarra = document.getElementById("ev-barra");
+    var rellenoViejo = cajaBarra.querySelector(".barra-relleno");
+    var anchoViejo = rellenoViejo ? rellenoViejo.style.width : "0%";
+    cajaBarra.innerHTML = barraUmbral(ultimo ? ultimo.pulsaciones : 0);
+    var rellenoNuevo = cajaBarra.querySelector(".barra-relleno");
+    if (rellenoNuevo && anchoViejo !== rellenoNuevo.style.width) {
+      var destino = rellenoNuevo.style.width;
+      rellenoNuevo.style.width = anchoViejo;
+      void rellenoNuevo.offsetWidth; // fuerza el reflujo para que la transición arranque
+      rellenoNuevo.style.width = destino;
+    }
+    // Mientras la evaluación sigue, se marca para animar (pulso, puntos, brillo en la barra).
+    var ocupado = !e.final;
+    document.getElementById("h-actual").parentElement.classList.toggle("ocupado", ocupado);
+    document.getElementById("ev-titulo").classList.toggle("cargando", ocupado);
     var s = e.estrategia;
     var texto = s ? "Estrategia " + s.indice + " de " + s.total + ": " + nombreEstrategia(s.estrategia) : "Abriendo la página de entrada…";
     if (ultimo) texto += ultimo.profundidad ? " · a " + ultimo.profundidad + " de 3 páginas de la entrada" : " · en la página de entrada";
@@ -453,11 +491,11 @@
     var filas = d.intentos.map(function (i) {
       var detalle = i.llego ? "«" + i.encontro + "»" : i.motivo;
       return "<tr><th scope=\"row\">" + esc(nombreEstrategia(i.estrategia)) + '</th><td><span class="si-no">' +
-        (i.llego ? "sí" : "no") + '</span></td><td class="num">' + i.pulsaciones + "</td><td>" + esc(detalle) + "</td></tr>";
+        (i.llego ? "sí" : "no") + '</span></td><td class="num">' + i.pulsaciones + '</td><td class="num">' + esc(mmss(i.duracion_s)) + "</td><td>" + esc(detalle) + "</td></tr>";
     }).join("");
     return '<section aria-labelledby="h-estr"><div class="encabezado-seccion"><h2 id="h-estr">Qué hizo cada estrategia</h2></div>' +
       '<div class="tabla-envoltura"><table><caption>«Cree que llegó» es lo que concluye cada estrategia con lo anunciado; no es un veredicto.</caption>' +
-      '<thead><tr><th scope="col">Estrategia</th><th scope="col">¿Cree que llegó?</th><th scope="col">Pulsaciones</th><th scope="col">Encontró o motivo</th></tr></thead>' +
+      '<thead><tr><th scope="col">Estrategia</th><th scope="col">¿Cree que llegó?</th><th scope="col">Pulsaciones</th><th scope="col">Duración</th><th scope="col">Encontró o motivo</th></tr></thead>' +
       "<tbody>" + filas + "</tbody></table></div></section>";
   }
 
@@ -475,7 +513,8 @@
 
   function pintarResultado(id, d, cambiando) {
     vista.innerHTML =
-      '<div><p class="contexto">' + contexto(d) + " · " + esc(fecha(d.fecha)) + "</p><h1>Resultado</h1></div>" +
+      '<div><p class="contexto">' + contexto(d) + " · " + esc(fecha(d.fecha)) + "</p><h1>Resultado</h1>" +
+      '<p class="nota">Duración total: ' + esc(mmss(d.duracion_s)) + " (mm:ss, axe incluido)</p></div>" +
       '<div class="tarjetas">' + tarjetaEstima(d, cambiando) + tarjetaAxe(d) + "</div>" +
       (d.captcha.length ? '<p class="nota">CAPTCHA detectado en la ruta: ' + esc(d.captcha.join(", ")) + ".</p>" : "") +
       tablaEstrategias(d) +

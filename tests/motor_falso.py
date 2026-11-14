@@ -65,4 +65,5 @@ class MotorFalso:
         puntajes = ({"reglas": 0.875, "elementos": 0.945, "reglas_conservador": 0.833,
                      "elementos_conservador": 0.83} if self.puntajes else None)
         return Exploracion(url, r.tarea, "2026-11-14T12:00:00-07:00", 2, 0, r, puntajes,
-                           None if self.puntajes else "no medido en la prueba", ())
+                           None if self.puntajes else "no medido en la prueba", (),
+                           75.4, (4.2, 61.0, 1.1))

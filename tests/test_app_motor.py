@@ -53,6 +53,10 @@ def test_el_gancho_no_cambia_el_resultado(servidor, tmp_path, nombre, letra):
     assert ex.puntajes is not None and set(ex.puntajes) == {"reglas", "elementos", "reglas_conservador",
                                                             "elementos_conservador"}
     assert (tmp_path / "capturas").is_dir()
+    # Duraciones: una por estrategia y el total (axe incluido) no puede ser menor que su suma.
+    assert len(ex.duraciones_s) == len(ex.resultado.intentos)
+    assert all(d >= 0 for d in ex.duraciones_s)
+    assert ex.duracion_s >= sum(ex.duraciones_s) - 0.1 * len(ex.duraciones_s)  # redondeo a 0.1 s
 
 
 def test_sin_objetivo_se_confirma_lo_encontrado(servidor, tmp_path):

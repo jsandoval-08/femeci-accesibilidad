@@ -151,6 +151,42 @@ main:focus { outline: none; }
 .recorrido li[aria-current="step"] { background: var(--marca-superficie); border-color: var(--marca-acento); }
 .recorrido .n { font-size: 16px; font-weight: 700; }
 .recorrido .texto { overflow-wrap: anywhere; }
+/* ---------- Animaciones de la evaluación (se apagan con prefers-reduced-motion) ---------- */
+
+.barra-relleno { transition: width .45s cubic-bezier(.2, .8, .2, 1); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Tecla: rebota al cambiar de paso (se recrea en cada pintada). */
+  #ev-tecla .tecla { animation: tecla-pop .35s cubic-bezier(.2, 1.4, .4, 1); }
+  .anuncio { animation: aparecer .3s ease-out; }
+  .recorrido li { animation: entrar-fila .35s ease-out; }
+
+  /* Evaluación en curso: la tarjeta "respira" y la barra tiene un brillo que corre. */
+  .actual.ocupado { animation: respirar 2.4s ease-in-out infinite; }
+  .actual.ocupado .barra::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+    transform: translateX(-100%); animation: brillo 1.6s ease-in-out infinite;
+  }
+  .actual.ocupado .anuncio { animation: none; }
+  /* Anillo giratorio junto al título mientras la evaluación sigue. */
+  .cabeza h1.cargando::after {
+    content: ""; display: inline-block; width: .6em; height: .6em; margin-left: .4em; vertical-align: -.02em;
+    border: .1em solid var(--marca-pista); border-top-color: var(--marca-acento); border-radius: 50%;
+    animation: girar .9s linear infinite;
+  }
+}
+
+@keyframes tecla-pop { 0% { transform: scale(.6) rotate(-8deg); opacity: .3; } 70% { transform: scale(1.08) rotate(2deg); opacity: 1; } 100% { transform: none; } }
+@keyframes aparecer { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes entrar-fila { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+@keyframes respirar {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--marca-acento) 0%, transparent); }
+  50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--marca-acento) 22%, transparent); }
+}
+@keyframes brillo { to { transform: translateX(100%); } }
+@keyframes girar { to { transform: rotate(360deg); } }
+
 .opcion-anunciar { display: inline-flex; gap: 10px; align-items: center; font-size: 17px; margin-bottom: 12px; }
 .opcion-anunciar input { width: 22px; height: 22px; accent-color: var(--marca-tinta); }
 .encabezado-seccion { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }

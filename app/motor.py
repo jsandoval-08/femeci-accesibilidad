@@ -14,6 +14,7 @@ verificada con NVDA.
 import json
 import shutil
 import threading
+import time
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -63,6 +64,8 @@ class Exploracion:
     puntajes: dict | None  # los 4 puntajes; None = no medido
     error_axe: str | None
     bloqueadas: tuple[str, ...]  # peticiones abortadas por la barrera 2
+    duracion_s: float | None = None  # de principio a fin, axe incluido; None = no medida
+    duraciones_s: tuple[float, ...] = ()  # una por estrategia, en el orden de resultado.intentos
 
 
 def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_evento=None,
@@ -71,6 +74,7 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
              tope: int = TOPE_PULSACIONES, tope_nav: int = TOPE_NAVEGACIONES) -> Exploracion:
     """Corre todas las estrategias de la tarea sobre `url` y luego axe sobre la misma página.
     al_evento(tipo, datos): "estrategia", "paso", "fase". Lanza Detenida, HostBloqueado o ValueError."""
+    t0 = time.monotonic()
     url = validar_entrada(url, hosts)  # barrera 1: antes de tocar la red
     tarea = Tarea(letra, url, (tramite or "").strip() or None)  # B sin trámite: ValueError
     if pausa_s < PAUSA_S and urlparse(url).hostname not in HOSTS_LOCALES:
@@ -80,6 +84,7 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
     palabras = cargar_palabras()
     claves = estrategias_de(letra)
     llamadas = []  # una por estrategia: así se sabe cuál corre
+    inicios = []  # reloj al arrancar cada estrategia; la duración de una termina donde empieza la siguiente
 
     def detenida():
         if detener is not None and detener.is_set():
@@ -96,6 +101,7 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
             def fabrica(entrada):
                 clave = claves[len(llamadas)]
                 llamadas.append(clave)
+                inicios.append(time.monotonic())
                 nombre = ETIQUETAS.get(clave, clave)
                 detenida()
                 emitir("estrategia", {"indice": len(llamadas), "total": len(claves), "estrategia": nombre})
@@ -118,6 +124,7 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
                 return emu
 
             resultado = mejor_estrategia(fabrica, tarea, palabras)
+            fin_estrategias = time.monotonic()
         finally:
             for nav in abiertos:
                 try:
@@ -131,9 +138,11 @@ def explorar(url: str, letra: str, tramite: str | None, carpeta, hosts, al_event
     if final := _url_final_bloqueada(carpeta / "capturas", hosts):  # barrera 4
         shutil.rmtree(carpeta / "capturas", ignore_errors=True)
         puntajes, error_axe = None, f"la captura de axe terminó en un host bloqueado ({final}); no se reporta"
+    cortes = inicios + [fin_estrategias]
+    duraciones = tuple(round(b - a, 1) for a, b in zip(cortes, cortes[1:]))
     return Exploracion(url, tarea, datetime.now().astimezone().isoformat(timespec="seconds"),
                        palabras.version, pausa_s, resultado, puntajes, error_axe,
-                       tuple(navegador.bloqueadas))
+                       tuple(navegador.bloqueadas), round(time.monotonic() - t0, 1), duraciones)
 
 
 def _url_final_bloqueada(capturas: Path, hosts) -> str | None:

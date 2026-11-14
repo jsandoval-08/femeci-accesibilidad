@@ -57,6 +57,28 @@ def test_evaluacion_completa_con_eventos_y_guardado(entorno):
     assert "pausa_s" not in motor.llamadas[0]["opciones"]  # el servidor no baja la pausa por su cuenta
 
 
+def test_duraciones_se_guardan(entorno):
+    cliente, _, _, base = entorno
+    id_ = _evaluar(cliente)
+    _eventos(cliente, id_)
+    guardado_en_disco = json.loads((base / id_ / "exploracion.json").read_text(encoding="utf-8"))
+    assert guardado_en_disco["duracion_s"] == 75.4
+    assert [i["duracion_s"] for i in guardado_en_disco["intentos"]] == [4.2, 61.0, 1.1]
+
+
+def test_evaluacion_vieja_sin_duracion_se_exporta(entorno):
+    """Lo guardado antes de medir el tiempo no trae duracion_s: el reporte dice "no medida", no falla."""
+    cliente, _, _, base = entorno
+    id_ = _evaluar(cliente)
+    _eventos(cliente, id_)
+    datos = json.loads((base / id_ / "exploracion.json").read_text(encoding="utf-8"))
+    datos.pop("duracion_s")
+    for i in datos["intentos"]:
+        i.pop("duracion_s")
+    md = guardado.markdown(datos)
+    assert "- Duración total: no medida" in md and "| no medida |" in md
+
+
 def test_confirmar_y_exportar(entorno):
     cliente, _, abiertos, base = entorno
     id_ = _evaluar(cliente)
@@ -73,6 +95,9 @@ def test_confirmar_y_exportar(entorno):
     assert "estimación experimental, no verificada con NVDA" in md
     assert "Confirmado por la persona (no por NVDA)" in md and "**Completable" in md
     assert "conformidad WCAG" not in md
+    assert "- Duración total: 01:15 (mm:ss, axe incluido)" in md  # 75.4 s del motor de prueba
+    assert "| Estrategia | ¿Cree que llegó? | Pulsaciones | Duración | Encontró o motivo |" in md
+    assert "| H_a_seccion | sí | 3 | 00:04 |" in md and "| enlace_por_nombre | sí | 7 | 01:01 |" in md
     cliente.post(f"/api/abrir/carpeta/{id_}")
     cliente.post("/api/abrir/estudio")
     assert abiertos[0].endswith(id_) and abiertos[1].endswith("index.html")
