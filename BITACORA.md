@@ -564,6 +564,82 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Decidir si la meta del 75 % se lee en 3 clases o binario; habría que dejarlo escrito antes de sumar sitios.
   - Más tareas auditadas a ciegas: con 5 comparables el AUC sigue sin calcularse.
 
+## 15-nov-2026 — Fase 4: auditoría NVDA a ciegas de navolato A, su corrida única y reproducción por estrategia
+
+- **Qué hice:**
+  - Javier auditó navolato A a ciegas y convirtió la fila con `scripts/excel_a_csv.py` (`navolato.auditoria.csv`,
+    `pagina_axe` = la portada). **Corrección de la referencia ANTES de correr Atorapp:** el veredicto NVDA pasó de
+    `completable` a `con_dificultad`, porque la ruta corta (~3 L + 1-2 flechas) usaba L (listas), que no está entre
+    las estrategias de la definición operacional (encabezados, regiones, enlaces, búsqueda interna, tabulación). Con
+    ellas, la mejor ruta fue ~20 H + 3-4 flechas = ~24. Queda anotado en `que_me_atoro`. Como se hizo sin ver a
+    Atorapp, no es una «referencia corregida después de la corrida» y el análisis no la reporta en dos versiones.
+  - Commit `1460551` con SOLO `estudio/auditoria/` (Excel, CSV, notas), **antes de tocar la red**.
+  - Commit `60ffa38`: `navolato.gob.mx` sale de `hosts_bloqueados` (lista vacía). La prueba de seguridad ya exigía la
+    lista vacía; solo cambié su comentario.
+  - Host final comprobado antes de correr con Playwright (urllib recibe HTTP 406, probablemente un filtro contra
+    clientes que no son navegador): `https://navolato.gob.mx/`, 200, **sin redirección**.
+  - Corrida **única** con `--sitio-real navolato.gob.mx` y pausa de 1 s (20:46–20:49), sin cambiar umbrales, topes ni
+    palabras clave (v2). Salida en `estudio/corridas/2026-11-15/navolato/` (commit `9969941`).
+  - Rehíce la reproducción por estrategia **sin red** (el script del 15-nov no quedó en el repo; vive otra vez fuera,
+    en el scratchpad de la sesión): un navegador sustituto sirve el árbol de la captura de axe y cualquier otra
+    petición termina la estrategia («no_capturada», artefacto). Validación: Culiacán A da exactamente la tabla de la
+    entrada anterior (Tab_inicio 41, D_a_seccion 5, D_a_main 69…) y navolato no_dirigida da 138, igual que en vivo.
+  - `scripts/analisis_conjunto.py`: el `analisis.md` rotula el acuerdo de **3 clases como principal** y el binario
+    como secundario (solo texto; las fórmulas no cambian). Regeneré `estudio/oficial/` e `interfaz/datos.js`
+    (commit `c09aa86`).
+- **Resultado:**
+  - navolato A: NVDA `con_dificultad` (~24) · Atorapp **`con_dificultad`, no_dirigida, fricción 138** (con 10, 15 y 25:
+    con_dificultad) · axe reglas 81.5 % / elementos 88.3 % / reglas cons. 77.8 % / elementos cons. 87.3 %. Encontró el
+    correo; 0 falsas llegadas; sin CAPTCHA. **Coincide en 3 clases**, pero la fricción es ~6 veces la de NVDA.
+  - **Navolato A por estrategia** (portada, 154 paradas; numeradas desde 1; un solo landmark, `navigation` sin nombre,
+    en la parada 1; sin `main` ni `contentinfo`; 43 encabezados, 44 enlaces, 64 enfocables). Ninguna estrategia
+    pediría otra página:
+
+    | Estrategia | ¿Llegó? | Pulsaciones | Dónde se detuvo |
+    |---|---|---|---|
+    | H_a_seccion | no | 44 | «no hay más encabezados»: ninguno tiene palabra de contacto |
+    | D_a_seccion | no | 2 | D al `navigation`; la 2.ª: «no hay más puntos de referencia» |
+    | D_a_main | no | 2 | igual: no hay `main` |
+    | enlace_por_nombre | no | 44 | recorre la lista hasta el último enlace; ninguno con palabra de contacto |
+    | **no_dirigida** | **sí** | **138** | texto `pm@navolato.gob.mx` (parada 138), **la mejor** |
+    | Tab_inicio | no | 65 | «fin de los elementos enfocables»: el contacto es texto, no recibe foco |
+    | probar_enlaces (H) | no | 44 | igual que H_a_seccion |
+    | probar_enlaces (inicio) | no | 45 | «no hay más enlaces»: ningún nombre genérico que probar |
+
+    - El pie: encabezado nivel 5 «H. AYUNTAMIENTO DE NAVOLATO» (parada 135), dirección (136-137), correo (138), dos
+      encabezados nivel 5 vacíos, y «Tel: (672)721-06-07 / (672)727-21-84» (143). El correo va antes que los teléfonos,
+      por eso no_dirigida se detiene ahí.
+    - **Por qué la fricción es tan alta (limitación declarada, no se corrige):** las estrategias deciden la relevancia
+      por palabras clave, no por significado. «H. AYUNTAMIENTO DE NAVOLATO» no trae ninguna palabra de contacto, así
+      que H lo salta; el auditor lo eligió por su significado. Un «H hasta ese encabezado y leer» hipotético costaría 41
+      H + 3 flechas = 44 en este árbol: seguiría `con_dificultad`. No se agrega: sería ajustar a la referencia.
+    - **Diferencias con lo que oyó NVDA (por verificar, no explican el veredicto):** los enlaces junto al teléfono son
+      `<a href="#!">` vacíos; NVDA, a falta de nombre, leyó la URL («navolato.gob.mx !») y Atorapp anuncia solo
+      «enlace». Hasta el encabezado del pie hay 41 encabezados en el árbol (incluidos 3 de nivel 1 vacíos) y el
+      auditor contó ~20 H. Puede ser conteo aproximado o un árbol distinto en vivo (noticias rotativas); no se sabe.
+  - Acuerdo (6 comparables de 7 tareas en 6 sitios; ahome A no evaluable):
+
+    | Referencia | 3 clases (principal) | Binario | Umbral 10 | Umbral 15 | Umbral 25 |
+    |---|---|---|---|---|---|
+    | Original (atención A sin corregir) | 2 de 6 | 4 de 6 | 3 de 6 | 2 de 6 | 2 de 6 |
+    | Corregida (vigente) | 3 de 6 (50 %) | 5 de 6 (83 %) | 4 de 6 | 3 de 6 | 3 de 6 |
+
+  - Meta de la Tabla 4 (≥ 75 %, leída en 3 clases): **no se alcanza** (50 %). En binario sí (83 %), pero es el secundario.
+    AUC: no se calcula (6 < 10).
+  - Suite completa: **493 pasan**, 0 fallan.
+- **Problemas y decisiones:**
+  - **Principal = acuerdo de 3 clases** (Javier, 15-nov): la Tabla 4 dice «acuerdo de los veredictos», y los veredictos
+    son de 3 clases. Se decidió con los 5 primeros comparables vistos, pero antes de correr navolato, y es la lectura
+    menos favorable a Atorapp (50 % contra 83 %).
+  - Desacuerdos con la referencia vigente: ciudadano A, umbral (13 contra ~17); ciudadano B, limitación declarada
+    (Enter sobre texto); culiacán A, limitación declarada (D no entra al contentinfo sin nombre). navolato A coincide
+    en clase, pero la diferencia de magnitud (138 contra ~24) es de la misma familia que culiacán: palabras clave en
+    lugar de significado.
+  - Sigue pendiente guardar el árbol de cada página que visitan las estrategias en el modo estudio.
+- **Siguiente:**
+  - Más tareas auditadas a ciegas (para el AUC hacen falta 10 comparables).
+  - Decidir si el script de reproducción sin red se versiona en `scripts/` (hoy se rehízo dos veces fuera del repo).
+
 ---
 
 <!-- Plantilla para nuevas entradas:
