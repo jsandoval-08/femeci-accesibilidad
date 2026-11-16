@@ -1,0 +1,14 @@
+--- original/index.html
++++ corregida/index.html
+@@ -555 +555 @@
+-															<img loading="lazy" decoding="async" width="330" height="236" src="../tarjetas/Card-linea-telefonica.png" class="attachment-large size-large wp-image-408" alt="">															</div>
++															<img loading="lazy" decoding="async" width="330" height="236" src="../tarjetas/Card-linea-telefonica.png" class="attachment-large size-large wp-image-408" alt="Línea telefónica Atención ciudadana (667) 7587123">															</div>
+@@ -561 +561 @@
+-															<img loading="lazy" decoding="async" width="330" height="236" src="../tarjetas/Tarjeta-whatsapp-dorada.png" class="attachment-large size-large wp-image-130" alt="">															</div>
++															<img loading="lazy" decoding="async" width="330" height="236" src="../tarjetas/Tarjeta-whatsapp-dorada.png" class="attachment-large size-large wp-image-130" alt="Whatsapp (667) 5027665">															</div>
+@@ -579 +579 @@
+-															<img loading="lazy" decoding="async" width="533" height="236" src="../tarjetas/Tarjeta-correo-L-dorada.png" class="attachment-large size-large wp-image-160" alt="">															</div>
++															<img loading="lazy" decoding="async" width="533" height="236" src="../tarjetas/Tarjeta-correo-L-dorada.png" class="attachment-large size-large wp-image-160" alt="Correo electrónico asistencia@sinaloa.gob.mx">															</div>
+@@ -620 +620 @@
+-															<img loading="lazy" decoding="async" width="532" height="236" src="../tarjetas/Tarjeta-video-L-dorada2-1.png" class="attachment-large size-large wp-image-473" alt="">															</div>
++															<img loading="lazy" decoding="async" width="532" height="236" src="../tarjetas/Tarjeta-video-L-dorada2-1.png" class="attachment-large size-large wp-image-473" alt="Videollamada en LSM (667) 5027665">															</div>

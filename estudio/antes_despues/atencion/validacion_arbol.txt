@@ -1,0 +1,46 @@
+paradas: capturado 32 · reproducción 32 · título 'Asistencia digital'
+main: capturado paradas 21-26 · reproducción 21-26
+main idéntico: True · todo idéntico: True
+aria snapshot idéntico (url local normalizada): False
+  --- capturado
+  +++ reproducción
+  @@ -9,3 +9,3 @@
+       - listitem:
+  -      - button "Mayor Tamaño Mayor Tamaño":
+  +      - button "Mayor TamañoMayor Tamaño":
+           - img "Mayor Tamaño"
+  @@ -13,3 +13,3 @@
+       - listitem:
+  -      - button "Menor Tamaño Menor Tamaño":
+  +      - button "Menor TamañoMenor Tamaño":
+           - img "Menor Tamaño"
+  @@ -17,3 +17,3 @@
+       - listitem:
+  -      - button "Escala de grises Escala de grises":
+  +      - button "Escala de grisesEscala de grises":
+           - img "Escala de grises"
+  @@ -21,3 +21,3 @@
+       - listitem:
+  -      - button "Mayor Contraste Mayor Contraste":
+  +      - button "Mayor ContrasteMayor Contraste":
+           - img "Mayor Contraste"
+  @@ -25,3 +25,3 @@
+       - listitem:
+  -      - button "Menor Contraste Menor Contraste":
+  +      - button "Menor ContrasteMenor Contraste":
+           - img "Menor Contraste"
+  @@ -29,3 +29,3 @@
+       - listitem:
+  -      - button "Fondo Luz Fondo Luz":
+  +      - button "Fondo LuzFondo Luz":
+           - img "Fondo Luz"
+  @@ -33,3 +33,3 @@
+       - listitem:
+  -      - button "Subrayar Enlaces Subrayar Enlaces":
+  +      - button "Subrayar EnlacesSubrayar Enlaces":
+           - img "Subrayar Enlaces"
+  @@ -37,3 +37,3 @@
+       - listitem:
+  -      - button "Palabras Legibles Palabras Legibles":
+  +      - button "Palabras LegiblesPalabras Legibles":
+           - img "Palabras Legibles"
