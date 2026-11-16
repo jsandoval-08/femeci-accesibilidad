@@ -15,6 +15,7 @@ import argparse
 import csv
 import json
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -50,6 +51,33 @@ def _leer_notas(ruta) -> dict:
         return {(n["sitio"], n["tarea"]): n for n in csv.DictReader(f)}
 
 
+def _referencia_original(registros, tareas) -> dict | None:
+    """Si alguna referencia NVDA se corrigió DESPUÉS de correr Atorapp ('veredicto_nvda_corrida' en el
+    reporte oficial, 15-nov: atención A), el acuerdo también se reporta con la referencia original.
+    Así se ve cuánto depende el resultado de una corrección hecha viendo a Atorapp."""
+    originales = {(t["sitio"], t["tarea"]): t["veredicto_nvda_corrida"] for t in tareas
+                  if t.get("veredicto_nvda_corrida") is not None}
+    if not originales:
+        return None
+    regs = [replace(r, nvda=originales.get((r.sitio, r.tarea), r.nvda)) for r in registros]
+    tars = [{**t, "veredicto_nvda": originales.get((t["sitio"], t["tarea"]), t["veredicto_nvda"])}
+            for t in tareas]
+    return {"corregidas": [{"sitio": s, "tarea": k, "original": o,
+                            "vigente": next(t["veredicto_nvda"] for t in tareas
+                                            if (t["sitio"], t["tarea"]) == (s, k))}
+                           for (s, k), o in originales.items()],
+            "acuerdo": acuerdo_observado(regs), "acuerdo_por_umbral": _acuerdo_por_umbral(tars)}
+
+
+def _lineas_acuerdo(acuerdo, por_umbral) -> list[str]:
+    if not acuerdo["n"]:
+        return ["- No hay tareas comparables."]
+    return ([f"- 3 clases: {round(acuerdo['tres_clases'] * acuerdo['n'])} de {acuerdo['n']}",
+             f"- Binario (se logró / {NO_COMPLETABLE}): {round(acuerdo['binario'] * acuerdo['n'])} "
+             f"de {acuerdo['n']}"]
+            + [f"- Umbral {u} (3 clases): {v['iguales']} de {v['n']}" for u, v in por_umbral.items()])
+
+
 def _pct(v) -> str:
     return "no medido" if v is None else f"{100 * v:.1f} %"
 
@@ -72,9 +100,10 @@ def analizar(carpeta_resultados, ruta_notas) -> tuple[dict, str]:
                       f"{len({r.sitio for r in registros})} sitios); con menos de {MIN_TAREAS_AUC} el AUC "
                       "no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada "
                       "clase, 0 o 1) y no dice nada de axe")}
+    original = _referencia_original(registros, tareas)
     datos = {"tareas": tareas, "notas_nvda": list(notas.values()), "matriz": matriz,
              "acuerdo": acuerdo, "acuerdo_por_umbral": por_umbral, "falsas_llegadas": falsas,
-             "auc": auc}
+             "auc": auc, "referencia_original": original}
 
     l = ["# Análisis conjunto: Atorapp contra la auditoría NVDA", "",
          "Atorapp es una estimación; la referencia es la auditoría manual con NVDA, hecha a ciegas "
@@ -113,6 +142,14 @@ def analizar(carpeta_resultados, ruta_notas) -> tuple[dict, str]:
         l.append("- No hay tareas comparables.")
     l += ["", "## Sensibilidad al umbral (acuerdo de 3 clases)", ""]
     l += [f"- Umbral {u}: {v['iguales']} de {v['n']}" for u, v in por_umbral.items()]
+    if original:
+        l += ["", "## Referencia corregida después de la corrida", "",
+              "Estas referencias NVDA se corrigieron DESPUÉS de ver el resultado de Atorapp, al aplicar "
+              "una regla que ya existía (ver BITACORA.md). Atorapp no se volvió a correr. Las secciones "
+              "de arriba usan la referencia vigente; aquí, el acuerdo con la referencia original.", ""]
+        l += [f"- {c['sitio']} {c['tarea']}: {c['original']} → {c['vigente']}" for c in original["corregidas"]]
+        l += ["", "Acuerdo con la referencia original:", ""]
+        l += _lineas_acuerdo(original["acuerdo"], original["acuerdo_por_umbral"])
     l += ["", "## Falsas llegadas", "",
           f"Tareas con al menos una: {falsas['tareas_con_falsa']} de {falsas['n_tareas']}.", "",
           "## AUC de los puntajes de axe", "", f"No se calcula: {auc['motivo']}.", ""]

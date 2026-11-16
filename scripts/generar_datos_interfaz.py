@@ -34,12 +34,14 @@ sys.path.insert(0, str(RAIZ / "scripts"))
 
 from analisis_conjunto import analizar  # noqa: E402
 from correr_paginas_prueba import NOMBRES, diferencias  # noqa: E402
+from src.sitio import FilaAuditoria, leer_auditoria  # noqa: E402
 
 RESULTADOS = RAIZ / "estudio" / "resultados"  # corrida del 8-nov (no se toca)
 CORRIDAS = RAIZ / "estudio" / "corridas"  # corridas posteriores: corridas/<AAAA-MM-DD>/<sitio>/
 OFICIAL = RAIZ / "estudio" / "oficial"
 PRUEBA = RAIZ / "estudio" / "resultados_prueba"
 NOTAS = RAIZ / "estudio" / "auditoria" / "notas_nvda.csv"
+AUDITORIA = RAIZ / "estudio" / "auditoria"  # <sitio>.auditoria.csv: la referencia NVDA vigente
 PAGINAS = RAIZ / "tests" / "paginas"
 SALIDA = RAIZ / "interfaz" / "datos.js"
 # Motivos de No evaluable que son falla técnica (src/emulador.py, NoEvaluable). Los topes y la
@@ -103,6 +105,29 @@ def elegir_oficial(primera: dict | None, fecha_primera: str | None,
     return oficial
 
 
+def aplicar_referencia(tarea: dict, fila: FilaAuditoria | None) -> dict:
+    """La referencia NVDA vigente es la del CSV de auditoría, no la que el reporte copió al correr.
+    Si se corrigió después de la corrida (15-nov: atención A), Atorapp NO se re-ejecuta: solo cambia
+    la referencia contra la que se compara, y la de la corrida queda en 'veredicto_nvda_corrida'."""
+    tarea = copy.deepcopy(tarea)
+    tarea.setdefault("veredicto_nvda_corrida", None)
+    tarea.setdefault("nota_referencia", None)
+    if fila is None:
+        return tarea
+    antes = tarea.get("veredicto_nvda")
+    if fila.veredicto_nvda != antes:
+        tarea.update(veredicto_nvda=fila.veredicto_nvda, veredicto_nvda_corrida=antes,
+                     nota_referencia=(f"Referencia NVDA corregida después de la corrida: {antes} → "
+                                      f"{fila.veredicto_nvda} (ver BITACORA.md). Atorapp no se volvió a correr."))
+    tarea["vidente_lo_encuentra"] = fila.vidente_lo_encuentra
+    return tarea
+
+
+def _referencia(sitio: str, carpeta_auditoria: Path) -> dict:
+    ruta = Path(carpeta_auditoria) / f"{sitio}.auditoria.csv"
+    return {f.tarea: f for f in leer_auditoria(ruta)} if ruta.exists() else {}
+
+
 def _leer(ruta: Path) -> dict:
     return json.loads(ruta.read_text(encoding="utf-8"))
 
@@ -114,7 +139,7 @@ def _primera_corrida_posterior(sitio: str, carpeta_corridas: Path) -> dict | Non
 
 
 def armar_oficial(carpeta_resultados=RESULTADOS, carpeta_corridas=CORRIDAS,
-                  carpeta_oficial=OFICIAL) -> list[dict]:
+                  carpeta_oficial=OFICIAL, carpeta_auditoria=AUDITORIA) -> list[dict]:
     """Escribe estudio/oficial/<sitio>/<sitio>.reporte.json y devuelve los reportes oficiales."""
     oficiales = []
     sitios = sorted({r.parent.name for r in Path(carpeta_resultados).glob("*/*.reporte.json")}
@@ -125,7 +150,9 @@ def armar_oficial(carpeta_resultados=RESULTADOS, carpeta_corridas=CORRIDAS,
         r2 = _primera_corrida_posterior(sitio, Path(carpeta_corridas))
         t1 = {t["tarea"]: t for t in r1["tareas"]} if r1 else {}
         t2 = {t["tarea"]: t for t in r2["tareas"]} if r2 else {}
-        tareas = [elegir_oficial(t1.get(k), r1 and r1["fecha"], t2.get(k), r2 and r2["fecha"])
+        ref = _referencia(sitio, carpeta_auditoria)
+        tareas = [aplicar_referencia(elegir_oficial(t1.get(k), r1 and r1["fecha"], t2.get(k),
+                                                    r2 and r2["fecha"]), ref.get(k))
                   for k in sorted(t1.keys() | t2.keys())]
         base = r1 or r2
         reporte = {k: base[k] for k in ("sitio", "url_base", "palabras_version", "umbral", "nota")}

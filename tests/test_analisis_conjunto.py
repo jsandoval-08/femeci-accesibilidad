@@ -45,3 +45,25 @@ def test_matriz_sensibilidad_y_auc_no_calculado(tmp_path):
     assert datos["auc"]["calculado"] is False and "no es interpretable" in md
     assert datos["falsas_llegadas"]["tareas_con_falsa"] == 1
     assert "73 consumidas" in md and "90.0 %" in md
+
+
+def test_referencia_corregida_despues_de_correr_se_reporta_en_dos_versiones(tmp_path):
+    # Como atención A el 15-nov: NVDA pasó de completable a no_completable sin re-ejecutar Atorapp.
+    corregida = {**_tarea("A", "no_completable", "no_completable", consumidas=105),
+                 "veredicto_nvda_corrida": "completable"}
+    _reporte(tmp_path, "s1", corregida)
+    _reporte(tmp_path, "s2", _tarea("A", "completable", "completable", friccion=5))
+    datos, md = analisis_conjunto.analizar(tmp_path, tmp_path / "no_hay_notas.csv")
+    assert datos["acuerdo"]["n"] == 2 and datos["acuerdo"]["tres_clases"] == 1.0
+    orig = datos["referencia_original"]
+    assert orig["corregidas"] == [{"sitio": "s1", "tarea": "A", "original": "completable",
+                                   "vigente": "no_completable"}]
+    assert orig["acuerdo"]["tres_clases"] == 0.5 and orig["acuerdo"]["binario"] == 0.5
+    assert orig["acuerdo_por_umbral"][15] == {"n": 2, "iguales": 1}
+    assert "corregida después de la corrida" in md and "s1 A: completable → no_completable" in md
+
+
+def test_sin_correcciones_no_hay_seccion_de_referencia_original(tmp_path):
+    _reporte(tmp_path, "s1", _tarea("A", "completable", "completable", friccion=5))
+    datos, md = analisis_conjunto.analizar(tmp_path, tmp_path / "no_hay_notas.csv")
+    assert datos["referencia_original"] is None and "referencia original" not in md

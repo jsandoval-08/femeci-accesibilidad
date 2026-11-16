@@ -111,3 +111,21 @@ def test_no_evaluable_por_tope_no_es_no_cargo_ni_en_ciego():
     tope = _t("no_evaluable", None, None, 508, "no resuelta dentro del presupuesto: tope_pulsaciones")
     assert g._para_interfaz(tope, "https://x.mx/", 15, ciego=False)["no_cargo"] is None
     assert g._para_interfaz(_no_cargo(), "https://x.mx/", 15, ciego=True)["no_cargo"] is None
+
+
+def test_referencia_vigente_sale_del_csv_y_la_de_la_corrida_queda_aparte():
+    # 15-nov: atención A se corrigió en la auditoría DESPUÉS de correr; Atorapp no se re-ejecuta.
+    t = {**_t(), "veredicto_nvda": "completable", "vidente_lo_encuentra": True}
+    fila = g.FilaAuditoria("A", "https://x.mx/", None, "x@x.mx", "no_completable", True, "https://x.mx/")
+    o = g.aplicar_referencia(t, fila)
+    assert o["veredicto_nvda"] == "no_completable" and o["veredicto_nvda_corrida"] == "completable"
+    assert "completable → no_completable" in o["nota_referencia"]
+    assert o["estado"] == "no_completable" and t["veredicto_nvda"] == "completable"  # no muta la entrada
+
+
+def test_referencia_igual_o_sin_fila_no_cambia_nada():
+    t = {**_t(), "veredicto_nvda": "con_dificultad", "vidente_lo_encuentra": True}
+    fila = g.FilaAuditoria("A", "https://x.mx/", None, "x@x.mx", "con_dificultad", True, "https://x.mx/")
+    for o in (g.aplicar_referencia(t, fila), g.aplicar_referencia(t, None)):
+        assert o["veredicto_nvda"] == "con_dificultad"
+        assert o.get("veredicto_nvda_corrida") is None and o.get("nota_referencia") is None
