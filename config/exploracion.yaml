@@ -5,7 +5,8 @@
 # Regla: todo sitio que se vaya a auditar a ciegas con NVDA entra aquí ANTES de explorar nada, para
 # que su auditoría no se contamine con lo que estime Atorapp. Se quita a mano cuando la auditoría
 # esté hecha.
-# ciudadano.sinaloa.gob.mx, culiacan.gob.mx y atencionciudadana.sinaloa.gob.mx: auditados el 15-nov.
+# ciudadano.sinaloa.gob.mx, culiacan.gob.mx, atencionciudadana.sinaloa.gob.mx y navolato.gob.mx:
+# auditados el 15-nov.
 hosts_bloqueados: []
 
 # Dónde guarda la app lo que corre. Nunca dentro de estudio/: nada de aquí entra al análisis.
