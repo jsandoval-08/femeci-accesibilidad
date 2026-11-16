@@ -481,6 +481,89 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Reproducir culiacán A y atención A estrategia por estrategia sobre la captura guardada, sin nuevas peticiones al sitio.
   - Push cuando Javier lo decida.
 
+## 15-nov-2026 — Fase 4: corrección de la referencia de atención A, análisis en dos versiones y reproducción por estrategia
+
+- **Qué hice:**
+  - **Corrección de la referencia (decidida por Javier, DESPUÉS de ver el resultado de Atorapp):** atención A pasa de
+    `completable` a `no_completable` en el Excel del repo (`veredicto_nvda`, más una nota en `ruta_nvda` y
+    `que_me_atoro`), y se regeneraron los CSV con `scripts/excel_a_csv.py`. `objetivo_correcto` y
+    `vidente_lo_encuentra=si` no cambian. Commit `6d1fbc7`.
+    - Motivo: aplicar la regla de host exacto del 8-nov (sinaloa A). La única ruta NVDA al contacto sale a
+      api.whatsapp.com; dentro del host el contacto existe (un vidente lo ve en `/asistencia-digital/`), pero NVDA no
+      lo lee.
+    - Cómo se detectó: en la revisión de consistencia de los desacuerdos, no en la auditoría. Como se hizo viendo a
+      Atorapp, el análisis se reporta también con la referencia original.
+    - **Atorapp no se volvió a correr.**
+  - `scripts/generar_datos_interfaz.py`: la referencia NVDA vigente ahora sale del CSV de auditoría, no de la copia que
+    el reporte guardó al correr. Si difiere, la de la corrida queda en `veredicto_nvda_corrida`, con una
+    `nota_referencia`.
+  - `scripts/analisis_conjunto.py`: si hay referencias corregidas después de correr, `analisis.md` agrega una sección
+    con el acuerdo calculado con la referencia original.
+  - Reproduje cada estrategia **sin red** sobre las capturas guardadas, con un navegador sustituto que sirve el árbol
+    capturado y no hace ninguna petición. Un Enter a una página no capturada termina esa estrategia (artefacto de la
+    reproducción). Validación: Culiacán Tab_inicio da 41, igual que en vivo. El script vive fuera del repo; no cambié
+    `src/` ni las palabras clave.
+- **Resultado:**
+  - Acuerdo (5 comparables; ahome A no evaluable):
+
+    | Referencia | 3 clases | Binario | Umbral 10 | Umbral 15 | Umbral 25 |
+    |---|---|---|---|---|---|
+    | Original (antes de corregir) | 1 de 5 | 3 de 5 | 2 de 5 | 1 de 5 | 1 de 5 |
+    | Corregida (vigente) | 2 de 5 | 4 de 5 | 3 de 5 | 2 de 5 | 2 de 5 |
+
+  - Meta del Anexo 2 (tabla 4, `Anexo2_Atorapp_v3.docx`, que está en `Claude outputs/` y no en git): «Acuerdo de los
+    veredictos de Atorapp con la auditoría manual ≥ 75 % en las tareas evaluables». **No dice si es de 3 clases o
+    binario.** Con la referencia vigente: 40 % en 3 clases y 80 % en binario, sobre 5 tareas.
+  - **Culiacán A, por estrategia (portada, 85 paradas; landmarks banner+navigation en la parada 1, main en la 10,
+    contentinfo sin nombre en la 75):**
+
+    | Estrategia | ¿Llegó? | Pulsaciones | Dónde se detuvo |
+    |---|---|---|---|
+    | H_a_seccion | no | 17 | «no hay más encabezados» (ninguno con palabra de contacto) |
+    | D_a_seccion | no | 5 | 4 D llegan al contentinfo (parada 75); la 5.ª: «no hay más puntos de referencia» |
+    | D_a_main | sí | 69 | 3 D a main + 66 leer hasta la dirección con «Teléfono (667) 7580101» |
+    | enlace_por_nombre | no | 42 | lista de enlaces hasta el último («Código de Ética»), ninguno con palabra de contacto |
+    | no_dirigida | sí | 77 | leer hasta la dirección con el teléfono (parada 76) |
+    | **Tab_inicio** | **sí** | **41** | enlace `mailto:info@culiacan.gob.mx` (parada 77), **la mejor** |
+    | probar_enlaces (H) | no | 17 | igual que H_a_seccion |
+    | probar_enlaces (inicio) | — | 12 | Enter en «Leer Más» (parada 16): página no capturada, artefacto; en vivo siguió |
+
+    - **Por qué ninguna D llega por poco:** D_a_seccion sí llega al contentinfo con 4 D, igual que NVDA, pero solo
+      entra a un landmark si su NOMBRE coincide con una palabra de la sección (regla de 3C: deciden por palabras clave
+      del nombre, no por rol). El contentinfo no tiene nombre («información de contenido» es el rol, no el nombre),
+      así que lo salta. D_a_main es la única que usa el rol (`main`) y lee todo main antes del pie.
+    - Un «D al pie y leer» hipotético costaría unas 6 pulsaciones: completable, igual que NVDA (~5). No se agrega:
+      sería ajustar las estrategias a la referencia después de verla. **Limitación declarada:** las estrategias no
+      saltan al contentinfo sin nombre, aunque el contacto suele estar en el pie.
+    - El auditor hizo la pasada con D sabiendo dónde estaba el contacto; Atorapp no lo sabe.
+  - **Atención A:**
+    - Del sitio solo se guardó `/asistencia-digital/` (la página de axe). De la portada (la entrada) no hay árbol: el
+      modo estudio no guarda los árboles de las estrategias. De la portada solo está la trayectoria de la estrategia
+      más larga, no_dirigida, con 105 pulsaciones: lee la página entera, pasa por «enlace, Asistencia digital»
+      (parada 16) y «enlace, Whatsapp» (parada 104), y no entra a ninguno.
+    - En `/asistencia-digital/` (32 paradas) ninguna estrategia llega y **ninguna pidió una sola página**:
+      H 4, D_a_seccion 7, D_a_main 16, enlace_por_nombre 14 (recorre la lista hasta «Whatsapp» y no lo elige),
+      no_dirigida 32, Tab 25, probar_enlaces 4 y 15. En el árbol no hay ningún teléfono ni correo: las tarjetas que
+      ve un vidente no existen para el lector, igual que anotó NVDA. **Es una barrera real del sitio.**
+    - **¿Alguna estrategia probó «Whatsapp»? No.** En `/asistencia-digital/` lo muestra la reproducción. En la portada
+      se deduce de la regla: Enter solo se ejecuta en enlaces cuyo nombre coincide con una palabra de la tarea A o con
+      un nombre genérico, y «Whatsapp» y «Asistencia digital» no están en ninguna lista (v2). Esto último es una
+      deducción, no una reproducción.
+  - Suite completa: **492 pasan**, 0 fallan (4 nuevas: 2 de la referencia vigente y 2 del análisis en dos versiones).
+- **Problemas y decisiones:**
+  - La corrección de atención A se hizo viendo a Atorapp. Por eso `analisis.md` y esta entrada muestran las dos
+    versiones. La versión vigente sube el acuerdo en una tarea, y la corrección favorece a Atorapp.
+  - Clasificación de desacuerdos con la referencia vigente:
+    - ciudadano A: diferencia de conteo junto al umbral (13 contra ~17);
+    - ciudadano B: limitación declarada (Enter sobre texto);
+    - culiacán A: limitación declarada (D no usa contentinfo sin nombre).
+    - atención A ya coincide (no_completable): es una barrera real del sitio.
+  - Sigue pendiente guardar el árbol de cada página que visitan las estrategias en el modo estudio, para poder
+    reproducir sin red todas las estrategias, no solo en la página de axe.
+- **Siguiente:**
+  - Decidir si la meta del 75 % se lee en 3 clases o binario; habría que dejarlo escrito antes de sumar sitios.
+  - Más tareas auditadas a ciegas: con 5 comparables el AUC sigue sin calcularse.
+
 ---
 
 <!-- Plantilla para nuevas entradas:

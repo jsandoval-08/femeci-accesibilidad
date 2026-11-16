@@ -304,6 +304,9 @@ Fase 3 (en este orden; marcar el sub-paso actual):
     ("Detalle"), se rechaza aunque sea el enlace correcto.
   - **`main` sin nombre**: variante `D_a_main`: D hasta `main` y leer hasta el final del documento (el
     contacto suele estar en el pie); en la tarea D, F desde ahí.
+    **Limitación (hallada el 15-nov en culiacán A, no se corrige):** D_a_seccion solo entra a un landmark
+    cuyo NOMBRE coincide con una palabra clave, así que salta un `contentinfo` sin nombre aunque el
+    contacto esté ahí (NVDA ~5 con 4 D; Atorapp 41 con Tab).
   - **Marcador en la misma parada**: cuenta si el texto EMPIEZA con el marcador, tiene texto después
     y no termina en ":". **Limitación:** "Para este trámite debes presentar INE" no se reconoce.
   - **Modo sitio real**: `correr_sitio(..., sitio_real=<host>)` o `python -m src.correr_sitio ...
