@@ -4,7 +4,7 @@ Resultados oficiales según la regla del 13-nov (BITACORA.md); la corrida del 8-
 
 Atorapp es una estimación; la referencia es la auditoría manual con NVDA, hecha a ciegas y antes de correr Atorapp. Las tareas de un mismo sitio no son independientes: no hay p-valores ni intervalos.
 
-Tareas: 6 · sitios: 5
+Tareas: 7 · sitios: 6
 
 ## Por tarea
 
@@ -15,6 +15,7 @@ Tareas: 6 · sitios: 5
 | ciudadano | A | con_dificultad | completable | — | 13 | Tab_inicio | 0 | con_dificultad / completable / completable | 73.7 % | 72.3 % | 73.7 % | 71.0 % | 17 |
 | ciudadano | B | con_dificultad | no_completable | no_encontrado | 73 consumidas | no_dirigida | 0 | no_completable / no_completable / no_completable | 73.7 % | 72.3 % | 73.7 % | 71.0 % | 20 |
 | culiacan | A | completable | con_dificultad | — | 41 | Tab_inicio | 0 | con_dificultad / con_dificultad / con_dificultad | 89.7 % | 95.0 % | 83.3 % | 94.3 % | 5 |
+| navolato | A | con_dificultad | con_dificultad | — | 138 | no_dirigida | 0 | con_dificultad / con_dificultad / con_dificultad | 81.5 % | 88.3 % | 77.8 % | 87.3 % | 24 |
 | sinaloa | A | no_completable | no_completable | no_encontrado | 123 consumidas | no_dirigida | 0 | no_completable / no_completable / no_completable | 87.5 % | 94.5 % | 83.3 % | 83.0 % | no medido |
 
 ## Matriz NVDA (filas) contra Atorapp (columnas)
@@ -22,21 +23,23 @@ Tareas: 6 · sitios: 5
 | NVDA \ Atorapp | completable | con_dificultad | no_completable |
 |---|---|---|---|
 | completable | 0 | 1 | 0 |
-| con_dificultad | 1 | 0 | 1 |
+| con_dificultad | 1 | 1 | 1 |
 | no_completable | 0 | 0 | 2 |
 
-Comparables: 5. Excluidas: sin NVDA 0, no evaluable en NVDA 0, no evaluable en Atorapp 1.
+Comparables: 6. Excluidas: sin NVDA 0, no evaluable en NVDA 0, no evaluable en Atorapp 1.
 
 ## Acuerdo observado
 
-- 3 clases: 2 de 5
-- Binario (se logró / no_completable): 4 de 5
+Principal: acuerdo de 3 clases (la meta de la Tabla 4 del Anexo 2 dice «acuerdo de los veredictos»; decidido el 15-nov, antes de correr navolato). Binario: secundario.
+
+- 3 clases (principal): 3 de 6
+- Binario (secundario; se logró / no_completable): 5 de 6
 
 ## Sensibilidad al umbral (acuerdo de 3 clases)
 
-- Umbral 10: 3 de 5
-- Umbral 15: 2 de 5
-- Umbral 25: 2 de 5
+- Umbral 10: 4 de 6
+- Umbral 15: 3 de 6
+- Umbral 25: 3 de 6
 
 ## Referencia corregida después de la corrida
 
@@ -46,19 +49,19 @@ Estas referencias NVDA se corrigieron DESPUÉS de ver el resultado de Atorapp, a
 
 Acuerdo con la referencia original:
 
-- 3 clases: 1 de 5
-- Binario (se logró / no_completable): 3 de 5
-- Umbral 10 (3 clases): 2 de 5
-- Umbral 15 (3 clases): 1 de 5
-- Umbral 25 (3 clases): 1 de 5
+- 3 clases (principal): 2 de 6
+- Binario (secundario; se logró / no_completable): 4 de 6
+- Umbral 10 (3 clases): 3 de 6
+- Umbral 15 (3 clases): 2 de 6
+- Umbral 25 (3 clases): 2 de 6
 
 ## Falsas llegadas
 
-Tareas con al menos una: 0 de 6.
+Tareas con al menos una: 0 de 7.
 
 ## AUC de los puntajes de axe
 
-No se calcula: hay 5 tareas comparables (de 6 tareas en 5 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe.
+No se calcula: hay 6 tareas comparables (de 7 tareas en 6 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe.
 
 ## Notas del auditor (no las lee Atorapp)
 
@@ -68,3 +71,4 @@ No se calcula: hay 5 tareas comparables (de 6 tareas en 5 sitios); con menos de 
 - **ciudadano B** (2026-11-08): ruta: Flechas cuadro por cuadro hasta Acta de nacimiento, Enter, flechas hasta Requisitos. Conteo manual aproximado; auditor principiante. · dónde se atoró: Los tramites se leen como texto uno por uno con flechas; se activan con Enter. Llegar a los requisitos cuesta ~20 pulsaciones. Los requisitos se muestran sin cambiar la URL (posible ventana emergente o app de una sola pagina).
 - **culiacan A** (2026-11-15): ruta: Mejor ruta: 4 D hasta la región 'información de contenido' + 1 al correo = ~5. Primer intento (H, K, L y Tab) ~45 sin reconocer el contacto; con solo flecha abajo ~120 hasta el teléfono. Conteo manual aproximado; auditor principiante. · dónde se atoró: Correo como mailto: y teléfono como texto plano en el pie. Ningún encabezado de contacto: H no ayuda. NVDA parte 'Teléfono' y el número en dos líneas. La pasada con D se hizo ya sabiendo dónde estaba.
 - **atencion A** (2026-11-15): ruta: Única ruta: ~4 D al pie + 3-4 K al enlace 'Whatsapp' + Enter + Esc (diálogo del navegador) + 1-2 H al encabezado 'Chatea en WhatsApp con el +52 667 502 7665' = ~11. El número se lee en api.whatsapp.com (otro host). Portada y Asistencia digital revisadas con H, K, L, D, Tab y flechas: no se lee ningún contacto. Conteo manual aproximado; auditor principiante. CORRECCIÓN 15-nov: la única ruta sale del host (api.whatsapp.com); por la regla de host exacto del 8-nov no cuenta, así que el veredicto pasa de completable a no_completable. · dónde se atoró: En Asistencia digital un vidente ve teléfono, WhatsApp y correo, pero NVDA no lee las tarjetas (texto no accesible, probablemente imágenes). Tiene widget de accesibilidad y aun así falla. El enlace 'Whatsapp' no avisa que sale del sitio ni que abre un diálogo de Chrome que se queda con el foco. 20 botones del mapa llamados 'Marker'; lista de municipios 'cliqueable' sin rol ni foco. Dentro del host el contacto existe (un vidente lo ve en /asistencia-digital/), pero NVDA no lo lee; solo se alcanza saliendo a api.whatsapp.com.
+- **navolato A** (2026-11-15): ruta: Mejor ruta con las estrategias definidas (encabezados, regiones, enlaces, búsqueda interna, tabulación): ~20 H hasta 'H. AYUNTAMIENTO DE NAVOLATO' + 3-4 flechas = ~24. D sin regiones útiles; ~42 K sin oír el teléfono (no es enlace); Tab pasa por los FACEBOOK y no lee el texto del pie. Con L (lista, fuera de las estrategias definidas) bastan ~3 L + 1-2 flechas, pero hay que adivinar entre listas sin nombre. Búsqueda interna (Ctrl+F) no probada. Conteo manual aproximado; auditor principiante. · dónde se atoró: Correo y teléfonos como texto plano en listas sin nombre del pie. Los enlaces junto al teléfono se llaman 'navolato.gob.mx !'. Muchos 'Gráfico sin descripción', 8 botones 'FACEBOOK' iguales, enlace 'profile id=…', encabezados vacíos ('separador'). Veredicto corregido el 15-nov de completable a con_dificultad ANTES de correr Atorapp: L no está entre las estrategias de la definición operacional.

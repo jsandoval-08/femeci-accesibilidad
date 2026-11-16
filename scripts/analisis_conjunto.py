@@ -72,8 +72,8 @@ def _referencia_original(registros, tareas) -> dict | None:
 def _lineas_acuerdo(acuerdo, por_umbral) -> list[str]:
     if not acuerdo["n"]:
         return ["- No hay tareas comparables."]
-    return ([f"- 3 clases: {round(acuerdo['tres_clases'] * acuerdo['n'])} de {acuerdo['n']}",
-             f"- Binario (se logró / {NO_COMPLETABLE}): {round(acuerdo['binario'] * acuerdo['n'])} "
+    return ([f"- 3 clases (principal): {round(acuerdo['tres_clases'] * acuerdo['n'])} de {acuerdo['n']}",
+             f"- Binario (secundario; se logró / {NO_COMPLETABLE}): {round(acuerdo['binario'] * acuerdo['n'])} "
              f"de {acuerdo['n']}"]
             + [f"- Umbral {u} (3 clases): {v['iguales']} de {v['n']}" for u, v in por_umbral.items()])
 
@@ -133,10 +133,12 @@ def analizar(carpeta_resultados, ruta_notas) -> tuple[dict, str]:
     ex = matriz["excluidas"]
     l += ["", f"Comparables: {matriz['n']}. Excluidas: sin NVDA {ex['sin_nvda']}, no evaluable en NVDA "
           f"{ex['no_evaluable_nvda']}, no evaluable en Atorapp {ex['no_evaluable_atorapp']}.", "",
-          "## Acuerdo observado", ""]
+          "## Acuerdo observado", "",
+          "Principal: acuerdo de 3 clases (la meta de la Tabla 4 del Anexo 2 dice «acuerdo de los "
+          "veredictos»; decidido el 15-nov, antes de correr navolato). Binario: secundario.", ""]
     if acuerdo["n"]:
-        l += [f"- 3 clases: {round(acuerdo['tres_clases'] * acuerdo['n'])} de {acuerdo['n']}",
-              f"- Binario (se logró / {NO_COMPLETABLE}): {round(acuerdo['binario'] * acuerdo['n'])} "
+        l += [f"- 3 clases (principal): {round(acuerdo['tres_clases'] * acuerdo['n'])} de {acuerdo['n']}",
+              f"- Binario (secundario; se logró / {NO_COMPLETABLE}): {round(acuerdo['binario'] * acuerdo['n'])} "
               f"de {acuerdo['n']}"]
     else:
         l.append("- No hay tareas comparables.")

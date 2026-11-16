@@ -1,6 +1,6 @@
 // Generado por scripts/generar_datos_interfaz.py. No editar a mano.
 window.ATORAPP = {
- "generado": "2026-11-15T19:45:30-07:00",
+ "generado": "2026-11-15T20:52:24-07:00",
  "umbral": 15,
  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
  "reales": [
@@ -2816,6 +2816,1577 @@ window.ATORAPP = {
     },
     {
      "paso": 40,
+     "tipo": "llego",
+     "texto": "Llegó al objetivo correcto"
+    }
+   ]
+  },
+  {
+   "sitio": "navolato",
+   "url_base": "https://navolato.gob.mx/",
+   "tarea": "A",
+   "entrada": "/",
+   "tramite": null,
+   "objetivo_correcto": "pm@navolato.gob.mx|(672)721-06-07|(672)727-21-84",
+   "pagina_axe": "/",
+   "estado": "con_dificultad",
+   "tipo_falla": null,
+   "estrategia": "no_dirigida",
+   "friccion": 138,
+   "consumidas": null,
+   "motivo": null,
+   "sensibilidad": {
+    "10": "con_dificultad",
+    "15": "con_dificultad",
+    "25": "con_dificultad"
+   },
+   "trayectoria": "leer×138",
+   "pasos": [
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Logo",
+     "pulsaciones": 1,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 2,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 3,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 4,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, INICIO (current)",
+     "pulsaciones": 5,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, PRESIDENCIA, contraído",
+     "pulsaciones": 6,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, TRANSPARENCIA, contraído",
+     "pulsaciones": 7,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, GOBIERNO, contraído",
+     "pulsaciones": 8,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, CONVOCATORIAS, contraído",
+     "pulsaciones": 9,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, ECOLOGÍA, contraído",
+     "pulsaciones": 10,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, NOTICIAS, contraído",
+     "pulsaciones": 11,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, <",
+     "pulsaciones": 12,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, >",
+     "pulsaciones": 13,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 2, ¡BIENVENIDOS!",
+     "pulsaciones": 14,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "El Gobierno de Navolato pone al alcance de los ciudadanos y de los lectores interesados en la función pública, esta página digital que es parte de un amplio ejercicio de rendición de cuentas y refleja la actividad diaria de un gobierno democrático que tiene el desafío de generar condiciones de igualdad, impulsar la prosperidad económica y garantizar la gobernabilidad de un gran municipio que forma parte de la geografía del estado de Sinaloa.",
+     "pulsaciones": 15,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Dr. Jorge Rosario Bojórquez Berrelleza",
+     "pulsaciones": 16,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Presidente Municipal de Navolato",
+     "pulsaciones": 17,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1, PLAN MUNICIPAL DE DESARROLLO",
+     "pulsaciones": 18,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 19,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1, Informes de Gobierno Navolato",
+     "pulsaciones": 20,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 21,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 22,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1, AVISOS",
+     "pulsaciones": 23,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 24,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1",
+     "pulsaciones": 25,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 26,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1",
+     "pulsaciones": 27,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 28,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1",
+     "pulsaciones": 29,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Previous slide",
+     "pulsaciones": 30,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Next slide",
+     "pulsaciones": 31,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1, Órgano Interno de Control",
+     "pulsaciones": 32,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Denuncia Ciudadana",
+     "pulsaciones": 33,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Código de Ética",
+     "pulsaciones": 34,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1, NOTICIAS",
+     "pulsaciones": 35,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "edición, Buscar",
+     "pulsaciones": 36,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 37,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Navolato ofrece 100 % de descuento en multas y recargos de predial, agua potable y otros adeudos durante el Buen Fin",
+     "pulsaciones": 38,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 13 de noviembre de 2026",
+     "pulsaciones": 39,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Centro",
+     "pulsaciones": 40,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 41,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 42,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 43,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Navolato reporta 97.5% de eficiencia en agua potable y refuerza atención a servicios públicos",
+     "pulsaciones": 44,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 11 de noviembre de 2026",
+     "pulsaciones": 45,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Centro",
+     "pulsaciones": 46,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 47,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 48,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 49,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Verbenas navideñas de Navolato abrirán al público el 15 de noviembre",
+     "pulsaciones": 50,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 9 de noviembre de 2026",
+     "pulsaciones": 51,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Centro",
+     "pulsaciones": 52,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 53,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 54,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 55,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Con música de banda, vecinos de Los Albañiles celebran la pavimentación de la calle Osa Mayor",
+     "pulsaciones": 56,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 4 de noviembre de 2026",
+     "pulsaciones": 57,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Col. Los Albañiles",
+     "pulsaciones": 58,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 59,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 60,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 61,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Llama Dr. Jorge Bojórquez a proteger a las familias con el desarme voluntario en Navolato",
+     "pulsaciones": 62,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 26 de octubre de 2026",
+     "pulsaciones": 63,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Centro",
+     "pulsaciones": 64,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 65,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 66,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 67,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Jorge Bojórquez Berrelleza apuesta por resultados y desarrollo para fortalecer el gobierno de Navolato",
+     "pulsaciones": 68,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 26 de octubre de 2026",
+     "pulsaciones": 69,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Centro",
+     "pulsaciones": 70,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 71,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 72,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 73,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "“Detrás de cada oportunidad de empleo hay una familia que busca salir adelante”: Jorge Bojórquez",
+     "pulsaciones": 74,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 23 de octubre de 2026",
+     "pulsaciones": 75,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Villa Benito Juarez",
+     "pulsaciones": 76,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 77,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 78,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 79,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Navolato gestiona apoyo interinstitucional para fortalecer la atención en salud mental",
+     "pulsaciones": 80,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, 7 de octubre de 2026",
+     "pulsaciones": 81,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Centro",
+     "pulsaciones": 82,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Navolato | Sinaloa",
+     "pulsaciones": 83,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER NOTA",
+     "pulsaciones": 84,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 85,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 86,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, 1",
+     "pulsaciones": 87,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, 2",
+     "pulsaciones": 88,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, 3",
+     "pulsaciones": 89,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 90,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 91,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VER TODO",
+     "pulsaciones": 92,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "TRÁMITES EN LÍNEA",
+     "pulsaciones": 93,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 94,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 4, PREDIAL",
+     "pulsaciones": 95,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Impuesto predial urbano",
+     "pulsaciones": 96,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, PAGAR",
+     "pulsaciones": 97,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 98,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 4, JAPAN",
+     "pulsaciones": 99,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Pago en línea",
+     "pulsaciones": 100,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, PAGAR",
+     "pulsaciones": 101,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 102,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 4, TRÁNSITO",
+     "pulsaciones": 103,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, Infracciones de tránsito",
+     "pulsaciones": 104,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, PAGAR",
+     "pulsaciones": 105,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 1, SITIOS DE INTERÉS",
+     "pulsaciones": 106,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 107,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Ayuntamiento",
+     "pulsaciones": 108,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Navolato",
+     "pulsaciones": 109,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 110,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 111,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "DIF",
+     "pulsaciones": 112,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Navolato",
+     "pulsaciones": 113,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 114,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 115,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Protección Civil Navolato",
+     "pulsaciones": 116,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 117,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 118,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Junta Agua Potable",
+     "pulsaciones": 119,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 120,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 121,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "INCA",
+     "pulsaciones": 122,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 123,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 124,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "IMDEN",
+     "pulsaciones": 125,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 126,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 127,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "IMJU",
+     "pulsaciones": 128,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 129,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 130,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "IMMUJERES",
+     "pulsaciones": 131,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, FACEBOOK",
+     "pulsaciones": 132,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 133,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "OK",
+     "pulsaciones": 134,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 5, H. AYUNTAMIENTO DE NAVOLATO",
+     "pulsaciones": 135,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Rosales #49 Nte, Col. Centro, C.P. 80320",
+     "pulsaciones": 136,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Navolato, Sinaloa.",
+     "pulsaciones": 137,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "pm@navolato.gob.mx",
+     "pulsaciones": 138,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    }
+   ],
+   "encontro": "pm@navolato.gob.mx",
+   "falsas_llegadas": [],
+   "captcha": [],
+   "puntajes": {
+    "reglas": 0.8148148148148148,
+    "elementos": 0.8833619210977701,
+    "reglas_conservador": 0.7777777777777778,
+    "elementos_conservador": 0.8728813559322034
+   },
+   "veredicto_nvda": "con_dificultad",
+   "vidente_lo_encuentra": true,
+   "corrida": "corrida del 2026-11-15",
+   "fecha": "2026-11-15T20:49:55-07:00",
+   "nota_corrida": null,
+   "veredicto_nvda_corrida": null,
+   "nota_referencia": null,
+   "no_cargo": null,
+   "ciego": false,
+   "marcas": [
+    {
+     "paso": 15,
+     "tipo": "umbral",
+     "texto": "Aquí pasa de 15 pulsaciones (umbral)"
+    },
+    {
+     "paso": 137,
      "tipo": "llego",
      "texto": "Llegó al objetivo correcto"
     }
@@ -8377,7 +9948,7 @@ window.ATORAPP = {
     },
     "con_dificultad": {
      "completable": 1,
-     "con_dificultad": 0,
+     "con_dificultad": 1,
      "no_completable": 1
     },
     "no_completable": {
@@ -8386,7 +9957,7 @@ window.ATORAPP = {
      "no_completable": 2
     }
    },
-   "n": 5,
+   "n": 6,
    "excluidas": {
     "sin_nvda": 0,
     "no_evaluable_nvda": 0,
@@ -8394,38 +9965,39 @@ window.ATORAPP = {
    }
   },
   "acuerdo": {
-   "n": 5,
-   "tres_clases": 0.4,
-   "binario": 0.8
+   "n": 6,
+   "tres_clases": 0.5,
+   "binario": 0.8333333333333334
   },
   "acuerdo_por_umbral": {
    "10": {
-    "n": 5,
-    "iguales": 3
+    "n": 6,
+    "iguales": 4
    },
    "15": {
-    "n": 5,
-    "iguales": 2
+    "n": 6,
+    "iguales": 3
    },
    "25": {
-    "n": 5,
-    "iguales": 2
+    "n": 6,
+    "iguales": 3
    }
   },
   "falsas_llegadas": {
    "tareas_con_falsa": 0,
-   "n_tareas": 6,
+   "n_tareas": 7,
    "por_sitio": {
     "ahome": 0,
     "atencion": 0,
     "ciudadano": 0,
     "culiacan": 0,
+    "navolato": 0,
     "sinaloa": 0
    }
   },
   "auc": {
    "calculado": false,
-   "motivo": "hay 5 tareas comparables (de 6 tareas en 5 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe"
+   "motivo": "hay 6 tareas comparables (de 7 tareas en 6 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe"
   }
  },
  "notas_nvda": [
@@ -8475,6 +10047,14 @@ window.ATORAPP = {
    "ruta_nvda": "Única ruta: ~4 D al pie + 3-4 K al enlace 'Whatsapp' + Enter + Esc (diálogo del navegador) + 1-2 H al encabezado 'Chatea en WhatsApp con el +52 667 502 7665' = ~11. El número se lee en api.whatsapp.com (otro host). Portada y Asistencia digital revisadas con H, K, L, D, Tab y flechas: no se lee ningún contacto. Conteo manual aproximado; auditor principiante. CORRECCIÓN 15-nov: la única ruta sale del host (api.whatsapp.com); por la regla de host exacto del 8-nov no cuenta, así que el veredicto pasa de completable a no_completable.",
    "pulsaciones_aprox": "11",
    "que_me_atoro": "En Asistencia digital un vidente ve teléfono, WhatsApp y correo, pero NVDA no lee las tarjetas (texto no accesible, probablemente imágenes). Tiene widget de accesibilidad y aun así falla. El enlace 'Whatsapp' no avisa que sale del sitio ni que abre un diálogo de Chrome que se queda con el foco. 20 botones del mapa llamados 'Marker'; lista de municipios 'cliqueable' sin rol ni foco. Dentro del host el contacto existe (un vidente lo ve en /asistencia-digital/), pero NVDA no lo lee; solo se alcanza saliendo a api.whatsapp.com.",
+   "fecha_auditoria": "2026-11-15"
+  },
+  {
+   "sitio": "navolato",
+   "tarea": "A",
+   "ruta_nvda": "Mejor ruta con las estrategias definidas (encabezados, regiones, enlaces, búsqueda interna, tabulación): ~20 H hasta 'H. AYUNTAMIENTO DE NAVOLATO' + 3-4 flechas = ~24. D sin regiones útiles; ~42 K sin oír el teléfono (no es enlace); Tab pasa por los FACEBOOK y no lee el texto del pie. Con L (lista, fuera de las estrategias definidas) bastan ~3 L + 1-2 flechas, pero hay que adivinar entre listas sin nombre. Búsqueda interna (Ctrl+F) no probada. Conteo manual aproximado; auditor principiante.",
+   "pulsaciones_aprox": "24",
+   "que_me_atoro": "Correo y teléfonos como texto plano en listas sin nombre del pie. Los enlaces junto al teléfono se llaman 'navolato.gob.mx !'. Muchos 'Gráfico sin descripción', 8 botones 'FACEBOOK' iguales, enlace 'profile id=…', encabezados vacíos ('separador'). Veredicto corregido el 15-nov de completable a con_dificultad ANTES de correr Atorapp: L no está entre las estrategias de la definición operacional.",
    "fecha_auditoria": "2026-11-15"
   }
  ]
