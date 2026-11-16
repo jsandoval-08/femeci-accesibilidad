@@ -641,6 +641,30 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - Más tareas auditadas a ciegas (para el AUC hacen falta 10 comparables).
   - Decidir si el script de reproducción sin red se versiona en `scripts/` (hoy se rehízo dos veces fuera del repo).
 
+## 15-nov-2026 (23:22) — Fase 4: script de reproducción versionado y cambio de redacción en tres desacuerdos
+
+- **Qué hice:**
+  1. **`scripts/reproducir.py` quedó versionado** (commit `54a2499`). Es un diagnóstico **posterior a las corridas**:
+     reproduce cada estrategia sin red sobre la captura guardada; no escribe nada, no cambia `src/` ni las palabras
+     clave y no altera veredictos ni resultados oficiales. Por eso, en la entrada anterior («navolato A… reproducción
+     por estrategia»), las líneas que decían que el script vive fuera del repo (en el scratchpad) y el pendiente
+     «decidir si se versiona» **ya no aplican**. No edité esa entrada; esta la corrige.
+  2. **Cambio de redacción** (commit `a1d9913`): «limitación declarada» pasó a «límite del emulador identificado
+     al revisar la corrida (fecha)» en tres desacuerdos de la entrada del 15-nov: ciudadano B (8-nov), culiacán A
+     (15-nov) y navolato A (15-nov). Motivo: «declarada» sugería que esos límites estaban declarados antes de correr, y
+     se identificaron al revisar las corridas.
+- **Resultado:**
+  - El cambio de redacción se hizo **después de ver los resultados de Atorapp**. Es **solo de redacción**: no cambia
+    veredictos, umbrales, topes, palabras clave ni ningún número (acuerdo 3 de 6 en 3 clases y 5 de 6 en binario con la
+    referencia vigente; 2 de 6 y 4 de 6 con la original).
+  - El script reproduce lo mismo desde `scripts/` (navolato A, no_dirigida 138).
+- **Problemas y decisiones:**
+  - En la entrada del 15-nov de navolato A, el cambio de «limitación declarada» se aplicó sobre el texto ya escrito;
+    el commit `a1d9913` es el rastro de esa edición.
+  - Quedan con «limitación declarada», sin tocar, las menciones de `CLAUDE.md` y del código, que no se revisaron.
+- **Siguiente:**
+  - Más tareas auditadas a ciegas (para el AUC hacen falta 10 comparables).
+
 ---
 
 <!-- Plantilla para nuevas entradas:
