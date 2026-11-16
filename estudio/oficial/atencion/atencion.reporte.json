@@ -1191,11 +1191,13 @@
         "elementos_conservador": 0.9745222929936306
       },
       "error_axe": null,
-      "veredicto_nvda": "completable",
+      "veredicto_nvda": "no_completable",
       "vidente_lo_encuentra": true,
       "corrida": "corrida del 2026-11-15",
       "fecha": "2026-11-15T19:28:48-07:00",
-      "nota_corrida": null
+      "nota_corrida": null,
+      "veredicto_nvda_corrida": "completable",
+      "nota_referencia": "Referencia NVDA corregida después de la corrida: completable → no_completable (ver BITACORA.md). Atorapp no se volvió a correr."
     }
   ],
   "regla": "Resultados oficiales según la regla del 13-nov (BITACORA.md): cada tarea dice de qué corrida sale."

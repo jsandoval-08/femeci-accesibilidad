@@ -46,7 +46,9 @@
       "vidente_lo_encuentra": true,
       "corrida": "segunda corrida, 2026-11-14",
       "fecha": "2026-11-14T07:57:45-07:00",
-      "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (no resuelta dentro del presupuesto: timeout). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento)."
+      "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (no resuelta dentro del presupuesto: timeout). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento).",
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     }
   ],
   "regla": "Resultados oficiales según la regla del 13-nov (BITACORA.md): cada tarea dice de qué corrida sale."

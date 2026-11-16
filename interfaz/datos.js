@@ -1,6 +1,6 @@
 // Generado por scripts/generar_datos_interfaz.py. No editar a mano.
 window.ATORAPP = {
- "generado": "2026-11-15T19:29:14-07:00",
+ "generado": "2026-11-15T19:45:30-07:00",
  "umbral": 15,
  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
  "reales": [
@@ -47,6 +47,8 @@ window.ATORAPP = {
    "corrida": "segunda corrida, 2026-11-14",
    "fecha": "2026-11-14T07:57:45-07:00",
    "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (la página de entrada no cargó). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento).",
+   "veredicto_nvda_corrida": null,
+   "nota_referencia": null,
    "no_cargo": {
     "tipo": "timeout"
    },
@@ -1246,11 +1248,13 @@ window.ATORAPP = {
     "reglas_conservador": 0.9565217391304348,
     "elementos_conservador": 0.9745222929936306
    },
-   "veredicto_nvda": "completable",
+   "veredicto_nvda": "no_completable",
    "vidente_lo_encuentra": true,
    "corrida": "corrida del 2026-11-15",
    "fecha": "2026-11-15T19:28:48-07:00",
    "nota_corrida": null,
+   "veredicto_nvda_corrida": "completable",
+   "nota_referencia": "Referencia NVDA corregida después de la corrida: completable → no_completable (ver BITACORA.md). Atorapp no se volvió a correr.",
    "no_cargo": null,
    "ciego": false,
    "marcas": [
@@ -1445,6 +1449,8 @@ window.ATORAPP = {
    "corrida": "corrida del 2026-11-15",
    "fecha": "2026-11-15T19:26:22-07:00",
    "nota_corrida": null,
+   "veredicto_nvda_corrida": null,
+   "nota_referencia": null,
    "no_cargo": null,
    "ciego": false,
    "marcas": [
@@ -2294,6 +2300,8 @@ window.ATORAPP = {
     }
    ],
    "encontro": null,
+   "veredicto_nvda_corrida": null,
+   "nota_referencia": null,
    "no_cargo": null,
    "ciego": false,
    "marcas": [
@@ -2796,6 +2804,8 @@ window.ATORAPP = {
    "corrida": "corrida del 2026-11-15",
    "fecha": "2026-11-15T19:28:02-07:00",
    "nota_corrida": null,
+   "veredicto_nvda_corrida": null,
+   "nota_referencia": null,
    "no_cargo": null,
    "ciego": false,
    "marcas": [
@@ -4200,6 +4210,8 @@ window.ATORAPP = {
     }
    ],
    "encontro": null,
+   "veredicto_nvda_corrida": null,
+   "nota_referencia": null,
    "no_cargo": null,
    "ciego": false,
    "marcas": [
@@ -8361,7 +8373,7 @@ window.ATORAPP = {
     "completable": {
      "completable": 0,
      "con_dificultad": 1,
-     "no_completable": 1
+     "no_completable": 0
     },
     "con_dificultad": {
      "completable": 1,
@@ -8371,7 +8383,7 @@ window.ATORAPP = {
     "no_completable": {
      "completable": 0,
      "con_dificultad": 0,
-     "no_completable": 1
+     "no_completable": 2
     }
    },
    "n": 5,
@@ -8383,21 +8395,21 @@ window.ATORAPP = {
   },
   "acuerdo": {
    "n": 5,
-   "tres_clases": 0.2,
-   "binario": 0.6
+   "tres_clases": 0.4,
+   "binario": 0.8
   },
   "acuerdo_por_umbral": {
    "10": {
     "n": 5,
-    "iguales": 2
+    "iguales": 3
    },
    "15": {
     "n": 5,
-    "iguales": 1
+    "iguales": 2
    },
    "25": {
     "n": 5,
-    "iguales": 1
+    "iguales": 2
    }
   },
   "falsas_llegadas": {
@@ -8460,9 +8472,9 @@ window.ATORAPP = {
   {
    "sitio": "atencion",
    "tarea": "A",
-   "ruta_nvda": "Única ruta: ~4 D al pie + 3-4 K al enlace 'Whatsapp' + Enter + Esc (diálogo del navegador) + 1-2 H al encabezado 'Chatea en WhatsApp con el +52 667 502 7665' = ~11. El número se lee en api.whatsapp.com (otro host). Portada y Asistencia digital revisadas con H, K, L, D, Tab y flechas: no se lee ningún contacto. Conteo manual aproximado; auditor principiante.",
+   "ruta_nvda": "Única ruta: ~4 D al pie + 3-4 K al enlace 'Whatsapp' + Enter + Esc (diálogo del navegador) + 1-2 H al encabezado 'Chatea en WhatsApp con el +52 667 502 7665' = ~11. El número se lee en api.whatsapp.com (otro host). Portada y Asistencia digital revisadas con H, K, L, D, Tab y flechas: no se lee ningún contacto. Conteo manual aproximado; auditor principiante. CORRECCIÓN 15-nov: la única ruta sale del host (api.whatsapp.com); por la regla de host exacto del 8-nov no cuenta, así que el veredicto pasa de completable a no_completable.",
    "pulsaciones_aprox": "11",
-   "que_me_atoro": "En Asistencia digital un vidente ve teléfono, WhatsApp y correo, pero NVDA no lee las tarjetas (texto no accesible, probablemente imágenes). Tiene widget de accesibilidad y aun así falla. El enlace 'Whatsapp' no avisa que sale del sitio ni que abre un diálogo de Chrome que se queda con el foco. 20 botones del mapa llamados 'Marker'; lista de municipios 'cliqueable' sin rol ni foco.",
+   "que_me_atoro": "En Asistencia digital un vidente ve teléfono, WhatsApp y correo, pero NVDA no lee las tarjetas (texto no accesible, probablemente imágenes). Tiene widget de accesibilidad y aun así falla. El enlace 'Whatsapp' no avisa que sale del sitio ni que abre un diálogo de Chrome que se queda con el foco. 20 botones del mapa llamados 'Marker'; lista de municipios 'cliqueable' sin rol ni foco. Dentro del host el contacto existe (un vidente lo ve en /asistencia-digital/), pero NVDA no lo lee; solo se alcanza saliendo a api.whatsapp.com.",
    "fecha_auditoria": "2026-11-15"
   }
  ]

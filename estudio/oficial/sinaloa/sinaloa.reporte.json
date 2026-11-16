@@ -1393,7 +1393,9 @@
           "no_evaluable": null
         }
       ],
-      "encontro": null
+      "encontro": null,
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     }
   ],
   "regla": "Resultados oficiales según la regla del 13-nov (BITACORA.md): cada tarea dice de qué corrida sale."

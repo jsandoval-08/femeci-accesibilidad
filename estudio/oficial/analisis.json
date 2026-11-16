@@ -41,7 +41,9 @@
       "veredicto_nvda": "con_dificultad",
       "vidente_lo_encuentra": true,
       "corrida": "segunda corrida, 2026-11-14",
-      "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (no resuelta dentro del presupuesto: timeout). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento)."
+      "nota_corrida": "La corrida del 2026-11-08 fue no evaluable, 0 pulsaciones consumidas (no resuelta dentro del presupuesto: timeout). Por la regla del 13-nov, el resultado oficial es el de la segunda corrida (único reintento).",
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     },
     {
       "sitio": "atencion",
@@ -1230,10 +1232,12 @@
         "elementos_conservador": 0.9745222929936306
       },
       "error_axe": null,
-      "veredicto_nvda": "completable",
+      "veredicto_nvda": "no_completable",
       "vidente_lo_encuentra": true,
       "corrida": "corrida del 2026-11-15",
-      "nota_corrida": null
+      "nota_corrida": null,
+      "veredicto_nvda_corrida": "completable",
+      "nota_referencia": "Referencia NVDA corregida después de la corrida: completable → no_completable (ver BITACORA.md). Atorapp no se volvió a correr."
     },
     {
       "sitio": "ciudadano",
@@ -1413,7 +1417,9 @@
       "veredicto_nvda": "con_dificultad",
       "vidente_lo_encuentra": true,
       "corrida": "corrida del 2026-11-15",
-      "nota_corrida": null
+      "nota_corrida": null,
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     },
     {
       "sitio": "ciudadano",
@@ -2253,7 +2259,9 @@
           "no_evaluable": null
         }
       ],
-      "encontro": null
+      "encontro": null,
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     },
     {
       "sitio": "culiacan",
@@ -2741,7 +2749,9 @@
       "veredicto_nvda": "completable",
       "vidente_lo_encuentra": true,
       "corrida": "corrida del 2026-11-15",
-      "nota_corrida": null
+      "nota_corrida": null,
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     },
     {
       "sitio": "sinaloa",
@@ -4131,7 +4141,9 @@
           "no_evaluable": null
         }
       ],
-      "encontro": null
+      "encontro": null,
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     }
   ],
   "notas_nvda": [
@@ -4178,9 +4190,9 @@
     {
       "sitio": "atencion",
       "tarea": "A",
-      "ruta_nvda": "Única ruta: ~4 D al pie + 3-4 K al enlace 'Whatsapp' + Enter + Esc (diálogo del navegador) + 1-2 H al encabezado 'Chatea en WhatsApp con el +52 667 502 7665' = ~11. El número se lee en api.whatsapp.com (otro host). Portada y Asistencia digital revisadas con H, K, L, D, Tab y flechas: no se lee ningún contacto. Conteo manual aproximado; auditor principiante.",
+      "ruta_nvda": "Única ruta: ~4 D al pie + 3-4 K al enlace 'Whatsapp' + Enter + Esc (diálogo del navegador) + 1-2 H al encabezado 'Chatea en WhatsApp con el +52 667 502 7665' = ~11. El número se lee en api.whatsapp.com (otro host). Portada y Asistencia digital revisadas con H, K, L, D, Tab y flechas: no se lee ningún contacto. Conteo manual aproximado; auditor principiante. CORRECCIÓN 15-nov: la única ruta sale del host (api.whatsapp.com); por la regla de host exacto del 8-nov no cuenta, así que el veredicto pasa de completable a no_completable.",
       "pulsaciones_aprox": "11",
-      "que_me_atoro": "En Asistencia digital un vidente ve teléfono, WhatsApp y correo, pero NVDA no lee las tarjetas (texto no accesible, probablemente imágenes). Tiene widget de accesibilidad y aun así falla. El enlace 'Whatsapp' no avisa que sale del sitio ni que abre un diálogo de Chrome que se queda con el foco. 20 botones del mapa llamados 'Marker'; lista de municipios 'cliqueable' sin rol ni foco.",
+      "que_me_atoro": "En Asistencia digital un vidente ve teléfono, WhatsApp y correo, pero NVDA no lee las tarjetas (texto no accesible, probablemente imágenes). Tiene widget de accesibilidad y aun así falla. El enlace 'Whatsapp' no avisa que sale del sitio ni que abre un diálogo de Chrome que se queda con el foco. 20 botones del mapa llamados 'Marker'; lista de municipios 'cliqueable' sin rol ni foco. Dentro del host el contacto existe (un vidente lo ve en /asistencia-digital/), pero NVDA no lo lee; solo se alcanza saliendo a api.whatsapp.com.",
       "fecha_auditoria": "2026-11-15"
     }
   ],
@@ -4194,7 +4206,7 @@
       "completable": {
         "completable": 0,
         "con_dificultad": 1,
-        "no_completable": 1
+        "no_completable": 0
       },
       "con_dificultad": {
         "completable": 1,
@@ -4204,7 +4216,7 @@
       "no_completable": {
         "completable": 0,
         "con_dificultad": 0,
-        "no_completable": 1
+        "no_completable": 2
       }
     },
     "n": 5,
@@ -4216,21 +4228,21 @@
   },
   "acuerdo": {
     "n": 5,
-    "tres_clases": 0.2,
-    "binario": 0.6
+    "tres_clases": 0.4,
+    "binario": 0.8
   },
   "acuerdo_por_umbral": {
     "10": {
       "n": 5,
-      "iguales": 2
+      "iguales": 3
     },
     "15": {
       "n": 5,
-      "iguales": 1
+      "iguales": 2
     },
     "25": {
       "n": 5,
-      "iguales": 1
+      "iguales": 2
     }
   },
   "falsas_llegadas": {
@@ -4247,5 +4259,34 @@
   "auc": {
     "calculado": false,
     "motivo": "hay 5 tareas comparables (de 6 tareas en 5 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe"
+  },
+  "referencia_original": {
+    "corregidas": [
+      {
+        "sitio": "atencion",
+        "tarea": "A",
+        "original": "completable",
+        "vigente": "no_completable"
+      }
+    ],
+    "acuerdo": {
+      "n": 5,
+      "tres_clases": 0.2,
+      "binario": 0.6
+    },
+    "acuerdo_por_umbral": {
+      "10": {
+        "n": 5,
+        "iguales": 2
+      },
+      "15": {
+        "n": 5,
+        "iguales": 1
+      },
+      "25": {
+        "n": 5,
+        "iguales": 1
+      }
+    }
   }
 }

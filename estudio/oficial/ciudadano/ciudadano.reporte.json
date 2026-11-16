@@ -183,7 +183,9 @@
       "vidente_lo_encuentra": true,
       "corrida": "corrida del 2026-11-15",
       "fecha": "2026-11-15T19:26:22-07:00",
-      "nota_corrida": null
+      "nota_corrida": null,
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     },
     {
       "tarea": "B",
@@ -1022,7 +1024,9 @@
           "no_evaluable": null
         }
       ],
-      "encontro": null
+      "encontro": null,
+      "veredicto_nvda_corrida": null,
+      "nota_referencia": null
     }
   ],
   "regla": "Resultados oficiales según la regla del 13-nov (BITACORA.md): cada tarea dice de qué corrida sale."
