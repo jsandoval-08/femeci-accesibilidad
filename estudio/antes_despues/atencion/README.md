@@ -13,7 +13,19 @@
 | `tarjetas/` | Las 6 PNG (16-nov, con sha256 en `descarga.json`) y su transcripción validada. |
 | `validacion_arbol.txt` | Árbol de `original/` contra el capturado: 32 de 32 paradas idénticas. |
 | `mediciones/` | axe y Atorapp, una corrida por versión (`scripts/antes_despues.py medir`). |
-| `nvda.csv` | Plantilla para anotar el resultado de NVDA en las dos versiones. |
+| `nvda.csv` | Plantilla para anotar el resultado de NVDA en las dos versiones (ver abajo). |
+| `resultados.md` | Tabla final original contra corregida, con la tabla por estrategia. |
+
+**Plantilla `nvda.csv`:** una fila por versión. Las columnas son:
+- `estado_nvda`: completable, con_dificultad, no_completable o no_evaluable.
+- `tipo_falla`: solo si no_completable (no_encontrado, no_identificable o cierre_roto).
+- `pulsaciones_aprox`: el conteo como en la auditoría (saltos + lectura).
+- `ruta_nvda`: las teclas, p. ej. «D×5, flecha×2».
+- `dato_oido`: el contacto tal como lo anunció NVDA.
+- `notas`: lo demás.
+
+`a_ciegas` ya viene en `no`: el auditor conoce el sitio. Mismo umbral (15) y la misma entrada que Atorapp
+(`/asistencia-digital/`).
 
 **Cómo abrirlas (también para NVDA):** desde la raíz del repo,
 `py -3.12 -m http.server 8765 --bind 127.0.0.1 --directory estudio/antes_despues/atencion`, y luego

@@ -1,0 +1,21 @@
+{
+  "url": "http://127.0.0.1:51979/original/",
+  "url_final": "http://127.0.0.1:51979/original/",
+  "estado_http": 200,
+  "fecha_hora": "2026-11-16T03:54:30-07:00",
+  "chromium_version": "153.0.8010.12",
+  "viewport": {
+    "width": 1366,
+    "height": 768
+  },
+  "bypass_csp": false,
+  "axe_version": "4.14.0",
+  "axe_etiquetas": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa"
+  ],
+  "num_iframes": 1,
+  "num_nodos_ax": 271
+}

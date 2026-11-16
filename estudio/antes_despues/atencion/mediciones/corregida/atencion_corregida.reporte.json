@@ -1,0 +1,135 @@
+{
+  "sitio": "atencion_corregida",
+  "url_base": "http://127.0.0.1:51979",
+  "fecha": "2026-11-16T03:55:24-07:00",
+  "palabras_version": 2,
+  "umbral": 15,
+  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
+  "tareas": [
+    {
+      "tarea": "A",
+      "entrada": "http://127.0.0.1:51979/corregida/",
+      "tramite": null,
+      "objetivo_correcto": "asistencia@sinaloa.gob.mx|(667) 7587123|(667) 5027665",
+      "pagina_axe": "http://127.0.0.1:51979/corregida/",
+      "estado": "completable",
+      "tipo_falla": null,
+      "estrategia": "D_a_main",
+      "friccion": 7,
+      "consumidas": null,
+      "motivo": null,
+      "sensibilidad": {
+        "10": "completable",
+        "15": "completable",
+        "25": "completable"
+      },
+      "trayectoria": "D×5, leer×2",
+      "pasos": [
+        {
+          "tecla": "D",
+          "anuncio": "navegación Accessibility Toolbar, punto de referencia; botón, Open toolbar Accesibilidad",
+          "pulsaciones": 1,
+          "url": "http://127.0.0.1:51979/corregida/",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": [
+            "navigation",
+            "Accessibility Toolbar"
+          ],
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "D",
+          "anuncio": "banner, punto de referencia; enlace",
+          "pulsaciones": 2,
+          "url": "http://127.0.0.1:51979/corregida/",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": [
+            "banner",
+            ""
+          ],
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "D",
+          "anuncio": "navegación Navegación del sitio principal, punto de referencia; enlace, Asistencia digital",
+          "pulsaciones": 3,
+          "url": "http://127.0.0.1:51979/corregida/",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": [
+            "navigation",
+            "Navegación del sitio principal"
+          ],
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "D",
+          "anuncio": "región Header Widget 1, punto de referencia; encabezado nivel 2, ASISTENCIA DIGITAL",
+          "pulsaciones": 4,
+          "url": "http://127.0.0.1:51979/corregida/",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": [
+            "region",
+            "Header Widget 1"
+          ],
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "D",
+          "anuncio": "principal, punto de referencia; encabezado nivel 2, ASISTENCIA DIGITAL",
+          "pulsaciones": 5,
+          "url": "http://127.0.0.1:51979/corregida/",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": [
+            "main",
+            ""
+          ],
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "En Asistencia Digital te brindamos atención por nuestros distintos medios de comunicación oficiales.",
+          "pulsaciones": 6,
+          "url": "http://127.0.0.1:51979/corregida/",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        },
+        {
+          "tecla": "leer",
+          "anuncio": "gráfico, Línea telefónica Atención ciudadana (667) 7587123",
+          "pulsaciones": 7,
+          "url": "http://127.0.0.1:51979/corregida/",
+          "profundidad": 0,
+          "se_movio": true,
+          "landmark": null,
+          "documento": null,
+          "no_evaluable": null
+        }
+      ],
+      "encontro": "Línea telefónica Atención ciudadana (667) 7587123",
+      "falsas_llegadas": [],
+      "captcha": [],
+      "puntajes": {
+        "reglas": 0.9130434782608695,
+        "elementos": 0.9491525423728814,
+        "reglas_conservador": 0.875,
+        "elementos_conservador": 0.9438202247191011
+      },
+      "error_axe": null,
+      "veredicto_nvda": null,
+      "vidente_lo_encuentra": true
+    }
+  ]
+}

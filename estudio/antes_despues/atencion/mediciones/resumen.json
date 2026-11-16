@@ -1,0 +1,276 @@
+{
+  "original": {
+    "url": "http://127.0.0.1:51979/original/",
+    "titulo": "Asistencia digital",
+    "paradas": 32,
+    "puntajes": {
+      "reglas": 0.9130434782608695,
+      "elementos": 0.9479768786127167,
+      "reglas_conservador": 0.875,
+      "elementos_conservador": 0.9425287356321839
+    },
+    "conteos_axe": {
+      "reglas_aprobadas": 21,
+      "reglas_violadas": 2,
+      "nodos_pasan": 164,
+      "nodos_fallan": 9,
+      "incompletas_reglas": 1,
+      "incompletas_nodos": 1,
+      "no_aplicables_reglas": 39
+    },
+    "violaciones": [
+      [
+        "color-contrast",
+        5
+      ],
+      [
+        "link-name",
+        4
+      ]
+    ],
+    "estado": "no_completable",
+    "tipo_falla": "no_encontrado",
+    "mejor_estrategia": "no_dirigida",
+    "friccion": null,
+    "consumidas": 32,
+    "motivo": "ninguna estrategia encontró el objetivo",
+    "sensibilidad": {
+      "10": "no_completable",
+      "15": "no_completable",
+      "25": "no_completable"
+    },
+    "falsas_llegadas": [],
+    "estrategias": [
+      {
+        "estrategia": "H_a_seccion",
+        "llego": false,
+        "pulsaciones": 4,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "H×4",
+        "ultimo_anuncio": "no hay más encabezados",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "D_a_seccion",
+        "llego": false,
+        "pulsaciones": 7,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "D×7",
+        "ultimo_anuncio": "no hay más puntos de referencia",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "D_a_main",
+        "llego": false,
+        "pulsaciones": 16,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "D×5, leer×11",
+        "ultimo_anuncio": "desktop",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "enlace_por_nombre",
+        "llego": false,
+        "pulsaciones": 14,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "lista_enlaces×1, flecha_lista×13",
+        "ultimo_anuncio": "enlace, Whatsapp",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "no_dirigida",
+        "llego": false,
+        "pulsaciones": 32,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "leer×32",
+        "ultimo_anuncio": "desktop",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "Tab_inicio",
+        "llego": false,
+        "pulsaciones": 25,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "Tab×25",
+        "ultimo_anuncio": "fin de los elementos enfocables",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "probar_enlaces",
+        "llego": false,
+        "pulsaciones": 4,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "H×4",
+        "ultimo_anuncio": "no hay más encabezados",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "probar_enlaces",
+        "llego": false,
+        "pulsaciones": 15,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "K×15",
+        "ultimo_anuncio": "no hay más enlaces",
+        "hallazgo": null
+      }
+    ],
+    "bloqueadas_axe": [],
+    "bloqueadas_estrategias": []
+  },
+  "corregida": {
+    "url": "http://127.0.0.1:51979/corregida/",
+    "titulo": "Asistencia digital",
+    "paradas": 36,
+    "puntajes": {
+      "reglas": 0.9130434782608695,
+      "elementos": 0.9491525423728814,
+      "reglas_conservador": 0.875,
+      "elementos_conservador": 0.9438202247191011
+    },
+    "conteos_axe": {
+      "reglas_aprobadas": 21,
+      "reglas_violadas": 2,
+      "nodos_pasan": 168,
+      "nodos_fallan": 9,
+      "incompletas_reglas": 1,
+      "incompletas_nodos": 1,
+      "no_aplicables_reglas": 39
+    },
+    "violaciones": [
+      [
+        "color-contrast",
+        5
+      ],
+      [
+        "link-name",
+        4
+      ]
+    ],
+    "estado": "completable",
+    "tipo_falla": null,
+    "mejor_estrategia": "D_a_main",
+    "friccion": 7,
+    "consumidas": null,
+    "motivo": null,
+    "sensibilidad": {
+      "10": "completable",
+      "15": "completable",
+      "25": "completable"
+    },
+    "falsas_llegadas": [],
+    "estrategias": [
+      {
+        "estrategia": "H_a_seccion",
+        "llego": false,
+        "pulsaciones": 4,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "H×4",
+        "ultimo_anuncio": "no hay más encabezados",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "D_a_seccion",
+        "llego": false,
+        "pulsaciones": 7,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "D×7",
+        "ultimo_anuncio": "no hay más puntos de referencia",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "D_a_main",
+        "llego": true,
+        "pulsaciones": 7,
+        "correcto": true,
+        "motivo": null,
+        "no_evaluable": null,
+        "trayectoria": "D×5, leer×2",
+        "ultimo_anuncio": "gráfico, Línea telefónica Atención ciudadana (667) 7587123",
+        "hallazgo": {
+          "contacto": "Línea telefónica Atención ciudadana (667) 7587123",
+          "url": "http://127.0.0.1:51979/tarjetas/Card-linea-telefonica.png"
+        }
+      },
+      {
+        "estrategia": "enlace_por_nombre",
+        "llego": false,
+        "pulsaciones": 14,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "lista_enlaces×1, flecha_lista×13",
+        "ultimo_anuncio": "enlace, Whatsapp",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "no_dirigida",
+        "llego": true,
+        "pulsaciones": 23,
+        "correcto": true,
+        "motivo": null,
+        "no_evaluable": null,
+        "trayectoria": "leer×23",
+        "ultimo_anuncio": "gráfico, Línea telefónica Atención ciudadana (667) 7587123",
+        "hallazgo": {
+          "contacto": "Línea telefónica Atención ciudadana (667) 7587123",
+          "url": "http://127.0.0.1:51979/tarjetas/Card-linea-telefonica.png"
+        }
+      },
+      {
+        "estrategia": "Tab_inicio",
+        "llego": false,
+        "pulsaciones": 25,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "Tab×25",
+        "ultimo_anuncio": "fin de los elementos enfocables",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "probar_enlaces",
+        "llego": false,
+        "pulsaciones": 4,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "H×4",
+        "ultimo_anuncio": "no hay más encabezados",
+        "hallazgo": null
+      },
+      {
+        "estrategia": "probar_enlaces",
+        "llego": false,
+        "pulsaciones": 15,
+        "correcto": null,
+        "motivo": "no encontró el objetivo con lo anunciado",
+        "no_evaluable": null,
+        "trayectoria": "K×15",
+        "ultimo_anuncio": "no hay más enlaces",
+        "hallazgo": null
+      }
+    ],
+    "bloqueadas_axe": [],
+    "bloqueadas_estrategias": []
+  }
+}

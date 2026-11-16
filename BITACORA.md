@@ -731,6 +731,47 @@ el defecto, la corrección, el objetivo ni la predicción.
   `Tarjeta-linea-telefonica-dorada.png`). No se bajaron ni se corrigen. El experimento corrige el defecto en `main`,
   no todas sus apariciones en la página.
 
+## 16-nov-2026 — Antes/después de atención A: reproducciones, medición y plantilla NVDA
+
+- **Qué hice:**
+  - Prerregistro (`caac9de`), con las 6 PNG y la transcripción validada por Javier. Enmienda antes de medir (`4c23247`).
+  - `scripts/antes_despues.py` (no toca `src/`), con tres pasos:
+    - `preparar`: genera `original/` desde la captura del 15-nov y `corregida/` con solo los 4 `alt`
+      (`correccion.diff`, 4 líneas);
+    - `validar`: compara árboles;
+    - `medir`: corre axe y Atorapp sin red, en 127.0.0.1, abortando todo lo externo.
+  - Validación del árbol antes de medir: 32 de 32 paradas idénticas a la captura (`validacion_arbol.txt`). Commit
+    `10bacf4`.
+  - **Una corrida por versión** (03:54 original, 03:55 corregida): 0 peticiones bloqueadas.
+  - Tabla final en `estudio/antes_despues/atencion/resultados.md`. Plantilla para NVDA en `nvda.csv` (una fila por
+    versión, `a_ciegas = no`).
+- **Resultado:**
+
+  | | Original | Corregida |
+  |---|---|---|
+  | axe reglas / elementos / reglas cons. / elementos cons. | 91.3 / 94.8 / 87.5 / 94.3 % | 91.3 / 94.9 / 87.5 / 94.4 % |
+  | Atorapp | no_completable, no_encontrado (32 consumidas) | **completable, D_a_main, 7** (umbral 10, 15 y 25: completable) |
+  | NVDA | no medido | no medido |
+
+  - Se cumple lo prerregistrado para axe (las reglas no cambian; los elementos suben 0.1 puntos, porque `image-alt` cuenta 4 nodos más
+    que pasan) y para Atorapp (no_completable → completable). NVDA queda pendiente.
+  - Por estrategia, la original coincide exactamente con la reproducción sin red del 15-nov (validación cruzada). En
+    la corregida llegan D_a_main (7) y no_dirigida (23); las demás no cambian, porque H, K, la lista de enlaces y Tab no
+    se detienen en imágenes.
+  - axe local ≠ axe en vivo (95.7 / 97.5 %): las 5 violaciones de `color-contrast` vienen de que falta el CSS del sitio.
+  - Suite: 493 pasan, 0 fallan.
+- **Problemas y decisiones:**
+  - Es el caso «Atorapp detecta lo que axe no»: el defecto (`alt=""` en imágenes de texto con el contacto) pasa
+    `image-alt`, y corregirlo no mueve el puntaje por reglas.
+  - **Límites:**
+    - mide la página, no la tarea desde la portada;
+    - las 2 tarjetas del pie no se corrigen;
+    - hay CSS reconstruido;
+    - la auditoría NVDA no es a ciegas;
+    - una sola corrida por versión.
+- **Siguiente:**
+  - Javier audita las dos versiones con NVDA y llena `nvda.csv`. Luego se agrega NVDA a la tabla final.
+
 ---
 
 <!-- Plantilla para nuevas entradas:

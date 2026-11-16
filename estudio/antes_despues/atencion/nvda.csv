@@ -1,0 +1,3 @@
+version,url,fecha,estado_nvda,tipo_falla,pulsaciones_aprox,ruta_nvda,dato_oido,a_ciegas,notas
+original,http://127.0.0.1:8765/original/,,,,,,,no,
+corregida,http://127.0.0.1:8765/corregida/,,,,,,,no,

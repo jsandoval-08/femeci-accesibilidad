@@ -1,0 +1,94 @@
+- link "Skip to content":
+  - /url: "#content"
+- navigation "Accessibility Toolbar":
+  - button "Open toolbar Accesibilidad":
+    - text: Open toolbar
+    - img "Accesibilidad"
+  - paragraph: Accesibilidad
+  - list:
+    - listitem:
+      - button "Mayor TamañoMayor Tamaño":
+        - img "Mayor Tamaño"
+        - text: Mayor Tamaño
+    - listitem:
+      - button "Menor TamañoMenor Tamaño":
+        - img "Menor Tamaño"
+        - text: Menor Tamaño
+    - listitem:
+      - button "Escala de grisesEscala de grises":
+        - img "Escala de grises"
+        - text: Escala de grises
+    - listitem:
+      - button "Mayor ContrasteMayor Contraste":
+        - img "Mayor Contraste"
+        - text: Mayor Contraste
+    - listitem:
+      - button "Menor ContrasteMenor Contraste":
+        - img "Menor Contraste"
+        - text: Menor Contraste
+    - listitem:
+      - button "Fondo LuzFondo Luz":
+        - img "Fondo Luz"
+        - text: Fondo Luz
+    - listitem:
+      - button "Subrayar EnlacesSubrayar Enlaces":
+        - img "Subrayar Enlaces"
+        - text: Subrayar Enlaces
+    - listitem:
+      - button "Palabras LegiblesPalabras Legibles":
+        - img "Palabras Legibles"
+        - text: Palabras Legibles
+    - listitem:
+      - button "Reset Reset":
+        - img "Reset"
+        - text: Reset
+- link "Ir al contenido":
+  - /url: "#content"
+- banner:
+  - link:
+    - /url: https://atencionciudadana.sinaloa.gob.mx/
+  - link:
+    - /url: https://atencionciudadana.sinaloa.gob.mx/
+  - navigation "Navegación del sitio principal":
+    - list:
+      - listitem:
+        - link "Asistencia digital":
+          - /url: https://atencionciudadana.sinaloa.gob.mx/asistencia-digital/
+      - listitem:
+        - link "Envíos":
+          - /url: https://atencionciudadana.sinaloa.gob.mx/envios/
+      - listitem:
+        - link "Módulos de Atención y Cajeros":
+          - /url: https://atencionciudadana.sinaloa.gob.mx/modulosatencion/
+      - listitem:
+        - link "Trámites presenciales":
+          - /url: https://atencionciudadana.sinaloa.gob.mx/tramites-presenciales/
+      - listitem:
+        - link "Noticias":
+          - /url: https://atencionciudadana.sinaloa.gob.mx/noticias/
+  - region "Header Widget 1":
+    - figure
+- main:
+  - article:
+    - heading "ASISTENCIA DIGITAL" [level=2]
+    - paragraph: En Asistencia Digital te brindamos atención por nuestros distintos medios de comunicación oficiales.
+    - link:
+      - /url: https://www.facebook.com/asistenciadigital
+    - link:
+      - /url: https://ciudadano.sinaloa.gob.mx/
+    - heading "ASISTENCIA EN LENGUA DE SEÑAS" [level=2]
+    - paragraph: Contáctanos enviando un mensaje por WhatsApp de lunes a viernes, de 8:00 am a 3:00 pm para agendar tu videollamada
+- contentinfo:
+  - heading "¿Tienes más dudas?" [level=2]
+  - text: Contáctanos a través de nuestros medios de comunicación oficiales para aclarar dudas y solicitar ayuda en los trámites y servicios estatales.
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/asistenciadigital
+    - listitem:
+      - link "Instagram":
+        - /url: https://www.instagram.com/atencionciudadana.sinaloa/
+    - listitem:
+      - link "Whatsapp":
+        - /url: https://wa.me/526675027665
+- text: desktop
