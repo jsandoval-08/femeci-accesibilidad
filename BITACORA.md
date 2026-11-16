@@ -772,6 +772,38 @@ el defecto, la corrección, el objetivo ni la predicción.
 - **Siguiente:**
   - Javier audita las dos versiones con NVDA y llena `nvda.csv`. Luego se agrega NVDA a la tabla final.
 
+## 16-nov-2026 (04:23) — Antes/después de atención A: resultado de NVDA en las dos versiones
+
+- **Qué hice:**
+  - Javier auditó con NVDA las dos reproducciones en Chrome, servidas en `127.0.0.1:8765` y sin estilos. La auditoría
+    **no es a ciegas**. Se anotó en `nvda.csv` y en `resultados.md`.
+  - No cambié nada más: ni reproducciones, ni mediciones, ni `src/`.
+- **Resultado:**
+
+  | | Original | Corregida |
+  |---|---|---|
+  | axe reglas | 91.3 % | 91.3 % |
+  | Atorapp | no_completable (no_encontrado) | completable, 7 |
+  | NVDA | no_completable (no_encontrado) | completable, 3 (H×1, flecha×2) |
+
+  - **La predicción del prerregistro se cumple en las tres herramientas:** axe igual, y Atorapp y NVDA pasan de
+    no_completable a completable.
+  - Original, NVDA: D por todas las regiones sin hallar contacto en la página; el único número salió por K×3–4 + Enter en
+    «Whatsapp» del pie, que lleva a wa.me (otro host), así que no cuenta por la regla de host exacto. Pulsaciones en blanco
+    porque no llegó.
+  - Corregida, NVDA: oyó «gráfico, Línea telefónica Atención ciudadana (667) 7587123».
+  - **Coinciden en el estado, no en la magnitud (3 contra 7).** NVDA hizo H al encabezado «ASISTENCIA DIGITAL» y flecha. Atorapp
+    solo se detiene en encabezados con palabra clave de contacto, así que su mejor ruta es D_a_main. Mismo tipo de
+    diferencia que culiacán A y navolato A. No se agrega ninguna estrategia.
+- **Problemas y decisiones:**
+  - Un solo caso, con corrección y predicción escritas por el mismo equipo que hizo Atorapp: ilustra el mecanismo, no mide
+    cuántas veces ocurre.
+  - Límites sin cambio: mide la página, no la tarea desde la portada; las 2 tarjetas del pie no se corrigen; hay CSS
+    reconstruido (`desktop`); una corrida por versión y herramienta.
+  - Esta tarea no entra al análisis oficial de `estudio/oficial/` (no es una auditoría a ciegas del sitio).
+- **Siguiente:**
+  - Más tareas auditadas a ciegas (para el AUC hacen falta 10 comparables).
+
 ---
 
 <!-- Plantilla para nuevas entradas:

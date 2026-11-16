@@ -23,7 +23,7 @@ Sin cambios en umbrales (15), topes (508 / 30), palabras clave (v2), estrategias
 | Atorapp: fricción | — (32 consumidas) | **7** (D_a_main) |
 | Con umbral 10 / 15 / 25 | no_completable en los tres | completable en los tres |
 | Falsas llegadas | 0 | 0 |
-| NVDA (auditoría no a ciegas) | *por anotar en `nvda.csv`* | *por anotar en `nvda.csv`* |
+| **NVDA** (auditoría no a ciegas, 16-nov) | **no_completable** (no_encontrado) | **completable**, 3 pulsaciones (H×1, flecha×2) |
 
 **Puntajes de axe.**
 - **Por qué los elementos suben 0.1 puntos:** las 4 imágenes ahora tienen nombre y `image-alt` las cuenta como nodos
@@ -66,14 +66,35 @@ probar 4 y 15).
 |---|---|---|
 | axe | igual o casi igual | **se cumple**: reglas iguales; elementos +0.1 puntos |
 | Atorapp | no_completable → completable o con_dificultad | **se cumple**: no_completable → completable (7) |
-| NVDA | igual que Atorapp | **no medido todavía** (`nvda.csv`) |
+| NVDA | igual que Atorapp | **se cumple**: no_completable → completable (`nvda.csv`) |
+
+**La predicción se cumple en las tres herramientas:** axe igual (91.3 % por reglas), y Atorapp y NVDA pasan de
+no_completable a completable.
+
+## NVDA (Javier, 16-nov, copia local en Chrome; no a ciegas)
+
+- **Original:** D por todas las regiones sin hallar contacto en la página. Las 4 tarjetas sin enlace no se oyen; Facebook y
+  chat se oyen como enlace con su URL («asistenciadigital», «ciudadano.sinaloa.gob.mx»). La única ruta al número fue
+  K×3–4 + Enter en «Whatsapp» del pie, que sale a wa.me; Esc cierra el diálogo del navegador y NVDA lee el número en la
+  página de WhatsApp (otro host). Con la regla de host exacto no cuenta: no_completable, no_encontrado. Pulsaciones en
+  blanco porque no llegó.
+- **Corregida:** H×1 y flecha×2 hasta «gráfico, Línea telefónica Atención ciudadana (667) 7587123»: completable, 3.
+
+**Coinciden en el estado, no en la magnitud: Atorapp 7, NVDA 3.** Ambos son completable con cualquier umbral (10, 15 y
+25). La diferencia viene de la ruta:
+- NVDA hizo H al encabezado «ASISTENCIA DIGITAL» y siguió con flecha.
+- Las estrategias de Atorapp solo se detienen en un encabezado si su nombre trae una palabra clave de contacto. Ese
+  encabezado no la trae, así que H_a_seccion termina con «no hay más encabezados» (4 pulsaciones) y la mejor es D_a_main (7).
+- Es la misma familia de diferencia que en culiacán A y navolato A (palabras clave contra significado). No se agrega ninguna
+  estrategia: sería ajustar a la referencia después de verla.
 
 ## Límites
 
 - Mide la página, no la tarea desde la portada.
 - Las 2 tarjetas del pie (`alt=""`) no se corrigen.
 - Hay CSS reconstruido (`desktop`) que no viene del sitio.
-- La auditoría NVDA no es a ciegas.
-- Una sola corrida por versión.
+- La auditoría NVDA no es a ciegas: el auditor conoce el sitio y dónde están las tarjetas.
+- NVDA se audita en Chrome sobre la copia local, sin estilos (la CSP bloquea el CSS del sitio).
+- Una sola corrida por versión y por herramienta.
 - La corrección y la predicción las escribió el mismo equipo que hizo Atorapp. El caso ilustra el mecanismo («axe no lo
   ve, Atorapp sí»); no mide cuántas veces pasa.

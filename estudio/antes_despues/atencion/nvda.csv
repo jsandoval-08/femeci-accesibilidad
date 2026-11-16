@@ -1,3 +1,3 @@
 version,url,fecha,estado_nvda,tipo_falla,pulsaciones_aprox,ruta_nvda,dato_oido,a_ciegas,notas
-original,http://127.0.0.1:8765/original/,,,,,,,no,
-corregida,http://127.0.0.1:8765/corregida/,,,,,,,no,
+original,http://127.0.0.1:8765/original/,2026-11-16,no_completable,no_encontrado,,"D por todas las regiones sin hallar contacto; K×3–4 + Enter en «Whatsapp» del pie sale a wa.me","+52 667 502 7665 solo en la página de WhatsApp (otro host); en la página no se oyó ningún teléfono ni correo",no,"Copia local en Chrome, ya se veía sin estilos. Pulsaciones en blanco: no llegó. Esc cierra el diálogo del navegador y NVDA lee el número en la página de WhatsApp (otro host, no cuenta). Facebook y chat se oyen como enlace con su URL («asistenciadigital», «ciudadano.sinaloa.gob.mx»)."
+corregida,http://127.0.0.1:8765/corregida/,2026-11-16,completable,,3,"H×1, flecha×2","gráfico, Línea telefónica Atención ciudadana (667) 7587123",no,"Copia local en Chrome."

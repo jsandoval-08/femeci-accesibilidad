@@ -13,7 +13,7 @@
 | `tarjetas/` | Las 6 PNG (16-nov, con sha256 en `descarga.json`) y su transcripción validada. |
 | `validacion_arbol.txt` | Árbol de `original/` contra el capturado: 32 de 32 paradas idénticas. |
 | `mediciones/` | axe y Atorapp, una corrida por versión (`scripts/antes_despues.py medir`). |
-| `nvda.csv` | Plantilla para anotar el resultado de NVDA en las dos versiones (ver abajo). |
+| `nvda.csv` | Resultado de NVDA en las dos versiones, anotado por Javier el 16-nov (columnas abajo). |
 | `resultados.md` | Tabla final original contra corregida, con la tabla por estrategia. |
 
 **Plantilla `nvda.csv`:** una fila por versión. Las columnas son:
