@@ -709,6 +709,28 @@ estrategias ni métrica.
     **no es a ciegas**: el auditor ya conoce el sitio, la página y dónde están las tarjetas.
 - Se reporta lo que salga, aunque no confirme lo esperado.
 
+## 16-nov-2026 (03:53) — ENMIENDA del prerregistro de atención A (antes de medir)
+
+Hecha después de la validación del árbol y **antes de medir nada** (ni axe ni Atorapp en las reproducciones). No cambia
+el defecto, la corrección, el objetivo ni la predicción.
+
+- **CSS reconstruido, igual en las dos versiones:** `<style>#elementor-device-mode::after{content:"desktop"}</style>`.
+  - **No viene del sitio.** La regla la escribió Claude a partir de cómo funciona Elementor. En vivo, la hoja externa
+    de Elementor (no capturada) le pone `content:"desktop"` a `<span id="elementor-device-mode"
+    class="elementor-screen-only">`, al final del `body`. Queda oculta a la vista, pero el lector la anuncia como
+    texto suelto.
+  - Sin esa hoja (la CSP bloquea todo lo externo), la reproducción original tenía 31 paradas contra 32 de la captura.
+    Faltaba solo la última, «desktop», fuera de `main`, y `main` ya era idéntico.
+  - **Se justifica porque deja el árbol idéntico al capturado el 15-nov: 32 de 32 paradas** (rol, nombre, nivel,
+    foco, landmarks y URL). La evidencia de que la regla es la correcta es esa coincidencia, no el CSS original.
+- **Diferencia que queda y no afecta:** el aria snapshot de Playwright junta sin espacio los nombres de los 8 botones
+  de la barra de accesibilidad («Mayor TamañoMayor Tamaño»). Los nombres del árbol de Chromium, que usan Atorapp y
+  NVDA, son iguales a los capturados.
+- **Alcance sin cambios: las 4 tarjetas de `main`.** **Límite del experimento:** en el pie (`contentinfo`, bajo
+  «¿Tienes más dudas?») hay 2 tarjetas más con `alt=""` y datos de contacto (`Tarjeta-correo-dorada.png`,
+  `Tarjeta-linea-telefonica-dorada.png`). No se bajaron ni se corrigen. El experimento corrige el defecto en `main`,
+  no todas sus apariciones en la página.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
