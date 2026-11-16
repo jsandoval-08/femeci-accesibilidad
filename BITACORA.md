@@ -665,6 +665,50 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
 - **Siguiente:**
   - Más tareas auditadas a ciegas (para el AUC hacen falta 10 comparables).
 
+## 16-nov-2026 — PRERREGISTRO del experimento antes/después: atención ciudadana A (sección 6.8 del Anexo)
+
+Escrito **antes** de construir las reproducciones y de medir nada. No cambia umbrales, topes, palabras clave (v2),
+estrategias ni métrica.
+
+- **Diagnóstico (captura del 15-nov de `/asistencia-digital/`, sin peticiones nuevas al sitio):** las tarjetas de
+  contacto de `main` son 6 PNG de Elementor, todas con `alt=""`. El texto que ve un vidente está dibujado dentro de la
+  imagen. Ni el correo ni los teléfonos están como texto en el HTML; el único rastro es `5027665` en la URL del enlace
+  «Whatsapp» del pie (`wa.me`). Chromium no expone una imagen con `alt=""`, así que las 4 tarjetas sin enlace no dejan
+  ninguna parada, y las 2 enlazadas (Facebook, chat) quedan como «enlace» sin nombre.
+- **Imágenes:** con permiso de Javier bajé solo las 6 PNG (16-nov, 03:45, una petición cada una, pausa 1 s, todas 200;
+  sha256 en `estudio/antes_despues/atencion/tarjetas/descarga.json`). Claude transcribió el texto literal y Javier lo
+  validó contra las imágenes (`tarjetas/transcripcion.md`).
+- **Qué se corrige (un solo defecto):** imágenes de texto con datos de contacto marcadas como decorativas (`alt=""`),
+  WCAG 1.1.1. Solo las 4 tarjetas **sin enlace** que tienen texto. Las 2 enlazadas no se tocan: su defecto es otro
+  (`link-name`, que axe ya marca).
+- **Cómo (WCAG: nombre accesible igual al texto visible, sin agregar texto que no esté en la página):** `alt` = texto
+  literal de la tarjeta, líneas unidas con un espacio, sin puntuación agregada:
+  - `Línea telefónica Atención ciudadana (667) 7587123`
+  - `Whatsapp (667) 5027665`
+  - `Correo electrónico asistencia@sinaloa.gob.mx`
+  - `Videollamada en LSM (667) 5027665`. En la imagen el hueco antes de «5027665» se ve más ancho; se pone **un solo
+    espacio** (en una imagen no se distinguen uno o dos).
+- **Objetivo:** el mismo de la referencia (`asistencia@sinaloa.gob.mx|(667) 7587123|(667) 5027665`; basta uno).
+  **(667) 5027665 cuenta como objetivo** porque en la versión corregida aparece como texto (nombre de la imagen) dentro
+  del mismo host. Es distinto de la ruta del 15-nov a `api.whatsapp.com`, que se rechazó por la regla de host exacto.
+- **Método:**
+  - Reproducciones locales, rotuladas como experimentales: `estudio/antes_despues/atencion/original/` (lo más fiel posible
+    a la captura) y `corregida/` (el mismo archivo con los 4 `alt` cambiados y nada más).
+  - **Validez:** el árbol de `original/` debe coincidir con el capturado el 15-nov (al menos todo `main`; se reporta
+    cualquier diferencia fuera de él). Si no coincide, se para antes de medir.
+  - Sin red: servidor en 127.0.0.1 y toda petición a otro host se aborta (se registra).
+  - **Entrada = `/asistencia-digital/`** (la página, no la tarea desde la portada). La fricción **no se compara con las
+    105** de la corrida oficial, que entra por la portada.
+  - Una corrida por versión. axe-core 4.14.0, los 4 índices. Atorapp con todas las estrategias de A y la tabla por
+    estrategia.
+- **Predicción:**
+  - **axe:** igual o casi igual en las dos versiones. `image-alt` ya pasa con `alt=""`, así que el defecto no lo ve.
+  - **Atorapp:** de `no_completable` (`no_encontrado`) en la original a `completable` o `con_dificultad` en la
+    corregida.
+  - **NVDA:** igual que Atorapp (no completable → completable o con dificultad). La auditoría NVDA de este experimento
+    **no es a ciegas**: el auditor ya conoce el sitio, la página y dónde están las tarjetas.
+- Se reporta lo que salga, aunque no confirme lo esperado.
+
 ---
 
 <!-- Plantilla para nuevas entradas:

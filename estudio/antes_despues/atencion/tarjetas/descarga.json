@@ -1,0 +1,50 @@
+[
+  {
+    "url": "https://atencionciudadana.sinaloa.gob.mx/wp-content/uploads/2024/08/Card-linea-telefonica.png",
+    "estado": 200,
+    "tipo": "image/png",
+    "bytes": 11695,
+    "sha256": "70499a2ae85cd9ce6dbcefe7b038e41fb9c5c652a2497b4fe8348eced0ec9ba2",
+    "fecha_hora": "2026-11-16T03:45:39-0700"
+  },
+  {
+    "url": "https://atencionciudadana.sinaloa.gob.mx/wp-content/uploads/2024/07/Tarjeta-whatsapp-dorada.png",
+    "estado": 200,
+    "tipo": "image/png",
+    "bytes": 6855,
+    "sha256": "718fbf17df8e3cabb72ecbbfc84a1d163703992021385bf6f8b3c78ea713f63f",
+    "fecha_hora": "2026-11-16T03:45:40-0700"
+  },
+  {
+    "url": "https://atencionciudadana.sinaloa.gob.mx/wp-content/uploads/2024/07/Tarjeta-facebook-dorada.png",
+    "estado": 200,
+    "tipo": "image/png",
+    "bytes": 6409,
+    "sha256": "933a123a93a6ba1fc7f5acd4b489446eb1a733b5845dcaee3919572fa2ed50f6",
+    "fecha_hora": "2026-11-16T03:45:42-0700"
+  },
+  {
+    "url": "https://atencionciudadana.sinaloa.gob.mx/wp-content/uploads/2024/07/Tarjeta-correo-L-dorada.png",
+    "estado": 200,
+    "tipo": "image/png",
+    "bytes": 8735,
+    "sha256": "1b0f2e6ae26f6fbd4c13153466e8f0834726992d2479aeb974734df14a7a1ca0",
+    "fecha_hora": "2026-11-16T03:45:43-0700"
+  },
+  {
+    "url": "https://atencionciudadana.sinaloa.gob.mx/wp-content/uploads/2024/07/Tarjeta-chat-L-dorada.png",
+    "estado": 200,
+    "tipo": "image/png",
+    "bytes": 7825,
+    "sha256": "1d1a1394f015c2705d11a7361e2ae34b3ec6cf2827dd4824e756014355f104bf",
+    "fecha_hora": "2026-11-16T03:45:44-0700"
+  },
+  {
+    "url": "https://atencionciudadana.sinaloa.gob.mx/wp-content/uploads/2024/09/Tarjeta-video-L-dorada2-1.png",
+    "estado": 200,
+    "tipo": "image/png",
+    "bytes": 10769,
+    "sha256": "26559fc0de9288d60dbfe0dfb803963053a7c2a8ad7fa4ea046af79b5f31b361",
+    "fecha_hora": "2026-11-16T03:45:45-0700"
+  }
+]
