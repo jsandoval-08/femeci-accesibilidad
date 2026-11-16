@@ -431,6 +431,56 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
     ANTES cualquier sitio nuevo que se vaya a auditar.
   - Ensayar la demo con la app y con la interfaz.
 
+## 15-nov-2026 — Fase 4: auditoría NVDA a ciegas de ciudadano A, Culiacán A y atención ciudadana A, y su primera corrida
+
+- **Qué hice:**
+  - Javier terminó la auditoría NVDA a ciegas de tres filas nuevas y las convirtió con `scripts/excel_a_csv.py`:
+    ciudadano A, culiacán A y atencion A (`atencion.auditoria.csv`, con `pagina_axe` = `/asistencia-digital/`, mismo host).
+    `config/exploracion.yaml` quedó con `hosts_bloqueados: []`.
+  - Commit `9acd77d` con SOLO `estudio/auditoria/` y `config/exploracion.yaml`, **antes de tocar la red**: es la
+    evidencia de que la referencia quedó fijada antes de la corrida.
+  - Corrí cada CSV **una sola vez** con `--sitio-real` y pausa de 1 s (19:23–19:28), sin cambiar umbrales, topes,
+    palabras clave (v2) ni nada más. Salida en `estudio/corridas/2026-11-15/<sitio>/` (commit `49537a5`).
+    El CSV de ciudadano trae A y B, así que B se corrió otra vez; va aparte y no reemplaza al 8-nov.
+  - `scripts/generar_datos_interfaz.py` sin `--ciego`: regenera `estudio/oficial/` e `interfaz/datos.js` con los 5 sitios.
+- **Resultado:**
+  - Auditoría NVDA (de `notas_nvda.csv`, conteo manual aproximado, auditor principiante):
+    - ciudadano A, con_dificultad, ~17 (H sin encabezados, luego K hasta el pie; con Tab también ~17). Sin landmarks. Orden de Tab raro
+      (empieza por el pie, posible `tabindex>0`, sin confirmar). Un campo y un botón sin nombre antes de «VALIDAR UN DOCUMENTO».
+      La ruta con Tab se hizo ya sabiendo dónde estaba.
+    - culiacán A, completable, ~5 (4 D hasta la región «información de contenido» + 1 al correo). Primer intento ~45 sin reconocer el
+      contacto; con flecha ~120. El teléfono es texto plano y NVDA lo parte en dos líneas. La pasada con D se hizo ya sabiendo dónde estaba.
+    - atención A, completable, ~11, **única ruta**: ~4 D al pie, 3-4 K al enlace «Whatsapp», Enter, Esc (diálogo del navegador) y H al
+      encabezado con el número. **El número se lee en api.whatsapp.com (otro host).** En Asistencia digital un vidente ve teléfono,
+      WhatsApp y correo, pero NVDA no lee las tarjetas. El enlace no avisa que sale del sitio.
+  - Atorapp (estado, mejor estrategia y fricción; axe reglas / elementos / reglas cons. / elementos cons.):
+
+    | Sitio | Tarea | NVDA | Atorapp | Fricción | axe |
+    |---|---|---|---|---|---|
+    | ciudadano | A | con_dificultad | completable, Tab_inicio | 13 (con umbral 10: con_dificultad) | 73.7 / 72.3 / 73.7 / 71.0 % |
+    | ciudadano | B | con_dificultad | no_completable, no_encontrado (igual que el 8-nov) | 73 consumidas | 73.7 / 72.3 / 73.7 / 71.0 % |
+    | culiacán | A | completable | con_dificultad, Tab_inicio | 41 | 89.7 / 95.0 / 83.3 / 94.3 % |
+    | atención | A | completable | no_completable, no_encontrado | 105 consumidas | 95.7 / 97.5 / 95.7 / 97.5 % |
+
+  - Análisis oficial (`estudio/oficial/analisis.md`): 6 tareas en 5 sitios, 5 comparables (ahome A no evaluable). Acuerdo de 3 clases
+    **1 de 5** (umbral 10: 2 de 5; 15 y 25: 1 de 5); binario 3 de 5. Falsas llegadas: 0 de 6. **AUC no se calcula** (5 < 10 comparables,
+    umbral fijado antes). Ningún sitio cargó con problemas: sin timeouts ni CAPTCHA.
+  - ciudadano B: la corrida del 15-nov dio lo mismo que la del 8-nov, y por la regla del 13-nov esa sigue siendo la oficial.
+  - Suite completa: 488 pasan, 0 fallan.
+- **Problemas y decisiones:**
+  - Una prueba (`test_app_seguridad.py`) exigía los dos hosts bloqueados; con la lista vacía fallaba. La cambié para que verifique la lista vacía
+    (el cambio de config era decisión de Javier). Es el único cambio de prueba.
+  - **Criterio de host inconsistente en la referencia (para decidir, no lo resolví):** sinaloa A se juzgó por host exacto (un contacto en otro
+    host no cuenta); en atención A el auditor dio `completable` por un número leído en api.whatsapp.com. Atorapp aplica el host exacto.
+  - **Sesgo declarado del auditor:** ciudadano A y culiacán A se hicieron con D/Tab sabiendo dónde estaba el contacto; Atorapp no lo sabe. Eso
+    abarata la ruta de NVDA frente a la de Atorapp, y no es un error de Atorapp.
+  - No se cambió nada tras ver resultados. Pendiente de investigar (no hecho): costo por estrategia en culiacán A (por qué ninguna D llegó al
+    pie por menos de 41) y si algún enlace «Whatsapp» se probó en atención A; el reporte guarda solo la mejor estrategia.
+- **Siguiente:**
+  - Decidir el criterio de host para atención A y si se anota como excepción de la referencia.
+  - Reproducir culiacán A y atención A estrategia por estrategia sobre la captura guardada, sin nuevas peticiones al sitio.
+  - Push cuando Javier lo decida.
+
 ---
 
 <!-- Plantilla para nuevas entradas:
