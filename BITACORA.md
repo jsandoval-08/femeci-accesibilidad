@@ -533,7 +533,7 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
       del nombre, no por rol). El contentinfo no tiene nombre («información de contenido» es el rol, no el nombre),
       así que lo salta. D_a_main es la única que usa el rol (`main`) y lee todo main antes del pie.
     - Un «D al pie y leer» hipotético costaría unas 6 pulsaciones: completable, igual que NVDA (~5). No se agrega:
-      sería ajustar las estrategias a la referencia después de verla. **Limitación declarada:** las estrategias no
+      sería ajustar las estrategias a la referencia después de verla. **Límite del emulador identificado al revisar la corrida (15-nov):** las estrategias no
       saltan al contentinfo sin nombre, aunque el contacto suele estar en el pie.
     - El auditor hizo la pasada con D sabiendo dónde estaba el contacto; Atorapp no lo sabe.
   - **Atención A:**
@@ -555,8 +555,8 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
     versiones. La versión vigente sube el acuerdo en una tarea, y la corrección favorece a Atorapp.
   - Clasificación de desacuerdos con la referencia vigente:
     - ciudadano A: diferencia de conteo junto al umbral (13 contra ~17);
-    - ciudadano B: limitación declarada (Enter sobre texto);
-    - culiacán A: limitación declarada (D no usa contentinfo sin nombre).
+    - ciudadano B: límite del emulador identificado al revisar la corrida (8-nov) (Enter sobre texto);
+    - culiacán A: límite del emulador identificado al revisar la corrida (15-nov) (D no usa contentinfo sin nombre).
     - atención A ya coincide (no_completable): es una barrera real del sitio.
   - Sigue pendiente guardar el árbol de cada página que visitan las estrategias en el modo estudio, para poder
     reproducir sin red todas las estrategias, no solo en la página de axe.
@@ -609,7 +609,7 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
     - El pie: encabezado nivel 5 «H. AYUNTAMIENTO DE NAVOLATO» (parada 135), dirección (136-137), correo (138), dos
       encabezados nivel 5 vacíos, y «Tel: (672)721-06-07 / (672)727-21-84» (143). El correo va antes que los teléfonos,
       por eso no_dirigida se detiene ahí.
-    - **Por qué la fricción es tan alta (limitación declarada, no se corrige):** las estrategias deciden la relevancia
+    - **Por qué la fricción es tan alta (límite del emulador identificado al revisar la corrida (15-nov), no se corrige):** las estrategias deciden la relevancia
       por palabras clave, no por significado. «H. AYUNTAMIENTO DE NAVOLATO» no trae ninguna palabra de contacto, así
       que H lo salta; el auditor lo eligió por su significado. Un «H hasta ese encabezado y leer» hipotético costaría 41
       H + 3 flechas = 44 en este árbol: seguiría `con_dificultad`. No se agrega: sería ajustar a la referencia.
@@ -631,8 +631,9 @@ Formato de cada entrada: **Qué hice · Resultado / hallazgo · Problemas y deci
   - **Principal = acuerdo de 3 clases** (Javier, 15-nov): la Tabla 4 dice «acuerdo de los veredictos», y los veredictos
     son de 3 clases. Se decidió con los 5 primeros comparables vistos, pero antes de correr navolato, y es la lectura
     menos favorable a Atorapp (50 % contra 83 %).
-  - Desacuerdos con la referencia vigente: ciudadano A, umbral (13 contra ~17); ciudadano B, limitación declarada
-    (Enter sobre texto); culiacán A, limitación declarada (D no entra al contentinfo sin nombre). navolato A coincide
+  - Desacuerdos con la referencia vigente: ciudadano A, umbral (13 contra ~17); ciudadano B, límite del emulador
+    identificado al revisar la corrida (8-nov) (Enter sobre texto); culiacán A, límite del emulador identificado al
+    revisar la corrida (15-nov) (D no entra al contentinfo sin nombre). navolato A coincide
     en clase, pero la diferencia de magnitud (138 contra ~24) es de la misma familia que culiacán: palabras clave en
     lugar de significado.
   - Sigue pendiente guardar el árbol de cada página que visitan las estrategias en el modo estudio.
