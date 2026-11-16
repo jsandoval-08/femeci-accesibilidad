@@ -10,9 +10,11 @@ from app.seguridad import (EntradaInvalida, HostBloqueado, NavegadorConBloqueo, 
 HOSTS = ("ciudadano.sinaloa.gob.mx", "culiacan.gob.mx")
 
 
-def test_config_trae_los_dos_sitios_con_auditoria_pendiente():
+def test_config_sin_sitios_bloqueados_tras_la_auditoria_del_15_nov():
+    # El 15-nov terminó la auditoría NVDA de ciudadano, Culiacán y atención ciudadana: la lista
+    # queda vacía. Se vuelve a llenar ANTES de explorar el siguiente sitio que se audite a ciegas.
     config = cargar_config()
-    assert set(HOSTS) <= set(config.hosts_bloqueados)
+    assert config.hosts_bloqueados == ()
     assert config.carpeta.name == "exploracion"
     assert "estudio" not in config.carpeta.parts
 

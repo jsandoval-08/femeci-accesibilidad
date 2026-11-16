@@ -1,6 +1,6 @@
 // Generado por scripts/generar_datos_interfaz.py. No editar a mano.
 window.ATORAPP = {
- "generado": "2026-11-14T14:38:49-07:00",
+ "generado": "2026-11-15T19:29:14-07:00",
  "umbral": 15,
  "nota": "Esta es una estimación de Atorapp sobre lo que un lector de pantalla anunciaría; la referencia es la auditoría manual con NVDA. El puntaje de conformidad automática mide solo lo que axe-core revisa, sobre la página fijada de antemano para cada tarea.",
  "reales": [
@@ -61,6 +61,1401 @@ window.ATORAPP = {
    ]
   },
   {
+   "sitio": "atencion",
+   "url_base": "https://atencionciudadana.sinaloa.gob.mx/",
+   "tarea": "A",
+   "entrada": "/",
+   "tramite": null,
+   "objetivo_correcto": "asistencia@sinaloa.gob.mx|(667) 7587123|(667) 5027665",
+   "pagina_axe": "/asistencia-digital/",
+   "estado": "no_completable",
+   "tipo_falla": "no_encontrado",
+   "estrategia": "no_dirigida",
+   "friccion": null,
+   "consumidas": 105,
+   "motivo": "ninguna estrategia encontró el objetivo",
+   "sensibilidad": {
+    "10": "no_completable",
+    "15": "no_completable",
+    "25": "no_completable"
+   },
+   "trayectoria": "leer×105",
+   "pasos": [
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Skip to content",
+     "pulsaciones": 1,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Open toolbar Accesibilidad",
+     "pulsaciones": 2,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Accesibilidad",
+     "pulsaciones": 3,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Mayor Tamaño Mayor Tamaño",
+     "pulsaciones": 4,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Menor Tamaño Menor Tamaño",
+     "pulsaciones": 5,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Escala de grises Escala de grises",
+     "pulsaciones": 6,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Mayor Contraste Mayor Contraste",
+     "pulsaciones": 7,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Menor Contraste Menor Contraste",
+     "pulsaciones": 8,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Fondo Luz Fondo Luz",
+     "pulsaciones": 9,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Subrayar Enlaces Subrayar Enlaces",
+     "pulsaciones": 10,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Palabras Legibles Palabras Legibles",
+     "pulsaciones": 11,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Reset Reset",
+     "pulsaciones": 12,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Ir al contenido",
+     "pulsaciones": 13,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 14,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 15,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Asistencia digital",
+     "pulsaciones": 16,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Envíos",
+     "pulsaciones": 17,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Módulos de Atención y Cajeros",
+     "pulsaciones": 18,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Trámites presenciales",
+     "pulsaciones": 19,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Noticias",
+     "pulsaciones": 20,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 21,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "ver más ›",
+     "pulsaciones": 22,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 23,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "ver más ›",
+     "pulsaciones": 24,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace",
+     "pulsaciones": 25,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "ver más ›",
+     "pulsaciones": 26,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 2, LOCALIZA TU UNIDAD ADMINISTRATIVA",
+     "pulsaciones": 27,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Acude presencialmente a cualquiera de nuestras oficinas para realizar tu trámite o recoger tus documentos realizados a través de Ciudadano Digital.",
+     "pulsaciones": 28,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 2, UNIDAD ADMINISTRATIVA",
+     "pulsaciones": 29,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Juan José Ríos",
+     "pulsaciones": 30,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "El Dorado",
+     "pulsaciones": 31,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Sinaloa de Leyva",
+     "pulsaciones": 32,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "San Ignacio",
+     "pulsaciones": 33,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Navolato",
+     "pulsaciones": 34,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Mocorito",
+     "pulsaciones": 35,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Mazatlán",
+     "pulsaciones": 36,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Guasave",
+     "pulsaciones": 37,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Guamúchil",
+     "pulsaciones": 38,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "La Cruz de Elota",
+     "pulsaciones": 39,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Escuinapa",
+     "pulsaciones": 40,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "El Fuerte",
+     "pulsaciones": 41,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "El Rosario",
+     "pulsaciones": 42,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Culiacán",
+     "pulsaciones": 43,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Cosalá",
+     "pulsaciones": 44,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Concordia",
+     "pulsaciones": 45,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Choix",
+     "pulsaciones": 46,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Badiraguato",
+     "pulsaciones": 47,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Angostura",
+     "pulsaciones": 48,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Los Mochis",
+     "pulsaciones": 49,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 50,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 51,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 52,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 53,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 54,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 55,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 56,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 57,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 58,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 59,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 60,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 61,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 62,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 63,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 64,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 65,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 66,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 67,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 68,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Marker",
+     "pulsaciones": 69,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón",
+     "pulsaciones": 70,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón",
+     "pulsaciones": 71,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, MapPress",
+     "pulsaciones": 72,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, OpenFreeMap",
+     "pulsaciones": 73,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "©",
+     "pulsaciones": 74,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, OpenStreetMap",
+     "pulsaciones": 75,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Ahome, expandido",
+     "pulsaciones": 76,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Angostura, contraído",
+     "pulsaciones": 77,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Badiraguato, contraído",
+     "pulsaciones": 78,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Choix, contraído",
+     "pulsaciones": 79,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Concordia, contraído",
+     "pulsaciones": 80,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Cosalá, contraído",
+     "pulsaciones": 81,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Culiacán, contraído",
+     "pulsaciones": 82,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, El fuerte, contraído",
+     "pulsaciones": 83,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Escuinapa, contraído",
+     "pulsaciones": 84,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Elota, contraído",
+     "pulsaciones": 85,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Guamúchil, expandido",
+     "pulsaciones": 86,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Guasave, contraído",
+     "pulsaciones": 87,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Mazatlán, contraído",
+     "pulsaciones": 88,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Mocorito, contraído",
+     "pulsaciones": 89,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Navolato, contraído",
+     "pulsaciones": 90,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, San ignacio, contraído",
+     "pulsaciones": 91,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Sinaloa de Leyva, contraído",
+     "pulsaciones": 92,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Rosario, contraído",
+     "pulsaciones": 93,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, ElDorado, contraído",
+     "pulsaciones": 94,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, Juan José Ríos, contraído",
+     "pulsaciones": 95,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 96,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Ciudadano Digital es la plataforma oficial del Gobierno del Estado de Sinaloa, donde puedes iniciar y terminar/concluir trámites en línea. Algunos trámites se pueden realizar completamente en línea, mientras que otros requieren finalizar en nuestras oficinas. Haz clic en el siguiente botón para iniciar o realizar un trámite digital.",
+     "pulsaciones": 97,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Ir a Ciudadano digital",
+     "pulsaciones": 98,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico, Imagen Ciudadano D@x2",
+     "pulsaciones": 99,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "encabezado nivel 2, ¿Tienes más dudas?",
+     "pulsaciones": 100,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Contáctanos a través de nuestros medios de comunicación oficiales para aclarar dudas y solicitar ayuda en los trámites y servicios estatales.",
+     "pulsaciones": 101,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Facebook",
+     "pulsaciones": 102,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Instagram",
+     "pulsaciones": 103,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Whatsapp",
+     "pulsaciones": 104,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "desktop",
+     "pulsaciones": 105,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    }
+   ],
+   "encontro": null,
+   "falsas_llegadas": [],
+   "captcha": [],
+   "puntajes": {
+    "reglas": 0.9565217391304348,
+    "elementos": 0.9745222929936306,
+    "reglas_conservador": 0.9565217391304348,
+    "elementos_conservador": 0.9745222929936306
+   },
+   "veredicto_nvda": "completable",
+   "vidente_lo_encuentra": true,
+   "corrida": "corrida del 2026-11-15",
+   "fecha": "2026-11-15T19:28:48-07:00",
+   "nota_corrida": null,
+   "no_cargo": null,
+   "ciego": false,
+   "marcas": [
+    {
+     "paso": 15,
+     "tipo": "umbral",
+     "texto": "Aquí pasa de 15 pulsaciones (umbral)"
+    },
+    {
+     "paso": 104,
+     "tipo": "detenido",
+     "texto": "Aquí se detuvo sin encontrar el objetivo correcto"
+    }
+   ]
+  },
+  {
+   "sitio": "ciudadano",
+   "url_base": "https://ciudadano.sinaloa.gob.mx/",
+   "tarea": "A",
+   "entrada": "/",
+   "tramite": null,
+   "objetivo_correcto": "asistencia@sinaloa.gob.mx|667 7587123",
+   "pagina_axe": "/",
+   "estado": "completable",
+   "tipo_falla": null,
+   "estrategia": "Tab_inicio",
+   "friccion": 13,
+   "consumidas": null,
+   "motivo": null,
+   "sensibilidad": {
+    "10": "con_dificultad",
+    "15": "completable",
+    "25": "completable"
+   },
+   "trayectoria": "Tab×13",
+   "pasos": [
+    {
+     "tecla": "Tab",
+     "anuncio": "botón, INGRESAR",
+     "pulsaciones": 1,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, ¿Cómo funciona?",
+     "pulsaciones": 2,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Digitalízate",
+     "pulsaciones": 3,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Ubicaciones",
+     "pulsaciones": 4,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Trámites",
+     "pulsaciones": 5,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Validador de documentos",
+     "pulsaciones": 6,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Rastreo de pedidoss",
+     "pulsaciones": 7,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "botón, INGRESAR",
+     "pulsaciones": 8,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "edición",
+     "pulsaciones": 9,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "botón",
+     "pulsaciones": 10,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "botón, VALIDAR UN DOCUMENTO",
+     "pulsaciones": 11,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "botón, RASTREO DE PEDIDO",
+     "pulsaciones": 12,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Correo electrónico: asistencia@sinaloa.gob.mx",
+     "pulsaciones": 13,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    }
+   ],
+   "encontro": "Correo electrónico: asistencia@sinaloa.gob.mx",
+   "falsas_llegadas": [],
+   "captcha": [],
+   "puntajes": {
+    "reglas": 0.7368421052631579,
+    "elementos": 0.7225433526011561,
+    "reglas_conservador": 0.7368421052631579,
+    "elementos_conservador": 0.7102272727272727
+   },
+   "veredicto_nvda": "con_dificultad",
+   "vidente_lo_encuentra": true,
+   "corrida": "corrida del 2026-11-15",
+   "fecha": "2026-11-15T19:26:22-07:00",
+   "nota_corrida": null,
+   "no_cargo": null,
+   "ciego": false,
+   "marcas": [
+    {
+     "paso": 12,
+     "tipo": "llego",
+     "texto": "Llegó al objetivo correcto"
+    }
+   ]
+  },
+  {
    "sitio": "ciudadano",
    "url_base": "https://ciudadano.sinaloa.gob.mx/",
    "tarea": "B",
@@ -79,8 +1474,8 @@ window.ATORAPP = {
     "15": "no_completable",
     "25": "no_completable"
    },
-   "trayectoria": null,
-   "falsas_llegadas": null,
+   "trayectoria": "leer×2, Enter×1, leer×8, Enter×1, leer×61",
+   "falsas_llegadas": [],
    "captcha": [],
    "puntajes": {
     "reglas": 0.7368421052631579,
@@ -92,12 +1487,1329 @@ window.ATORAPP = {
    "vidente_lo_encuentra": true,
    "corrida": "corrida del 2026-11-08",
    "fecha": "2026-11-08T20:14:20-07:00",
-   "nota_corrida": "Pendiente: auditoría NVDA a ciegas en curso en este sitio.",
-   "pasos": null,
+   "nota_corrida": "Pasos de la segunda corrida (2026-11-15), que dio el mismo resultado; el veredicto es el de la primera.",
+   "pasos": [
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, ¿Cómo funciona?",
+     "pulsaciones": 1,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Trámites",
+     "pulsaciones": 2,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Enter",
+     "anuncio": "enlace, Trámites",
+     "pulsaciones": 3,
+     "profundidad": 0,
+     "se_movio": false,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Validador de documentos",
+     "pulsaciones": 4,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Rastreo de pedidos",
+     "pulsaciones": 5,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Consulta de Adeudos",
+     "pulsaciones": 6,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, INGRESAR",
+     "pulsaciones": 7,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, ¿Cómo funciona?",
+     "pulsaciones": 8,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Digitalízate",
+     "pulsaciones": 9,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Ubicaciones",
+     "pulsaciones": 10,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Trámites",
+     "pulsaciones": 11,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Enter",
+     "anuncio": "Trámites disponibles",
+     "pulsaciones": 12,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Trámites de Identidad",
+     "pulsaciones": 13,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 14,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Carta de no antecedentes penales",
+     "pulsaciones": 15,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 16,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Acta de nacimiento",
+     "pulsaciones": 17,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 18,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Acta de defunción",
+     "pulsaciones": 19,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 20,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Corrección de extracto de acta del estado civil",
+     "pulsaciones": 21,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 22,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Captura de actas del estado civil",
+     "pulsaciones": 23,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 24,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Aclaración de actas del estado civil",
+     "pulsaciones": 25,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Trámites de Vialidad y Transportes",
+     "pulsaciones": 26,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 27,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Licencia de conducir permanente",
+     "pulsaciones": 28,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 29,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Canje de placas",
+     "pulsaciones": 30,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 31,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Tenencia y calcomanía vehicular",
+     "pulsaciones": 32,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 33,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Renovación de licencia",
+     "pulsaciones": 34,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 35,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Baja de placas",
+     "pulsaciones": 36,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 37,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Alta de vehículo y asignación de placas",
+     "pulsaciones": 38,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Pago de Impuestos",
+     "pulsaciones": 39,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 40,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Nómina Agricola",
+     "pulsaciones": 41,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 42,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Nómina Empresarial",
+     "pulsaciones": 43,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 44,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Hospedaje",
+     "pulsaciones": 45,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 46,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Predial Rústico",
+     "pulsaciones": 47,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Recuerda que tus documentos expedidos por Ciudadano Digital son completamente validos, da clic en el siguiente botón para confirmar su validez oficial",
+     "pulsaciones": 48,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, VALIDAR UN DOCUMENTO",
+     "pulsaciones": 49,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Si solicitaste envío a domicilio de tus documentos expedidos en Ciudadano Digital, da clic en el siguiente botón para dar seguimiento a tu pedido",
+     "pulsaciones": 50,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "botón, RASTREO DE PEDIDO",
+     "pulsaciones": 51,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "gráfico",
+     "pulsaciones": 52,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Para recibir asesoría gratuita sobre tus trámites, puedes llamar al número 667 758 7123 de lunes a viernes, entre 8:00 am y 3:00 pm.",
+     "pulsaciones": 53,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Contacto",
+     "pulsaciones": 54,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Teléfono : 667 7587123",
+     "pulsaciones": 55,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Correo electrónico: asistencia@sinaloa.gob.mx",
+     "pulsaciones": 56,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Facebook: /asistenciadigital",
+     "pulsaciones": 57,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Whatsapp: 667 5027665",
+     "pulsaciones": 58,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Aviso de privacidad",
+     "pulsaciones": 59,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "v2.1.8-041-1",
+     "pulsaciones": 60,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Otros portales del Gobierno",
+     "pulsaciones": 61,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Portal de empleos",
+     "pulsaciones": 62,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "enlace, Portal de atención ciudadana",
+     "pulsaciones": 63,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Unidades Administrativas principales",
+     "pulsaciones": 64,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Los Mochis",
+     "pulsaciones": 65,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Marcial Ordóñez y Allende s/n Col. Centro",
+     "pulsaciones": 66,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Guasave",
+     "pulsaciones": 67,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Adolfo López Mateos y Pino Suárez s/n Colonia Ángel Flores",
+     "pulsaciones": 68,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Culiacán",
+     "pulsaciones": 69,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Blvd Pedro infante y Blvd Miguel Tamayo Espinoza No. 2471",
+     "pulsaciones": 70,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Mazatlán",
+     "pulsaciones": 71,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Calle Río Culiacán esq con Río Baluarte s/n",
+     "pulsaciones": 72,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "leer",
+     "anuncio": "Chat en vivo",
+     "pulsaciones": 73,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    }
+   ],
    "encontro": null,
    "no_cargo": null,
-   "ciego": true,
-   "marcas": []
+   "ciego": false,
+   "marcas": [
+    {
+     "paso": 15,
+     "tipo": "umbral",
+     "texto": "Aquí pasa de 15 pulsaciones (umbral)"
+    },
+    {
+     "paso": 72,
+     "tipo": "detenido",
+     "texto": "Aquí se detuvo sin encontrar el objetivo correcto"
+    }
+   ]
+  },
+  {
+   "sitio": "culiacan",
+   "url_base": "https://www.culiacan.gob.mx/",
+   "tarea": "A",
+   "entrada": "/",
+   "tramite": null,
+   "objetivo_correcto": "info@culiacan.gob.mx|(667) 7580101",
+   "pagina_axe": "/",
+   "estado": "con_dificultad",
+   "tipo_falla": null,
+   "estrategia": "Tab_inicio",
+   "friccion": 41,
+   "consumidas": null,
+   "motivo": null,
+   "sensibilidad": {
+    "10": "con_dificultad",
+    "15": "con_dificultad",
+    "25": "con_dificultad"
+   },
+   "trayectoria": "Tab×41",
+   "pasos": [
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Skip to main content",
+     "pulsaciones": 1,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Volver al Inicio",
+     "pulsaciones": 2,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Inicio",
+     "pulsaciones": 3,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "botón, Ayuntamiento, contraído",
+     "pulsaciones": 4,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "botón, Transparencia, contraído",
+     "pulsaciones": 5,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Servicios",
+     "pulsaciones": 6,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Prensa",
+     "pulsaciones": 7,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 8,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 9,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 10,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 11,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Prensa",
+     "pulsaciones": 12,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Leer Más",
+     "pulsaciones": 13,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 14,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Prensa",
+     "pulsaciones": 15,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Leer Más",
+     "pulsaciones": 16,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 17,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Prensa",
+     "pulsaciones": 18,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Leer Más",
+     "pulsaciones": 19,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 20,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Prensa",
+     "pulsaciones": 21,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Leer Más",
+     "pulsaciones": 22,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 23,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "botón, Fechas, contraído",
+     "pulsaciones": 24,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "pestaña, Historia, seleccionada",
+     "pulsaciones": 25,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Leer Más",
+     "pulsaciones": 26,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Consultar",
+     "pulsaciones": 27,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Atlas Nacional de Riesgos",
+     "pulsaciones": 28,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Pago del Impuesto Predial Pagar",
+     "pulsaciones": 29,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Reporte Ciudadano Reportar",
+     "pulsaciones": 30,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Trámites y Servicios Consultar",
+     "pulsaciones": 31,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Multas de Tránsito Pagar",
+     "pulsaciones": 32,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Jardín Botánico Ver más",
+     "pulsaciones": 33,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, La Lomita Ver más",
+     "pulsaciones": 34,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Catedral Ver más",
+     "pulsaciones": 35,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Estadio de los Tomateros Ver más",
+     "pulsaciones": 36,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, La Cofradía de Imala \"Narnia\" Ver más",
+     "pulsaciones": 37,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Imala Ver más",
+     "pulsaciones": 38,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, Ver más",
+     "pulsaciones": 39,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace",
+     "pulsaciones": 40,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    },
+    {
+     "tecla": "Tab",
+     "anuncio": "enlace, info@culiacan.gob.mx",
+     "pulsaciones": 41,
+     "profundidad": 0,
+     "se_movio": true,
+     "landmark": null,
+     "documento": null,
+     "no_evaluable": null,
+     "pagina": "/"
+    }
+   ],
+   "encontro": "info@culiacan.gob.mx",
+   "falsas_llegadas": [],
+   "captcha": [],
+   "puntajes": {
+    "reglas": 0.896551724137931,
+    "elementos": 0.9498806682577565,
+    "reglas_conservador": 0.8333333333333334,
+    "elementos_conservador": 0.943127962085308
+   },
+   "veredicto_nvda": "completable",
+   "vidente_lo_encuentra": true,
+   "corrida": "corrida del 2026-11-15",
+   "fecha": "2026-11-15T19:28:02-07:00",
+   "nota_corrida": null,
+   "no_cargo": null,
+   "ciego": false,
+   "marcas": [
+    {
+     "paso": 15,
+     "tipo": "umbral",
+     "texto": "Aquí pasa de 15 pulsaciones (umbral)"
+    },
+    {
+     "paso": 40,
+     "tipo": "llego",
+     "texto": "Llegó al objetivo correcto"
+    }
+   ]
   },
   {
    "sitio": "sinaloa",
@@ -5648,11 +8360,11 @@ window.ATORAPP = {
    "matriz": {
     "completable": {
      "completable": 0,
-     "con_dificultad": 0,
-     "no_completable": 0
+     "con_dificultad": 1,
+     "no_completable": 1
     },
     "con_dificultad": {
-     "completable": 0,
+     "completable": 1,
      "con_dificultad": 0,
      "no_completable": 1
     },
@@ -5662,7 +8374,7 @@ window.ATORAPP = {
      "no_completable": 1
     }
    },
-   "n": 2,
+   "n": 5,
    "excluidas": {
     "sin_nvda": 0,
     "no_evaluable_nvda": 0,
@@ -5670,36 +8382,38 @@ window.ATORAPP = {
    }
   },
   "acuerdo": {
-   "n": 2,
-   "tres_clases": 0.5,
-   "binario": 0.5
+   "n": 5,
+   "tres_clases": 0.2,
+   "binario": 0.6
   },
   "acuerdo_por_umbral": {
    "10": {
-    "n": 2,
-    "iguales": 1
+    "n": 5,
+    "iguales": 2
    },
    "15": {
-    "n": 2,
+    "n": 5,
     "iguales": 1
    },
    "25": {
-    "n": 2,
+    "n": 5,
     "iguales": 1
    }
   },
   "falsas_llegadas": {
    "tareas_con_falsa": 0,
-   "n_tareas": 3,
+   "n_tareas": 6,
    "por_sitio": {
     "ahome": 0,
+    "atencion": 0,
     "ciudadano": 0,
+    "culiacan": 0,
     "sinaloa": 0
    }
   },
   "auc": {
    "calculado": false,
-   "motivo": "hay 2 tareas comparables (de 3 tareas en 3 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe"
+   "motivo": "hay 5 tareas comparables (de 6 tareas en 5 sitios); con menos de 10 el AUC no es interpretable: solo puede tomar unos cuantos valores (con 1 tarea de cada clase, 0 o 1) y no dice nada de axe"
   }
  },
  "notas_nvda": [
@@ -5721,11 +8435,35 @@ window.ATORAPP = {
   },
   {
    "sitio": "ciudadano",
+   "tarea": "A",
+   "ruta_nvda": "H (no hay encabezados), luego K hasta el pie: ~17. Con Tab también ~17 (3 enlaces del pie salen primero + 14 hasta el correo). D no avanza: el sitio no tiene regiones. Conteo manual aproximado; auditor principiante.",
+   "pulsaciones_aprox": "17",
+   "que_me_atoro": "Contacto en el pie y en el bloque de Asistencia Digital. Sin landmarks (D inútil). Orden de Tab raro: empieza por el pie (posible tabindex>0, sin confirmar). Las tarjetas de trámites no reciben foco con Tab. Un campo y un botón sin nombre antes de VALIDAR UN DOCUMENTO. La ruta con Tab se hizo ya sabiendo dónde estaba.",
+   "fecha_auditoria": "2026-11-15"
+  },
+  {
+   "sitio": "ciudadano",
    "tarea": "B",
    "ruta_nvda": "Flechas cuadro por cuadro hasta Acta de nacimiento, Enter, flechas hasta Requisitos. Conteo manual aproximado; auditor principiante.",
    "pulsaciones_aprox": "20",
    "que_me_atoro": "Los tramites se leen como texto uno por uno con flechas; se activan con Enter. Llegar a los requisitos cuesta ~20 pulsaciones. Los requisitos se muestran sin cambiar la URL (posible ventana emergente o app de una sola pagina).",
    "fecha_auditoria": "2026-11-08"
+  },
+  {
+   "sitio": "culiacan",
+   "tarea": "A",
+   "ruta_nvda": "Mejor ruta: 4 D hasta la región 'información de contenido' + 1 al correo = ~5. Primer intento (H, K, L y Tab) ~45 sin reconocer el contacto; con solo flecha abajo ~120 hasta el teléfono. Conteo manual aproximado; auditor principiante.",
+   "pulsaciones_aprox": "5",
+   "que_me_atoro": "Correo como mailto: y teléfono como texto plano en el pie. Ningún encabezado de contacto: H no ayuda. NVDA parte 'Teléfono' y el número en dos líneas. La pasada con D se hizo ya sabiendo dónde estaba.",
+   "fecha_auditoria": "2026-11-15"
+  },
+  {
+   "sitio": "atencion",
+   "tarea": "A",
+   "ruta_nvda": "Única ruta: ~4 D al pie + 3-4 K al enlace 'Whatsapp' + Enter + Esc (diálogo del navegador) + 1-2 H al encabezado 'Chatea en WhatsApp con el +52 667 502 7665' = ~11. El número se lee en api.whatsapp.com (otro host). Portada y Asistencia digital revisadas con H, K, L, D, Tab y flechas: no se lee ningún contacto. Conteo manual aproximado; auditor principiante.",
+   "pulsaciones_aprox": "11",
+   "que_me_atoro": "En Asistencia digital un vidente ve teléfono, WhatsApp y correo, pero NVDA no lee las tarjetas (texto no accesible, probablemente imágenes). Tiene widget de accesibilidad y aun así falla. El enlace 'Whatsapp' no avisa que sale del sitio ni que abre un diálogo de Chrome que se queda con el foco. 20 botones del mapa llamados 'Marker'; lista de municipios 'cliqueable' sin rol ni foco.",
+   "fecha_auditoria": "2026-11-15"
   }
  ]
 };
